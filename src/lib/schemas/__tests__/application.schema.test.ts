@@ -116,7 +116,15 @@ describe('applicationFormSchema', () => {
   })
 
   it('should apply default status', () => {
-    const { status: _, ...dataWithoutStatus } = validApplicationData
+    const dataWithoutStatus = {
+      company_name: validApplicationData.company_name,
+      job_title: validApplicationData.job_title,
+      job_url: validApplicationData.job_url,
+      location: validApplicationData.location,
+      salary_range: validApplicationData.salary_range,
+      date_applied: validApplicationData.date_applied,
+      notes: validApplicationData.notes,
+    }
     const result = applicationFormSchema.safeParse(dataWithoutStatus)
     expect(result.success).toBe(true)
     if (result.success) {
@@ -158,7 +166,12 @@ describe('createApplicationSchema', () => {
   })
 
   it('should require user_id', () => {
-    const { user_id: _, ...dataWithoutUserId } = validCreateData
+    const dataWithoutUserId = {
+      company_name: validCreateData.company_name,
+      job_title: validCreateData.job_title,
+      status: validCreateData.status,
+      date_applied: validCreateData.date_applied,
+    }
     const result = createApplicationSchema.safeParse(dataWithoutUserId)
     expect(result.success).toBe(false)
   })
