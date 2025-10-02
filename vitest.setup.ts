@@ -6,4 +6,6 @@ expect.extend(matchers)
 
 afterEach(() => {
   cleanup()
+  localStorage.clear()
+  document.documentElement.className = ''
 })
