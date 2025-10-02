@@ -7,32 +7,33 @@
 ## Phase 1: MVP (Core Functionality)
 
 ### Setup
-- [ ] Initialize Next.js 15 + TypeScript
-- [ ] Configure Tailwind CSS
-- [ ] Initialize Shadcn UI
-- [ ] Set up ESLint, Prettier, Jest
-- [ ] Create project structure
+- [x] Initialize Next.js 15 + TypeScript
+- [x] Configure Tailwind CSS
+- [x] Initialize Shadcn UI (button component added)
+- [x] Set up ESLint, Prettier, Vitest
+- [x] Create project structure
+- [x] Add theme system (light/dark/system modes)
 
 ### Database & Auth
-- [ ] Create Supabase project
-- [ ] Set up authentication (email/password)
-- [ ] Create applications table
-- [ ] Implement Row Level Security policies
-- [ ] Configure Supabase client
+- [x] Create Supabase project
+- [x] Set up authentication (email/password)
+- [x] Create applications table
+- [x] Implement Row Level Security policies
+- [x] Configure Supabase client (server + client + middleware)
 
 ### Authentication
-- [ ] Login page
-- [ ] Signup page
-- [ ] Auth middleware for protected routes
-- [ ] Logout functionality
+- [x] Login page
+- [x] Signup page
+- [x] Auth middleware for protected routes
+- [x] Logout functionality
 - [ ] Auth tests
 
 ### Application CRUD
-- [ ] Define TypeScript interfaces
-- [ ] Create Zod schemas
-- [ ] Implement database operations (create, read, update, delete)
-- [ ] Write unit tests
-- [ ] Add error handling
+- [x] Define TypeScript interfaces
+- [x] Create Zod schemas (form validation with comprehensive tests)
+- [x] Implement database operations (create, read, update, delete)
+- [x] Write unit tests (applications API)
+- [x] Add error handling
 
 ### UI Components
 - [ ] Application form (with React Hook Form + Zod)
