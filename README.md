@@ -39,7 +39,7 @@ supabase db reset # Apply all migrations
 
 # Configure environment
 cp .env.example .env.local
-# Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
+# Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
 
 # Run development server
 yarn dev
@@ -85,7 +85,7 @@ vercel
 
 Add environment variables in Vercel dashboard:
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
 
 ## Documentation
 
