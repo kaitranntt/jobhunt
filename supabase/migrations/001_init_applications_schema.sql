@@ -34,10 +34,15 @@ CREATE TABLE IF NOT EXISTS applications (
 ALTER TABLE applications ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist (for idempotency)
-DROP POLICY IF EXISTS "Users can view own applications" ON applications;
-DROP POLICY IF EXISTS "Users can insert own applications" ON applications;
-DROP POLICY IF EXISTS "Users can update own applications" ON applications;
-DROP POLICY IF EXISTS "Users can delete own applications" ON applications;
+-- Note: First run will show notices - this is expected behavior
+DO $$
+BEGIN
+  DROP POLICY IF EXISTS "Users can view own applications" ON applications;
+  DROP POLICY IF EXISTS "Users can insert own applications" ON applications;
+  DROP POLICY IF EXISTS "Users can update own applications" ON applications;
+  DROP POLICY IF EXISTS "Users can delete own applications" ON applications;
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
 
 -- Create RLS Policies
 CREATE POLICY "Users can view own applications"
@@ -70,7 +75,12 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Drop trigger if exists (for idempotency)
-DROP TRIGGER IF EXISTS update_applications_updated_at ON applications;
+-- Note: First run will show notice - this is expected behavior
+DO $$
+BEGIN
+  DROP TRIGGER IF EXISTS update_applications_updated_at ON applications;
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
 
 -- Create updated_at trigger
 CREATE TRIGGER update_applications_updated_at
