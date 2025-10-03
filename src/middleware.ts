@@ -6,6 +6,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Use Node.js runtime for full API support and Supabase SSR compatibility
+  runtime: 'nodejs',
+
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
