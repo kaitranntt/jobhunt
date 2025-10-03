@@ -91,9 +91,14 @@ echo "🔐 Checking required environment variables..."
 REQUIRED_VARS=("NEXT_PUBLIC_SUPABASE_URL" "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY")
 ENV_CHECK_PASSED=1
 
+# Check environment variables (works for both Vercel and local)
 for VAR in "${REQUIRED_VARS[@]}"; do
-    if grep -q "^${VAR}=" .env.local 2>/dev/null; then
-        : # Variable exists, continue
+    # First check if variable is set in environment (Vercel builds)
+    if [ -n "${!VAR}" ]; then
+        : # Variable exists in environment, continue
+    # Then check .env.local for local development
+    elif grep -q "^${VAR}=" .env.local 2>/dev/null; then
+        : # Variable exists in .env.local, continue
     else
         ENV_CHECK_PASSED=0
     fi
