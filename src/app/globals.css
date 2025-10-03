@@ -36,6 +36,30 @@
   --info: 217 91% 60%;
   --info-foreground: 0 0% 98%;
 
+  /* Brand Gradients (Purple/Blue) */
+  --brand-primary: 266 85% 58%;        /* purple-600 */
+  --brand-primary-dark: 266 85% 48%;   /* purple-700 */
+  --brand-primary-light: 266 85% 68%;  /* purple-400 */
+
+  --brand-secondary: 221 83% 53%;      /* blue-600 */
+  --brand-secondary-dark: 221 83% 43%; /* blue-700 */
+  --brand-secondary-light: 221 83% 63%; /* blue-400 */
+
+  /* Gradient Backgrounds */
+  --gradient-light-start: 221 100% 96%;    /* blue-50 */
+  --gradient-light-mid: 0 0% 100%;         /* white */
+  --gradient-light-end: 266 100% 97%;      /* purple-50 */
+
+  --gradient-accent-start: 221 100% 92%;   /* blue-100 */
+  --gradient-accent-end: 266 100% 95%;     /* purple-100 */
+
+  /* Accent Gradients */
+  --accent-gradient-start: 189 94% 43%;    /* cyan-500 */
+  --accent-gradient-end: 173 80% 40%;      /* teal-500 */
+
+  --accent-pink-start: 266 85% 68%;        /* purple-400 */
+  --accent-pink-end: 328 86% 70%;          /* pink-400 */
+
   --radius: 0.5rem;
 }
 
@@ -96,6 +120,30 @@
   --warning-foreground: 222 47% 11%;
   --info: 217 91% 60%;
   --info-foreground: 210 40% 98%;
+
+  /* Dark mode brand colors */
+  --brand-primary: 266 85% 68%;        /* purple-400 */
+  --brand-primary-dark: 266 85% 58%;   /* purple-600 */
+  --brand-primary-light: 266 85% 78%;  /* purple-300 */
+
+  --brand-secondary: 221 83% 63%;      /* blue-400 */
+  --brand-secondary-dark: 221 83% 53%; /* blue-600 */
+  --brand-secondary-light: 221 83% 73%; /* blue-300 */
+
+  /* Dark gradient backgrounds */
+  --gradient-light-start: 222 47% 11%;     /* gray-900 */
+  --gradient-light-mid: 221 39% 11%;       /* blue-950 */
+  --gradient-light-end: 266 47% 11%;       /* purple-950 */
+
+  --gradient-accent-start: 266 47% 11%;    /* purple-900 */
+  --gradient-accent-end: 221 39% 11%;      /* blue-900 */
+
+  /* Accent gradients (darker in dark mode) */
+  --accent-gradient-start: 189 94% 23%;    /* cyan-600 */
+  --accent-gradient-end: 173 80% 20%;      /* teal-600 */
+
+  --accent-pink-start: 266 47% 25%;        /* purple-600 */
+  --accent-pink-end: 328 86% 30%;          /* pink-600 */
 }
 
 body {
@@ -281,3 +329,92 @@ body {
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 .stagger-6 { animation-delay: 0.6s; }
+
+/* Brand Gradient Utilities */
+.gradient-brand {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-primary)),
+    hsl(var(--brand-secondary))
+  );
+}
+
+.gradient-brand-text {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-primary)),
+    hsl(var(--brand-secondary))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-page-bg {
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--gradient-light-start)),
+    hsl(var(--gradient-light-mid)),
+    hsl(var(--gradient-light-end))
+  );
+}
+
+.gradient-accent-overlay {
+  background: linear-gradient(
+    to top left,
+    hsl(var(--gradient-accent-start) / 0.3),
+    transparent,
+    hsl(var(--gradient-accent-end) / 0.3)
+  );
+}
+
+/* Floating orb gradients */
+.gradient-orb-blue {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-secondary) / 0.3),
+    hsl(var(--brand-primary) / 0.3)
+  );
+}
+
+.gradient-orb-pink {
+  background: linear-gradient(
+    to right,
+    hsl(var(--accent-pink-start) / 0.3),
+    hsl(var(--accent-pink-end) / 0.3)
+  );
+}
+
+.gradient-orb-cyan {
+  background: linear-gradient(
+    to right,
+    hsl(var(--accent-gradient-start) / 0.3),
+    hsl(var(--accent-gradient-end) / 0.3)
+  );
+}
+
+/* Button gradients */
+.btn-brand-gradient {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-primary)),
+    hsl(var(--brand-secondary))
+  );
+}
+
+.btn-brand-gradient-hover {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-primary-dark)),
+    hsl(var(--brand-secondary-dark))
+  );
+}
+
+/* Text colors */
+.text-brand-primary {
+  color: hsl(var(--brand-primary));
+}
+
+.text-brand-secondary {
+  color: hsl(var(--brand-secondary));
+}
