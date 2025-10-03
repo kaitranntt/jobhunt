@@ -3,6 +3,13 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { useRouter } from 'next/navigation'
 import LoginPage from '../page'
 import { createClient } from '@/lib/supabase/client'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
+import { setupMatchMedia } from '@/test/setup'
+
+// Wrapper for ThemeProvider context
+function renderWithTheme(ui: React.ReactElement) {
+  return render(<ThemeProvider>{ui}</ThemeProvider>)
+}
 
 // Mock Next.js navigation
 vi.mock('next/navigation', () => ({
@@ -21,6 +28,7 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    setupMatchMedia()
 
     vi.mocked(useRouter).mockReturnValue({
       push: mockPush,
@@ -35,7 +43,7 @@ describe('LoginPage', () => {
   })
 
   it('should render login form with all required fields', () => {
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     expect(screen.getByRole('heading', { name: /sign in to jobhunt/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
@@ -45,7 +53,7 @@ describe('LoginPage', () => {
   })
 
   it('should update email and password fields on input', () => {
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i) as HTMLInputElement
     const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement
@@ -60,7 +68,7 @@ describe('LoginPage', () => {
   it('should handle successful login', async () => {
     mockSignIn.mockResolvedValue({ data: {}, error: null })
 
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
     const passwordInput = screen.getByLabelText(/password/i)
@@ -90,7 +98,7 @@ describe('LoginPage', () => {
       error: new Error(errorMessage),
     })
 
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
     const passwordInput = screen.getByLabelText(/password/i)
@@ -115,7 +123,7 @@ describe('LoginPage', () => {
         )
     )
 
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
     const passwordInput = screen.getByLabelText(/password/i)
@@ -141,7 +149,7 @@ describe('LoginPage', () => {
       })
       .mockResolvedValueOnce({ data: {}, error: null })
 
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
     const passwordInput = screen.getByLabelText(/password/i)
@@ -166,7 +174,7 @@ describe('LoginPage', () => {
   })
 
   it('should require email and password fields', () => {
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
     const passwordInput = screen.getByLabelText(/password/i)
@@ -178,7 +186,7 @@ describe('LoginPage', () => {
   })
 
   it('should have link to signup page', () => {
-    render(<LoginPage />)
+    renderWithTheme(<LoginPage />)
 
     const signupLink = screen.getByRole('link', { name: /sign up/i })
     expect(signupLink).toHaveAttribute('href', '/signup')
