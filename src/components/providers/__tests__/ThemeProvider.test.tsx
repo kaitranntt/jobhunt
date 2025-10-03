@@ -2,9 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, renderHook, waitFor, act } from '@testing-library/react'
 import { ThemeProvider, useTheme } from '../ThemeProvider'
 
-// TODO: These tests are temporarily skipped due to React 19 + @testing-library/react compatibility issues
-// See: https://github.com/testing-library/react-testing-library/issues/1216
-describe.skip('ThemeProvider', () => {
+describe('ThemeProvider', () => {
   let localStorageMock: Record<string, string> = {}
   let mediaQueryListeners: Array<(e: MediaQueryListEvent) => void> = []
 
@@ -154,7 +152,7 @@ describe.skip('ThemeProvider', () => {
 
   it('throws error when useTheme is called outside ThemeProvider', () => {
     // Suppress console.error for this test
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => { })
 
     expect(() => {
       renderHook(() => useTheme())

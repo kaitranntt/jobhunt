@@ -1,13 +1,27 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { ThemeToggle } from '../ThemeToggle'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-// TODO: Temporarily skipped due to React 19 + @testing-library/react compatibility
-describe.skip('ThemeToggle', () => {
+describe('ThemeToggle', () => {
   beforeEach(() => {
     localStorage.clear()
     document.documentElement.className = ''
+
+    // Mock matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    })
   })
 
   it('renders with correct initial icon', () => {
