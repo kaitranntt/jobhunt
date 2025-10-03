@@ -14,7 +14,6 @@ import {
   Sparkles,
   Github,
   Star,
-  GitFork,
   Code,
   Download,
   Database,
@@ -26,70 +25,9 @@ import {
   Globe,
   Lock,
   Wrench,
+  Rocket,
 } from 'lucide-react'
-
-interface StatCounterProps {
-  end: number
-  duration?: number
-  suffix?: string
-  prefix?: string
-}
-
-// Counter animation component for statistics
-function StatCounter({ end, duration = 2000, suffix = '', prefix = '' }: StatCounterProps) {
-  const [count, setCount] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.5 }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isVisible])
-
-  useEffect(() => {
-    if (!isVisible) return
-
-    const startTime = Date.now()
-    const endTime = startTime + duration
-
-    const updateCount = () => {
-      const now = Date.now()
-      const progress = Math.min((now - startTime) / duration, 1)
-      const easeOutQuad = 1 - Math.pow(1 - progress, 3)
-      const currentCount = Math.floor(easeOutQuad * end)
-
-      setCount(currentCount)
-
-      if (now < endTime) {
-        requestAnimationFrame(updateCount)
-      } else {
-        setCount(end)
-      }
-    }
-
-    requestAnimationFrame(updateCount)
-  }, [isVisible, end, duration])
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {prefix}
-      {count.toLocaleString()}
-      {suffix}
-    </span>
-  )
-}
+import { NavBar } from '@/components/layout/NavBar'
 
 interface AnimatedSectionProps {
   children: React.ReactNode
@@ -138,16 +76,18 @@ export default function Home() {
     <div className="relative min-h-screen overflow-hidden">
       {/* Multi-layer animated gradient background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950" />
-        <div className="absolute inset-0 bg-gradient-to-tl from-purple-100/30 via-transparent to-blue-100/30 dark:from-purple-900/20 dark:via-transparent dark:to-blue-900/20 animate-gradient" />
+        <div className="absolute inset-0 gradient-page-bg" />
+        <div className="absolute inset-0 gradient-accent-overlay animate-gradient" />
 
         {/* Animated floating orbs */}
-        <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-gradient-to-r from-blue-400/30 to-purple-400/30 dark:from-blue-600/20 dark:to-purple-600/20 blur-3xl animate-float" />
-        <div className="absolute top-40 right-20 h-96 w-96 rounded-full bg-gradient-to-r from-purple-400/30 to-pink-400/30 dark:from-purple-600/20 dark:to-pink-600/20 blur-3xl animate-float-reverse" />
-        <div className="absolute bottom-20 left-1/4 h-80 w-80 rounded-full bg-gradient-to-r from-cyan-400/30 to-blue-400/30 dark:from-cyan-600/20 dark:to-blue-600/20 blur-3xl animate-pulse-glow" />
+        <div className="absolute top-20 left-10 h-72 w-72 rounded-full gradient-orb-blue blur-3xl animate-float" />
+        <div className="absolute top-40 right-20 h-96 w-96 rounded-full gradient-orb-pink blur-3xl animate-float-reverse" />
+        <div className="absolute bottom-20 left-1/4 h-80 w-80 rounded-full gradient-orb-cyan blur-3xl animate-pulse-glow" />
       </div>
 
-      <main className="relative">
+      <NavBar variant="landing" />
+
+      <main className="relative pt-20">
         {/* Hero Section */}
         <section className="relative px-4 py-20 sm:py-32">
           <div className="container mx-auto max-w-7xl">
@@ -161,11 +101,11 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Github className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                  <Github className="h-5 w-5 text-brand-primary" />
+                  <span className="gradient-brand-text">
                     Open Source
                   </span>
-                  <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                  <span className="flex items-center gap-1 text-foreground/90">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     Star if useful ⭐
                   </span>
@@ -175,19 +115,19 @@ export default function Home() {
               {/* Main heading with gradient */}
               <h1 className="mb-6 animate-slide-up opacity-0 stagger-2">
                 <span className="block text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
-                  <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-900 bg-clip-text text-transparent dark:from-white dark:via-blue-200 dark:to-purple-200 animate-gradient">
-                    Open-Source Job
+                  <span className="gradient-brand-text animate-gradient">
+                    Open-Source
                   </span>
                 </span>
                 <span className="mt-2 block text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
-                    Application Tracker
+                  <span className="gradient-brand-text">
+                  Job Application Tracker
                   </span>
                 </span>
               </h1>
 
               {/* Subtitle */}
-              <p className="mx-auto mb-12 max-w-3xl text-lg text-gray-600 dark:text-gray-300 sm:text-xl lg:text-2xl animate-slide-up opacity-0 stagger-3">
+              <p className="mx-auto mb-12 max-w-3xl text-lg text-foreground/90 sm:text-xl lg:text-2xl animate-slide-up opacity-0 stagger-3">
                 Your data, your way. Track applications with a modern Kanban board.
                 <br />
                 Start free on our cloud or self-host with one command.
@@ -197,20 +137,20 @@ export default function Home() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-slide-up opacity-0 stagger-4">
                 <Link
                   href="/signup"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 dark:shadow-purple-900/50"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 dark:shadow-purple-900/50"
                   aria-label="Start tracking applications for free"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Start Tracking Free
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="absolute inset-0 btn-brand-gradient-hover opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   <div className="absolute inset-0 animate-shimmer" />
                 </Link>
 
                 <Link
                   href="https://github.com/kaitranntt/jobhunt"
-                  className="glass-strong group inline-flex items-center justify-center rounded-xl px-8 py-4 text-lg font-semibold text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 dark:text-white"
+                  className="glass-strong group inline-flex items-center justify-center rounded-xl px-8 py-4 text-lg font-semibold text-foreground shadow-lg transition-all duration-300 hover:scale-105"
                   aria-label="Self-host JobHunt from GitHub"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -224,7 +164,7 @@ export default function Home() {
               </div>
 
               {/* Social proof */}
-              <p className="mt-8 text-sm text-gray-600 dark:text-gray-400 animate-slide-up opacity-0 stagger-5">
+              <p className="mt-8 text-sm text-foreground/80 animate-slide-up opacity-0 stagger-5">
                 <span className="flex items-center justify-center gap-6 flex-wrap">
                   <span className="flex items-center gap-1">
                     <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -251,13 +191,13 @@ export default function Home() {
               <div className="grid gap-8 md:grid-cols-3">
                 {/* For Job Seekers */}
                 <div className="glass rounded-2xl p-8 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 text-white">
+                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl gradient-brand text-white">
                     <Briefcase className="h-7 w-7" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="mb-4 text-2xl font-bold text-foreground">
                     For Job Seekers
                   </h3>
-                  <ul className="space-y-3 text-gray-600 dark:text-gray-300">
+                  <ul className="space-y-3 text-foreground/80">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                       <span>Simple Kanban board interface</span>
@@ -279,13 +219,13 @@ export default function Home() {
 
                 {/* For Developers */}
                 <div className="glass rounded-2xl p-8 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
+                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl gradient-brand text-white">
                     <Code className="h-7 w-7" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="mb-4 text-2xl font-bold text-foreground">
                     For Developers
                   </h3>
-                  <ul className="space-y-3 text-gray-600 dark:text-gray-300">
+                  <ul className="space-y-3 text-foreground/80">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                       <span>Fully customizable source code</span>
@@ -307,11 +247,11 @@ export default function Home() {
 
                 {/* For Teams */}
                 <div className="glass rounded-2xl p-8 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 text-white">
+                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl gradient-brand text-white">
                     <Users className="h-7 w-7" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">For Teams</h3>
-                  <ul className="space-y-3 text-gray-600 dark:text-gray-300">
+                  <h3 className="mb-4 text-2xl font-bold text-foreground">For Teams</h3>
+                  <ul className="space-y-3 text-foreground/80">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
                       <span>Self-host for complete control</span>
@@ -340,13 +280,13 @@ export default function Home() {
           <section className="px-4 py-16 sm:py-24" aria-label="Platform features">
             <div className="container mx-auto max-w-7xl">
               <div className="mb-16 text-center">
-                <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                   Powerful Features,{' '}
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                  <span className="gradient-brand-text">
                     Your Control
                   </span>
                 </h2>
-                <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+                <p className="mx-auto max-w-2xl text-lg text-foreground/90">
                   Everything you need to manage your job search, with the freedom to customize
                 </p>
               </div>
@@ -409,11 +349,11 @@ export default function Home() {
                         <feature.icon className="h-full w-full text-white" aria-hidden="true" />
                       </div>
 
-                      <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                      <h3 className="mb-4 text-2xl font-bold text-foreground">
                         {feature.title}
                       </h3>
 
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                      <p className="text-foreground/80 leading-relaxed">
                         {feature.description}
                       </p>
 
@@ -432,13 +372,13 @@ export default function Home() {
           <section className="px-4 py-16 sm:py-24" aria-label="Technology stack">
             <div className="container mx-auto max-w-7xl">
               <div className="text-center mb-12">
-                <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                   Built with Modern,{' '}
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                  <span className="gradient-brand-text">
                     Production-Ready Tools
                   </span>
                 </h2>
-                <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+                <p className="mx-auto max-w-2xl text-lg text-foreground/90">
                   Fast, secure, and scalable technology choices you can trust
                 </p>
               </div>
@@ -485,15 +425,15 @@ export default function Home() {
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0">
                         <tech.icon
-                          className="h-8 w-8 text-purple-600 dark:text-purple-400 transition-transform group-hover:rotate-12"
+                          className="h-8 w-8 text-brand-primary transition-transform group-hover:rotate-12"
                           aria-hidden="true"
                         />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                        <h3 className="font-semibold text-foreground mb-1">
                           {tech.name}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-foreground/80">
                           {tech.description}
                         </p>
                       </div>
@@ -504,17 +444,17 @@ export default function Home() {
 
               {/* Developer Benefits */}
               <div className="glass-strong rounded-2xl p-8 sm:p-12">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                <h3 className="text-2xl font-bold text-foreground mb-6 text-center">
                   Why Developers Love This Stack
                 </h3>
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-foreground mb-1">
                         Type-Safe Throughout
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-foreground/80">
                         TypeScript + Zod schemas catch errors before production
                       </p>
                     </div>
@@ -522,10 +462,10 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-foreground mb-1">
                         Optimized Performance
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-foreground/80">
                         React Server Components and automatic code splitting
                       </p>
                     </div>
@@ -533,10 +473,10 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-foreground mb-1">
                         Modern DX
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-foreground/80">
                         Hot reload, ESLint, Prettier - batteries included
                       </p>
                     </div>
@@ -544,10 +484,10 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-foreground mb-1">
                         Test Coverage
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-foreground/80">
                         Vitest for fast unit and integration testing
                       </p>
                     </div>
@@ -563,13 +503,13 @@ export default function Home() {
           <section className="px-4 py-16 sm:py-24" aria-label="Getting started">
             <div className="container mx-auto max-w-7xl">
               <div className="text-center mb-12">
-                <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                   Two Ways to{' '}
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                  <span className="gradient-brand-text">
                     Get Started
                   </span>
                 </h2>
-                <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+                <p className="mx-auto max-w-2xl text-lg text-foreground/90">
                   Choose cloud hosting for instant setup or self-host for complete control
                 </p>
               </div>
@@ -581,8 +521,8 @@ export default function Home() {
                     onClick={() => setActiveTab('cloud')}
                     className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                       activeTab === 'cloud'
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                        ? 'btn-brand-gradient text-white shadow-lg'
+                        : 'text-foreground/90 hover:text-foreground'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -594,8 +534,8 @@ export default function Home() {
                     onClick={() => setActiveTab('self-hosted')}
                     className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
                       activeTab === 'self-hosted'
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                        ? 'btn-brand-gradient text-white shadow-lg'
+                        : 'text-foreground/90 hover:text-foreground'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -611,45 +551,45 @@ export default function Home() {
                 {activeTab === 'cloud' ? (
                   <div className="space-y-8">
                     <div className="text-center mb-8">
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      <h3 className="text-3xl font-bold text-foreground mb-2">
                         Start Free in 3 Steps
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400">
+                      <p className="text-foreground/90">
                         No installation required. Fully managed and secure.
                       </p>
                     </div>
 
                     <div className="grid gap-6 md:grid-cols-3">
                       <div className="text-center">
-                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white text-2xl font-bold shadow-lg">
+                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full gradient-brand text-white text-2xl font-bold shadow-lg">
                           1
                         </div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">
+                        <h4 className="font-bold text-foreground mb-2">
                           Sign Up Free
                         </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-foreground/80">
                           Create your account in seconds. No credit card required.
                         </p>
                       </div>
                       <div className="text-center">
-                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-2xl font-bold shadow-lg">
+                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full gradient-brand text-white text-2xl font-bold shadow-lg">
                           2
                         </div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">
+                        <h4 className="font-bold text-foreground mb-2">
                           Add Applications
                         </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-foreground/80">
                           Start tracking your job applications with our intuitive interface.
                         </p>
                       </div>
                       <div className="text-center">
-                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 text-white text-2xl font-bold shadow-lg">
+                        <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full gradient-brand text-white text-2xl font-bold shadow-lg">
                           3
                         </div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">
+                        <h4 className="font-bold text-foreground mb-2">
                           Land Your Job
                         </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-foreground/80">
                           Stay organized and never miss a follow-up opportunity.
                         </p>
                       </div>
@@ -658,12 +598,12 @@ export default function Home() {
                     <div className="text-center pt-6">
                       <Link
                         href="/signup"
-                        className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
+                        className="inline-flex items-center justify-center rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
                       >
                         Start Free Account
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
-                      <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                      <p className="mt-4 text-sm text-foreground/80">
                         <span className="flex items-center justify-center gap-4 flex-wrap">
                           <span className="flex items-center gap-1">
                             <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -684,17 +624,17 @@ export default function Home() {
                 ) : (
                   <div className="space-y-8">
                     <div className="text-center mb-8">
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      <h3 className="text-3xl font-bold text-foreground mb-2">
                         Deploy Your Own Instance
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400">
+                      <p className="text-foreground/90">
                         Complete control over your data and infrastructure.
                       </p>
                     </div>
 
                     {/* Code snippet */}
                     <div className="glass rounded-xl p-6 overflow-x-auto">
-                      <pre className="text-sm text-gray-800 dark:text-gray-200 font-mono">
+                      <pre className="text-sm text-foreground/90 font-mono">
                         <code>{`# Clone the repository
 git clone https://github.com/kaitranntt/jobhunt.git
 cd jobhunt
@@ -715,7 +655,7 @@ yarn dev`}</code>
 
                     {/* Deployment options */}
                     <div>
-                      <h4 className="font-bold text-gray-900 dark:text-white mb-4 text-center">
+                      <h4 className="font-bold text-foreground mb-4 text-center">
                         Deployment Options
                       </h4>
                       <div className="flex flex-wrap items-center justify-center gap-4">
@@ -723,7 +663,7 @@ yarn dev`}</code>
                           (platform) => (
                             <div
                               key={platform}
-                              className="glass rounded-lg px-4 py-2 font-semibold text-gray-900 dark:text-white text-sm"
+                              className="glass rounded-lg px-4 py-2 font-semibold text-foreground text-sm"
                             >
                               {platform}
                             </div>
@@ -757,68 +697,47 @@ yarn dev`}</code>
             <div className="container mx-auto max-w-7xl">
               <div className="glass-strong rounded-3xl p-8 sm:p-16 shadow-2xl">
                 <div className="text-center mb-12">
-                  <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-                    Join Our{' '}
-                    <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
-                      Growing Community
+                  <h2 className="mb-4 text-4xl font-bold text-foreground sm:text-5xl">
+                    <span className="gradient-brand-text">
+                      Open Source
                     </span>
+                    {' '}& Early Stage
                   </h2>
-                  <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-                    Built transparently in the open. Contributions welcome.
+                  <p className="mx-auto max-w-2xl text-lg text-foreground/90">
+                    This project is just getting started. Your feedback and contributions can shape its future.
                   </p>
                 </div>
 
-                {/* GitHub Stats */}
-                <div className="grid gap-6 sm:grid-cols-3 mb-12">
-                  <div className="glass rounded-xl p-6 text-center">
-                    <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/20 text-yellow-600 dark:text-yellow-400">
-                      <Star className="h-6 w-6" />
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                      <StatCounter end={1200} suffix="+" />
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">GitHub Stars</div>
-                  </div>
-                  <div className="glass rounded-xl p-6 text-center">
-                    <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400">
-                      <GitFork className="h-6 w-6" />
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                      <StatCounter end={156} />
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Forks</div>
-                  </div>
-                  <div className="glass rounded-xl p-6 text-center">
-                    <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-500/20 text-green-600 dark:text-green-400">
-                      <Users className="h-6 w-6" />
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                      <StatCounter end={23} />
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Contributors</div>
+                {/* Project Status Badge */}
+                <div className="mb-10 text-center">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-6 py-3 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                    <Rocket className="h-5 w-5" />
+                    <span className="font-semibold">Active Development • MIT Licensed</span>
                   </div>
                 </div>
 
-                {/* Contribution Opportunities */}
+                {/* Early Adopter Benefits */}
                 <div className="mb-12">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                    Ways to Contribute
+                  <h3 className="text-xl font-semibold text-foreground mb-8 text-center">
+                    How You Can Contribute
                   </h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     {[
-                      'Report bugs and suggest features',
-                      'Improve documentation',
-                      'Submit pull requests',
-                      'Share your use cases',
-                      'Help other users',
-                      'Translate to new languages',
+                      { icon: Target, text: 'Help define core features' },
+                      { icon: Sparkles, text: 'Report bugs and suggest improvements' },
+                      { icon: TrendingUp, text: 'Shape the roadmap' },
+                      { icon: Code, text: 'Contribute code or documentation' },
+                      { icon: Users, text: 'Share your use cases' },
+                      { icon: TestTube, text: 'Test and provide feedback' },
                     ].map((item) => (
                       <div
-                        key={item}
-                        className="flex items-center gap-3 text-gray-700 dark:text-gray-300"
+                        key={item.text}
+                        className="flex flex-col items-center text-center gap-3 p-4 rounded-xl glass hover:glass-strong transition-all duration-300"
                       >
-                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-                        <span>{item}</span>
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                          <item.icon className="h-5 w-5" />
+                        </div>
+                        <span className="text-sm text-foreground/90">{item.text}</span>
                       </div>
                     ))}
                   </div>
@@ -827,21 +746,21 @@ yarn dev`}</code>
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
-                    href="https://github.com/kaitranntt/jobhunt.git"
+                    href="https://github.com/kaitranntt/jobhunt"
                     className="inline-flex items-center justify-center rounded-xl bg-gray-900 dark:bg-white px-6 py-3 font-semibold text-white dark:text-gray-900 shadow-lg transition-all duration-300 hover:scale-105"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Github className="mr-2 h-5 w-5" />
-                    Star on GitHub
+                    View on GitHub
                   </Link>
                   <Link
-                    href="https://github.com/kaitranntt/jobhunt.git/blob/main/ROADMAP.md"
-                    className="inline-flex items-center justify-center rounded-xl border-2 border-gray-300 dark:border-gray-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition-all duration-300 hover:scale-105 hover:border-purple-600 dark:hover:border-purple-400"
+                    href="https://github.com/kaitranntt/jobhunt/issues/new"
+                    className="inline-flex items-center justify-center rounded-xl border-2 border-gray-300 dark:border-gray-600 px-6 py-3 font-semibold text-foreground transition-all duration-300 hover:scale-105 hover:border-purple-600 dark:hover:border-purple-400"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    View Roadmap
+                    Share Feedback
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </div>
@@ -855,9 +774,9 @@ yarn dev`}</code>
           <section className="px-4 py-16 sm:py-24" aria-label="Frequently asked questions">
             <div className="container mx-auto max-w-4xl">
               <div className="text-center mb-12">
-                <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
+                <h2 className="mb-4 text-4xl font-bold text-foreground sm:text-5xl">
                   Frequently Asked{' '}
-                  <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+                  <span className="gradient-brand-text">
                     Questions
                   </span>
                 </h2>
@@ -900,11 +819,11 @@ yarn dev`}</code>
                     key={index}
                     className="glass group rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl"
                   >
-                    <summary className="cursor-pointer p-6 font-semibold text-gray-900 dark:text-white text-lg flex items-center justify-between hover:text-purple-600 dark:hover:text-purple-400">
+                    <summary className="cursor-pointer p-6 font-semibold text-foreground text-lg flex items-center justify-between hover:text-brand-primary">
                       {faq.question}
                       <ChevronRight className="h-5 w-5 transition-transform group-open:rotate-90" />
                     </summary>
-                    <div className="px-6 pb-6 text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <div className="px-6 pb-6 text-foreground/80 leading-relaxed">
                       {faq.answer}
                     </div>
                   </details>
@@ -918,9 +837,9 @@ yarn dev`}</code>
         <AnimatedSection delay={600}>
           <section className="px-4 py-16 sm:py-24" aria-label="Final call to action">
             <div className="container mx-auto max-w-7xl">
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 p-12 sm:p-16 lg:p-24 shadow-2xl">
+              <div className="relative overflow-hidden rounded-3xl gradient-brand p-12 sm:p-16 lg:p-24 shadow-2xl">
                 {/* Animated background pattern */}
-                <div className="absolute inset-0 bg-gradient-to-tl from-purple-700/50 via-transparent to-blue-700/50 animate-gradient" />
+                <div className="absolute inset-0 gradient-accent-overlay animate-gradient" />
 
                 <div className="relative z-10 text-center">
                   <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
@@ -993,13 +912,13 @@ yarn dev`}</code>
         <footer className="px-4 py-12 border-t border-gray-200 dark:border-gray-800">
           <div className="container mx-auto max-w-7xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
+              <p className="text-foreground/80 text-sm">
                 &copy; {new Date().getFullYear()} JobHunt. Open source under MIT License.
               </p>
               <div className="flex items-center gap-6">
                 <Link
                   href="https://github.com/kaitranntt/jobhunt.git"
-                  className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className="text-foreground/80 hover:text-brand-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub repository"
@@ -1008,7 +927,7 @@ yarn dev`}</code>
                 </Link>
                 <Link
                   href="https://github.com/kaitranntt/jobhunt.git/blob/main/LICENSE"
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className="text-sm text-foreground/80 hover:text-brand-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
