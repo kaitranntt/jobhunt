@@ -26,7 +26,7 @@
 - [x] Signup page
 - [x] Auth middleware for protected routes
 - [x] Logout functionality
-- [ ] Auth tests
+- [x] Auth tests (login: 8 tests, signup: 8 tests)
 
 ### Application CRUD
 - [x] Define TypeScript interfaces
@@ -36,6 +36,8 @@
 - [x] Add error handling
 
 ### UI Components
+- [x] Button component with comprehensive tests (41 tests)
+- [x] Theme system with tests (ThemeProvider: 11 tests, ThemeToggle: 4 tests)
 - [ ] Application form (with React Hook Form + Zod)
 - [ ] Application card component
 - [ ] Kanban board with drag-and-drop

@@ -41,6 +41,33 @@ yarn test              # All tests must pass
 3. 🔄 Refactor while keeping tests green
 4. 🔁 Repeat for next feature
 
+**Testing Strategy - Test Value, Not Lines:**
+- ✅ **MUST TEST**: Business logic (auth, CRUD, validation schemas)
+- ✅ **MUST TEST**: Reusable UI components (buttons, forms, cards)
+- ✅ **MUST TEST**: Error handling and edge cases
+- ❌ **SKIP**: Thin library wrappers (Supabase clients, Next.js middleware)
+- ❌ **SKIP**: Pure presentational components without logic
+- ❌ **SKIP**: Configuration files
+
+**Test Pattern Examples:**
+```typescript
+// ✅ Business Logic Tests (applications.test.ts, application.schema.test.ts)
+- CRUD operations with proper mocking
+- Validation schemas with comprehensive edge cases
+- Error handling and data transformation
+
+// ✅ Component Tests (login/page.test.tsx, button.test.tsx)
+- Form rendering and user interactions
+- All component variants and props
+- Accessibility and keyboard navigation
+- Loading states and error handling
+
+// ❌ DO NOT Test (unless they contain business logic)
+- Supabase client wrappers (thin SDK abstractions)
+- Next.js middleware delegation (framework patterns)
+- Type definition files (no runtime behavior)
+```
+
 ### 2. Package Management - STRICT REQUIREMENTS
 
 - **Use latest `yarn` (modern Yarn) ONLY** - no npm, pnpm, or legacy yarn versions
