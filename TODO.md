@@ -38,20 +38,20 @@
 ### UI Components
 - [x] Button component with comprehensive tests (41 tests)
 - [x] Theme system with tests (ThemeProvider: 11 tests, ThemeToggle: 4 tests)
-- [ ] Application form (with React Hook Form + Zod)
-- [ ] Application card component
-- [ ] Kanban board with drag-and-drop
-- [ ] Application detail view
-- [ ] Dashboard layout
+- [x] Application form (with React Hook Form + Zod) - 24 tests
+- [x] Application card component - 46 tests
+- [x] Kanban board with drag-and-drop - 30 tests
+- [x] Application detail view - 24 tests
+- [x] Dashboard layout - 22 tests
 
 ### MVP Quality & Deployment
-- [ ] Pass all quality gates: `yarn lint && yarn typecheck && yarn test`
-- [ ] Achieve 80%+ test coverage (business logic)
-- [ ] Achieve 70%+ test coverage (components)
-- [ ] No TypeScript errors (no `any` types)
-- [ ] No ESLint warnings (no bypasses)
-- [ ] Test end-to-end flows
-- [ ] Verify mobile responsiveness
+- [x] Pass all quality gates: `yarn lint && yarn typecheck && yarn test`
+- [x] Achieve 80%+ test coverage (business logic)
+- [x] Achieve 70%+ test coverage (components)
+- [x] No TypeScript errors (no `any` types)
+- [x] No ESLint warnings (no bypasses)
+- [x] Test end-to-end flows
+- [x] Verify mobile responsiveness
 - [ ] Deploy to Vercel
 - [ ] Test in production
 
