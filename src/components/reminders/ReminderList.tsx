@@ -94,24 +94,24 @@ export default function ReminderList({ applicationId }: ReminderListProps) {
   }
 
   if (isLoading) {
-    return <div className="text-center py-8 text-muted-foreground">Loading reminders...</div>
+    return <div className="text-center py-8 text-label-secondary">Loading reminders...</div>
   }
 
   if (error) {
-    return <div className="text-center py-8 text-destructive">{error}</div>
+    return <div className="text-center py-8 text-label-primary" style={{ color: 'var(--color-error)' }}>{error}</div>
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Reminders</h2>
+        <h2 className="text-2xl font-semibold text-label-primary">Reminders</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={handleAddClick}>Add Reminder</Button>
+            <Button onClick={handleAddClick} className="btn-glass font-semibold">Add Reminder</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="text-xl font-semibold text-label-primary">
                 {editingReminder ? 'Edit Reminder' : 'Add Reminder'}
               </DialogTitle>
             </DialogHeader>
@@ -125,11 +125,11 @@ export default function ReminderList({ applicationId }: ReminderListProps) {
       </div>
 
       {reminders.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
-          No reminders set
+        <div className="text-center py-12 glass-ultra rounded-glass p-8">
+          <p className="text-label-secondary">No reminders set</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {reminders.map(reminder => (
             <ReminderCard
               key={reminder.id}

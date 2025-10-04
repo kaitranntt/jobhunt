@@ -53,12 +53,12 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
         <CardHeader>
-          <CardTitle>Upcoming Reminders</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <p className="text-sm text-label-secondary">Loading...</p>
         </CardContent>
       </Card>
     )
@@ -66,38 +66,39 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
 
   if (error) {
     return (
-      <Card>
+      <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
         <CardHeader>
-          <CardTitle>Upcoming Reminders</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-sm text-label-primary" style={{ color: 'var(--color-error)' }}>{error}</p>
         </CardContent>
       </Card>
     )
   }
 
   return (
-    <Card>
+    <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
       <CardHeader>
-        <CardTitle>Upcoming Reminders</CardTitle>
+        <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
       </CardHeader>
       <CardContent>
         {reminders.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No upcoming reminders</p>
+          <p className="text-sm text-label-secondary">No upcoming reminders</p>
         ) : (
-          <div className="space-y-2">
-            {reminders.map(reminder => (
+          <div className="space-y-3">
+            {reminders.map((reminder, index) => (
               <Button
                 key={reminder.id}
                 variant="ghost"
-                className="w-full justify-start h-auto py-2 px-3"
+                className={`w-full justify-start h-auto py-3 px-4 glass-ultra rounded-glass-sm shadow-glass-subtle glass-interactive stagger-${Math.min(index + 1, 6)}`}
+                style={{ border: '1px solid var(--glass-border-subtle)' }}
                 onClick={() => handleReminderClick(reminder)}
                 aria-label={`${reminder.title} - ${formatDate(reminder.reminder_date)}`}
               >
                 <div className="flex flex-col items-start gap-1 w-full">
-                  <p className="font-medium text-sm">{reminder.title}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="font-semibold text-sm text-label-primary">{reminder.title}</p>
+                  <p className="text-xs text-label-tertiary font-medium">
                     {formatDate(reminder.reminder_date)}
                   </p>
                 </div>

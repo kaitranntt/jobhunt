@@ -37,9 +37,23 @@ export default function ReminderCard({
     }
   }
 
+  const getPriorityStyle = () => {
+    if (isOverdue) {
+      return {
+        border: '1px solid var(--color-error)',
+        background: 'var(--glass-ultra)',
+      }
+    }
+    return {
+      border: '1px solid var(--glass-border-medium)',
+      background: 'var(--glass-ultra)',
+    }
+  }
+
   return (
     <Card
-      className={isOverdue ? 'border-destructive' : ''}
+      className="rounded-glass-sm shadow-glass-subtle glass-interactive"
+      style={getPriorityStyle()}
       data-overdue={isOverdue}
     >
       <CardHeader className="pb-3">
@@ -53,11 +67,11 @@ export default function ReminderCard({
             />
             <div className="flex-1">
               <h3
-                className={`font-semibold ${reminder.is_completed ? 'line-through text-muted-foreground' : ''}`}
+                className={`font-semibold text-base ${reminder.is_completed ? 'line-through text-label-tertiary' : 'text-label-primary'}`}
               >
                 {reminder.title}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-label-tertiary font-medium mt-1">
                 {formatDate(reminder.reminder_date)}
               </p>
             </div>
@@ -68,6 +82,7 @@ export default function ReminderCard({
               size="sm"
               onClick={onEdit}
               aria-label="Edit reminder"
+              className="glass-ultra rounded-glass-sm text-label-primary hover:glass-light"
             >
               Edit
             </Button>
@@ -76,6 +91,7 @@ export default function ReminderCard({
               size="sm"
               onClick={onDelete}
               aria-label="Delete reminder"
+              className="glass-ultra rounded-glass-sm text-label-primary hover:glass-light"
             >
               Delete
             </Button>
@@ -85,12 +101,16 @@ export default function ReminderCard({
       {(reminder.description || isOverdue) && (
         <CardContent className="pt-0">
           {isOverdue && (
-            <Badge variant="destructive" className="mb-2">
+            <Badge
+              variant="destructive"
+              className="mb-2 glass-medium rounded-glass-sm"
+              style={{ background: 'var(--color-error)', color: 'white' }}
+            >
               Overdue
             </Badge>
           )}
           {reminder.description && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-label-secondary">
               {truncateText(reminder.description, 150)}
             </p>
           )}
