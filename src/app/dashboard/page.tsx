@@ -7,6 +7,8 @@ import { KanbanBoardV2 } from '@/components/applications/KanbanBoardV2'
 import { SmartStatsPanel } from '@/components/applications/SmartStatsPanel'
 import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
+import Timeline from '@/components/timeline/Timeline'
+import UpcomingReminders from '@/components/reminders/UpcomingReminders'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -41,8 +43,9 @@ export default function DashboardPage() {
   const [isCreating, setIsCreating] = React.useState(false)
   const [createError, setCreateError] = React.useState<string | null>(null)
 
-  // User email for NavBar
+  // User email and ID for NavBar and Timeline
   const [userEmail, setUserEmail] = React.useState<string>('')
+  const [userId, setUserId] = React.useState<string>('')
 
   // Load applications on mount
   React.useEffect(() => {
@@ -54,9 +57,10 @@ export default function DashboardPage() {
         setApplications(apps)
         setFilteredApplications(apps)
 
-        // Get user email from first application
+        // Get user email and ID from first application
         if (apps.length > 0) {
           setUserEmail('user@example.com') // In real app, would get from auth
+          setUserId(apps[0].user_id) // Get user ID from first application
         }
       } catch (err) {
         console.error('Failed to load applications:', err)
@@ -238,7 +242,16 @@ export default function DashboardPage() {
         ) : applications.length > 0 ? (
           <>
             {/* Top Section - Global Dashboard (Most Important) */}
-            <SmartStatsPanel applications={filteredApplications} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              <div className="lg:col-span-2">
+                <SmartStatsPanel applications={filteredApplications} />
+              </div>
+              {userId && (
+                <div className="lg:col-span-1">
+                  <UpcomingReminders userId={userId} />
+                </div>
+              )}
+            </div>
 
             {/* Middle Section - Action Bar (Secondary) */}
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -268,6 +281,13 @@ export default function DashboardPage() {
               onApplicationClick={handleApplicationClick}
               isLoading={false}
             />
+
+            {/* Timeline Section */}
+            {userId && (
+              <div className="mt-8">
+                <Timeline userId={userId} />
+              </div>
+            )}
           </>
         ) : null}
       </main>
