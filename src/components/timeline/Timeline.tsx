@@ -119,12 +119,12 @@ export default function Timeline({ userId }: TimelineProps) {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Loading timeline...</p>
+          <p className="text-label-secondary">Loading timeline...</p>
         </CardContent>
       </Card>
     )
@@ -132,12 +132,12 @@ export default function Timeline({ userId }: TimelineProps) {
 
   if (error) {
     return (
-      <Card>
+      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-destructive">Failed to load timeline: {error}</p>
+          <p className="text-label-primary" style={{ color: 'var(--color-error)' }}>Failed to load timeline: {error}</p>
         </CardContent>
       </Card>
     )
@@ -145,22 +145,22 @@ export default function Timeline({ userId }: TimelineProps) {
 
   if (activities.length === 0) {
     return (
-      <Card>
+      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">No activities found</p>
+          <p className="text-label-secondary">No activities found</p>
         </CardContent>
       </Card>
     )
   }
 
   return (
-    <Card>
+    <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
           <div className="flex gap-2">
             {/* Filter Sheet */}
             <Sheet>
@@ -263,10 +263,12 @@ export default function Timeline({ userId }: TimelineProps) {
 
             return (
               <div key={group}>
-                <h3 className="mb-4 text-sm font-semibold text-muted-foreground">{group}</h3>
+                <h3 className="mb-4 text-sm font-semibold text-label-secondary">{group}</h3>
                 <ul className="space-y-4">
-                  {groupActivities.map((activity) => (
-                    <TimelineItem key={activity.id} activity={activity} />
+                  {groupActivities.map((activity, index) => (
+                    <div key={activity.id} className={`stagger-${Math.min(index + 1, 6)}`}>
+                      <TimelineItem activity={activity} />
+                    </div>
                   ))}
                 </ul>
               </div>
