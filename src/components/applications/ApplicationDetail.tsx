@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { format } from 'date-fns'
-import { X, Edit2, Trash2, ExternalLink } from 'lucide-react'
+import { X, Edit2, Trash2, ExternalLink, Users, FileText, Bell } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -26,6 +26,9 @@ import { cn } from '@/lib/utils'
 import type { Application, ApplicationStatus } from '@/lib/types/database.types'
 import type { ApplicationFormData } from '@/lib/schemas/application.schema'
 import ApplicationForm from './ApplicationForm'
+import ContactList from '@/components/contacts/ContactList'
+import { DocumentList } from '@/components/documents/DocumentList'
+import ReminderList from '@/components/reminders/ReminderList'
 
 interface ApplicationDetailProps {
   application: Application
@@ -245,6 +248,38 @@ export function ApplicationDetail({
               </div>
             )}
           </div>
+
+          {/* Phase 2 Features - Only show in view mode */}
+          {!isEditMode && (
+            <div className="mt-8 space-y-8 border-t pt-6">
+              {/* Contacts Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Contacts
+                </h3>
+                <ContactList applicationId={application.id} />
+              </div>
+
+              {/* Documents Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Documents
+                </h3>
+                <DocumentList applicationId={application.id} />
+              </div>
+
+              {/* Reminders Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Bell className="h-5 w-5" />
+                  Reminders
+                </h3>
+                <ReminderList applicationId={application.id} />
+              </div>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center justify-between gap-3 pt-6 border-t">
             {isEditMode ? (
