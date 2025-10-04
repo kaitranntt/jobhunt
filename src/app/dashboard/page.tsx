@@ -230,7 +230,7 @@ export default function DashboardPage() {
               <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                 <p className="text-sm text-blue-800 dark:text-blue-200 flex items-center gap-2">
                   <Lightbulb className="h-4 w-4" />
-                  <span>💡 Tip: Start by adding jobs you&apos;re interested in to your wishlist</span>
+                  <span>Tip: Start by adding jobs you&apos;re interested in to your wishlist</span>
                 </p>
               </div>
             </div>
