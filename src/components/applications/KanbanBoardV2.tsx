@@ -51,10 +51,10 @@ const GROUP_DESCRIPTIONS: Record<StatusGroup, string> = {
 }
 
 const GROUP_COLORS: Record<StatusGroup, string> = {
-  active_pipeline: 'bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800',
-  in_progress: 'bg-purple-50 dark:bg-purple-950 border-purple-200 dark:border-purple-800',
-  offers: 'bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800',
-  closed: 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700',
+  active_pipeline: 'glass-light bg-blue-500/5 border-blue-300/20 dark:border-blue-600/20',
+  in_progress: 'glass-light bg-purple-500/5 border-purple-300/20 dark:border-purple-600/20',
+  offers: 'glass-light bg-green-500/5 border-green-300/20 dark:border-green-600/20',
+  closed: 'glass-light bg-slate-500/5 border-slate-300/20 dark:border-slate-600/20',
 }
 
 const STATUS_LABELS: Record<ApplicationStatus, string> = {
@@ -133,15 +133,15 @@ interface SubStageColumnProps {
 
 function SubStageColumn({ status, applications, activeId, onApplicationClick }: SubStageColumnProps) {
   return (
-    <div className="ml-4 rounded-md border bg-background/50 p-3">
-      <div className="mb-3 flex items-center justify-between">
-        <h4 className="text-xs font-medium text-muted-foreground">{STATUS_LABELS[status]}</h4>
-        <Badge variant="outline" className="text-xs">
+    <div className="ml-4 glass-ultra rounded-glass-sm p-4 border-0">
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-label-primary">{STATUS_LABELS[status]}</h4>
+        <Badge variant="outline" className="text-xs glass-ultra border-0">
           {applications.length}
         </Badge>
       </div>
       <SortableContext items={applications.map((app) => app.id)} strategy={verticalListSortingStrategy}>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {applications.map((application) => (
             <SortableApplication
               key={application.id}
@@ -165,12 +165,14 @@ function EmptyState({ group, Icon }: EmptyStateProps) {
   const guidance = EMPTY_STATE_GUIDANCE[group]
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center rounded-md border-2 border-dashed border-muted-foreground/25 p-8 text-center">
-      <Icon className="mb-3 h-12 w-12 text-muted-foreground/50" />
-      <h4 className="mb-2 font-medium text-muted-foreground">{guidance.heading}</h4>
-      <p className="mb-4 max-w-xs text-sm text-muted-foreground/75">{guidance.text}</p>
+    <div className="flex flex-1 flex-col items-center justify-center glass-ultra rounded-glass border-2 border-dashed border-label-quaternary p-12 text-center">
+      <div className="glass-ultra rounded-full p-4 mb-4">
+        <Icon className="h-12 w-12 text-label-tertiary" />
+      </div>
+      <h4 className="mb-2 font-semibold text-label-primary">{guidance.heading}</h4>
+      <p className="mb-6 max-w-xs text-sm text-label-secondary">{guidance.text}</p>
       {guidance.cta && (
-        <Button variant="outline" size="sm" disabled>
+        <Button variant="outline" size="sm" disabled className="glass-ultra border-0">
           {guidance.cta}
         </Button>
       )}
@@ -213,37 +215,37 @@ function GroupColumn({
   return (
     <div
       className={cn(
-        'flex min-w-[280px] flex-1 flex-col rounded-lg border p-4 md:min-w-[320px]',
+        'flex min-w-[280px] flex-1 flex-col rounded-glass p-6 md:min-w-[320px] shadow-glass-soft backdrop-blur-sm',
         colorClass
       )}
       data-testid={`group-column-${group}`}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
           {isExpandable && (
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6"
+              className="h-8 w-8 glass-ultra rounded-full hover:glass-light transition-all"
               onClick={onToggleExpand}
               aria-label={isExpanded ? 'Collapse sub-stages' : 'Expand sub-stages'}
               data-testid={`toggle-expand-${group}`}
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 text-label-primary" />
               ) : (
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="h-4 w-4 text-label-primary" />
               )}
             </Button>
           )}
-          <h3 className="text-sm font-semibold">{GROUP_LABELS[group]}</h3>
+          <h3 className="text-lg font-semibold text-label-primary">{GROUP_LABELS[group]}</h3>
         </div>
-        <Badge variant="secondary" className="text-xs" data-testid={`count-badge-${group}`}>
+        <Badge variant="secondary" className="text-xs glass-ultra border-0 px-3 py-1" data-testid={`count-badge-${group}`}>
           {count}
         </Badge>
       </div>
 
-      <p className="mb-4 text-xs text-muted-foreground">{GROUP_DESCRIPTIONS[group]}</p>
+      <p className="mb-6 text-sm text-label-secondary">{GROUP_DESCRIPTIONS[group]}</p>
 
       <SortableContext
         items={applications.map((app) => app.id)}
@@ -466,7 +468,7 @@ export function KanbanBoardV2({
 
         <DragOverlay>
           {activeApplication ? (
-            <div className="rotate-3 cursor-grabbing">
+            <div className="rotate-3 cursor-grabbing glass-heavy shadow-glass-dramatic rounded-glass animate-spring-bounce-in">
               <ApplicationCard application={activeApplication} isDragging={true} />
             </div>
           ) : null}
