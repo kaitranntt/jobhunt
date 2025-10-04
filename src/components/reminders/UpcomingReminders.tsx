@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { getUpcomingReminders } from '@/lib/api/reminders'
@@ -12,6 +13,7 @@ interface UpcomingRemindersProps {
 }
 
 export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
+  const router = useRouter()
   const [reminders, setReminders] = useState<Reminder[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -35,9 +37,10 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
     fetchReminders()
   }, [userId])
 
-  const handleReminderClick = () => {
-    // TODO: Implement navigation to application detail when route is added
-    // For now, clicking does nothing
+  const handleReminderClick = (reminder: Reminder) => {
+    if (reminder.application_id) {
+      router.push(`/applications/${reminder.application_id}`)
+    }
   }
 
   const formatDate = (dateString: string) => {
@@ -89,7 +92,7 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
                 key={reminder.id}
                 variant="ghost"
                 className="w-full justify-start h-auto py-2 px-3"
-                onClick={handleReminderClick}
+                onClick={() => handleReminderClick(reminder)}
                 aria-label={`${reminder.title} - ${formatDate(reminder.reminder_date)}`}
               >
                 <div className="flex flex-col items-start gap-1 w-full">
