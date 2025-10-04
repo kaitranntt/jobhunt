@@ -21,6 +21,14 @@ vi.mock('../actions', () => ({
   getApplicationsAction: vi.fn(),
 }))
 
+// Mock Next.js navigation
+const mockPush = vi.fn()
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}))
+
 describe('DashboardPage', () => {
   const mockApplications: Application[] = [
     {
@@ -70,6 +78,7 @@ describe('DashboardPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     setupMatchMedia()
+    mockPush.mockClear()
     vi.mocked(actions.getApplicationsAction).mockResolvedValue(mockApplications)
   })
 
