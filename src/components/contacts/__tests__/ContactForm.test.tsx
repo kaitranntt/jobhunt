@@ -153,7 +153,7 @@ describe('ContactForm', () => {
     it('should call onSuccess after successful submission', async () => {
       const user = userEvent.setup()
       renderWithTheme(
-        <ContactForm applicationId="app-123" onSuccess={mockOnSuccess} />
+        <ContactForm applicationId="123e4567-e89b-12d3-a456-426614174000" onSuccess={mockOnSuccess} />
       )
 
       const nameInput = screen.getByLabelText(/contact name/i)
@@ -170,7 +170,7 @@ describe('ContactForm', () => {
     it('should submit with all fields filled', async () => {
       const user = userEvent.setup()
       renderWithTheme(
-        <ContactForm applicationId="app-123" onSuccess={mockOnSuccess} />
+        <ContactForm applicationId="123e4567-e89b-12d3-a456-426614174000" onSuccess={mockOnSuccess} />
       )
 
       const nameInput = screen.getByLabelText(/contact name/i)
@@ -213,9 +213,9 @@ describe('ContactForm', () => {
   describe('Edit Mode', () => {
     it('should populate form with initial data', () => {
       const initialData: Contact = {
-        id: '1',
-        user_id: 'user-123',
-        application_id: 'app-123',
+        id: '123e4567-e89b-12d3-a456-426614174001',
+        user_id: '123e4567-e89b-12d3-a456-426614174002',
+        application_id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Jane Smith',
         email: 'jane@example.com',
         phone: '555-5678',
@@ -227,7 +227,7 @@ describe('ContactForm', () => {
 
       renderWithTheme(
         <ContactForm
-          applicationId="app-123"
+          applicationId="123e4567-e89b-12d3-a456-426614174000"
           onSuccess={mockOnSuccess}
           initialData={initialData}
         />
@@ -243,9 +243,9 @@ describe('ContactForm', () => {
     it('should update existing contact on edit submission', async () => {
       const user = userEvent.setup()
       const initialData: Contact = {
-        id: '1',
-        user_id: 'user-123',
-        application_id: 'app-123',
+        id: '123e4567-e89b-12d3-a456-426614174001',
+        user_id: '123e4567-e89b-12d3-a456-426614174002',
+        application_id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Jane Smith',
         email: 'jane@example.com',
         phone: '555-5678',
@@ -257,7 +257,7 @@ describe('ContactForm', () => {
 
       renderWithTheme(
         <ContactForm
-          applicationId="app-123"
+          applicationId="123e4567-e89b-12d3-a456-426614174000"
           onSuccess={mockOnSuccess}
           initialData={initialData}
         />
