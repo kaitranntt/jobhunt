@@ -80,34 +80,34 @@ export default function ContactList({ applicationId }: ContactListProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <p className="text-muted-foreground">Loading contacts...</p>
+      <div className="flex items-center justify-center py-8 glass-ultra rounded-glass">
+        <p className="text-label-secondary">Loading contacts...</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="rounded-md bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400">
+      <div className="glass-light rounded-glass p-4 text-sm shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
         Failed to load contacts: {error}
       </div>
     )
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Contacts</h3>
+        <h3 className="text-lg font-semibold text-label-primary">Contacts</h3>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button size="sm">
+            <Button size="sm" className="btn-glass font-semibold">
               <Plus className="size-4" />
               Add Contact
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
             <DialogHeader>
-              <DialogTitle>Add Contact</DialogTitle>
+              <DialogTitle className="text-xl font-semibold text-label-primary">Add Contact</DialogTitle>
             </DialogHeader>
             <ContactForm
               applicationId={applicationId}
@@ -118,13 +118,13 @@ export default function ContactList({ applicationId }: ContactListProps) {
       </div>
 
       {contacts.length === 0 ? (
-        <div className="rounded-lg border border-dashed p-8 text-center">
-          <p className="text-sm text-muted-foreground">
+        <div className="glass-ultra rounded-glass p-8 text-center" style={{ border: '1px dashed var(--glass-border-medium)' }}>
+          <p className="text-sm text-label-secondary">
             No contacts yet. Add your first contact to get started.
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {contacts.map((contact) => (
             <ContactCard
               key={contact.id}
@@ -141,9 +141,9 @@ export default function ContactList({ applicationId }: ContactListProps) {
         open={editingContact !== null}
         onOpenChange={(open) => !open && setEditingContact(null)}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
           <DialogHeader>
-            <DialogTitle>Edit Contact</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-label-primary">Edit Contact</DialogTitle>
           </DialogHeader>
           {editingContact && (
             <ContactForm
@@ -160,16 +160,16 @@ export default function ContactList({ applicationId }: ContactListProps) {
         open={deletingContactId !== null}
         onOpenChange={(open) => !open && setDeletingContactId(null)}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="glass-heavy rounded-glass shadow-glass-strong" style={{ border: '1px solid var(--glass-border-strong)' }}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-xl font-semibold text-label-primary">Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-label-secondary">
               This action cannot be undone. This will permanently delete this contact.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm}>
+            <AlertDialogCancel className="btn-glass">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="btn-glass" style={{ background: 'var(--color-error)', color: 'white' }}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -177,7 +177,7 @@ export default function ContactList({ applicationId }: ContactListProps) {
       </AlertDialog>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400">
+        <div className="glass-light rounded-glass p-3 text-sm shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
           {error}
         </div>
       )}
