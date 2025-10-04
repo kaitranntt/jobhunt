@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Filter, ArrowUpDown } from 'lucide-react'
 import { getTimelineActivities } from '@/lib/api/timeline'
 import type { TimelineActivity, TimelineFilters, TimelineSortOrder, TimelineActivityType } from '@/lib/types/timeline.types'
@@ -13,8 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
+  DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -69,25 +68,28 @@ export default function Timeline({ userId }: TimelineProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const [selectedTypes, setSelectedTypes] = useState<TimelineActivityType[]>([
-    'application',
-    'contact',
-    'document',
-    'reminder',
-  ])
+  const [selectedTypes, setSelectedTypes] = useState<TimelineActivityType[]>([])
   const [sortOrder, setSortOrder] = useState<TimelineSortOrder>('newest')
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
 
-  const fetchActivities = async () => {
+  const fetchActivities = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
 
-      const filters: TimelineFilters = {
-        types: selectedTypes.length > 0 ? selectedTypes : undefined,
-        dateFrom: dateFrom ? new Date(dateFrom).toISOString() : undefined,
-        dateTo: dateTo ? new Date(dateTo).toISOString() : undefined,
+      const filters: TimelineFilters = {}
+
+      if (selectedTypes.length > 0 && selectedTypes.length < 4) {
+        filters.types = selectedTypes
+      }
+
+      if (dateFrom) {
+        filters.dateFrom = new Date(dateFrom).toISOString()
+      }
+
+      if (dateTo) {
+        filters.dateTo = new Date(dateTo).toISOString()
       }
 
       const data = await getTimelineActivities(userId, filters, sortOrder)
@@ -97,11 +99,15 @@ export default function Timeline({ userId }: TimelineProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [userId, selectedTypes, dateFrom, dateTo, sortOrder])
 
   useEffect(() => {
-    fetchActivities()
-  }, [userId, selectedTypes, sortOrder, dateFrom, dateTo])
+    const timeoutId = setTimeout(() => {
+      fetchActivities()
+    }, 300)
+
+    return () => clearTimeout(timeoutId)
+  }, [fetchActivities])
 
   const toggleType = (type: TimelineActivityType) => {
     setSelectedTypes((prev) =>
@@ -203,7 +209,8 @@ export default function Timeline({ userId }: TimelineProps) {
                         </Label>
                         <Input
                           id="date-from"
-                          type="date"
+                          type="text"
+                          placeholder="YYYY-MM-DD"
                           value={dateFrom}
                           onChange={(e) => setDateFrom(e.target.value)}
                         />
@@ -214,7 +221,8 @@ export default function Timeline({ userId }: TimelineProps) {
                         </Label>
                         <Input
                           id="date-to"
-                          type="date"
+                          type="text"
+                          placeholder="YYYY-MM-DD"
                           value={dateTo}
                           onChange={(e) => setDateTo(e.target.value)}
                         />
@@ -236,10 +244,12 @@ export default function Timeline({ userId }: TimelineProps) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Sort Order</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={sortOrder} onValueChange={(value) => setSortOrder(value as TimelineSortOrder)}>
-                  <DropdownMenuRadioItem value="newest">Newest First</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="oldest">Oldest First</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
+                <DropdownMenuItem onClick={() => setSortOrder('newest')}>
+                  Newest First
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSortOrder('oldest')}>
+                  Oldest First
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
