@@ -1,5 +1,9 @@
 # JobHunt - AI Assistant Development Guidelines
 
+**Security Policies**
+> **⚠️ NEVER COMMIT ENVIRONMENT FILES TO GIT**
+> Never `git add` or `git commit` any `.env*` files except `.env.example`.
+
 ## Project Overview
 
 JobHunt is a job application tracking system built with Next.js 15, TypeScript, Supabase, and Shadcn UI.
