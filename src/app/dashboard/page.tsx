@@ -169,11 +169,11 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
         <NavBar variant="authenticated" user={{ email: userEmail }} />
-        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center p-8">
-            <p className="text-muted-foreground">Loading applications...</p>
+        <main className="mx-auto max-w-7xl px-6 py-8">
+          <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
+            <p className="text-label-secondary">Loading applications...</p>
           </div>
         </main>
       </div>
@@ -182,15 +182,17 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
         <NavBar variant="authenticated" user={{ email: userEmail }} />
-        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center p-8">
+        <main className="mx-auto max-w-7xl px-6 py-8">
+          <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
             <div className="text-center">
-              <p className="text-red-600 dark:text-red-400">{error}</p>
+              <p className="text-label-primary font-medium mb-4" style={{ color: 'var(--color-error)' }}>
+                {error}
+              </p>
               <Button
                 onClick={() => window.location.reload()}
-                className="mt-4"
+                className="mt-4 btn-glass"
               >
                 Retry
               </Button>
@@ -202,22 +204,22 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
       <NavBar variant="authenticated" user={{ email: userEmail }} />
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-6 py-8">
         {applications.length === 0 && !isNewApplicationModalOpen ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-            <div className="max-w-md text-center space-y-6">
+            <div className="max-w-md text-center space-y-6 glass-ultra rounded-glass-lg p-8 shadow-glass-soft">
               <div className="flex justify-center">
-                <Rocket className="h-24 w-24 text-primary" />
+                <Rocket className="h-24 w-24" style={{ color: 'var(--tint-blue)' }} />
               </div>
 
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-foreground">
+                <h2 className="text-3xl font-semibold text-label-primary">
                   Start Your Job Hunt Journey
                 </h2>
-                <p className="text-muted-foreground text-lg">
+                <p className="text-label-secondary text-lg">
                   Track applications, ace interviews, land your dream job
                 </p>
               </div>
@@ -225,15 +227,15 @@ export default function DashboardPage() {
               <Button
                 onClick={handleOpenNewModal}
                 size="lg"
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto btn-glass font-semibold"
               >
                 <Plus className="mr-2 h-5 w-5" />
                 Add Your First Application
               </Button>
 
-              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                <p className="text-sm text-blue-800 dark:text-blue-200 flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4" />
+              <div className="glass-medium rounded-glass-sm p-4 shadow-glass-subtle" style={{ border: '1px solid var(--glass-border-medium)' }}>
+                <p className="text-sm text-label-primary flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4" style={{ color: 'var(--tint-yellow)' }} />
                   <span>Tip: Start by adding jobs you&apos;re interested in to your wishlist</span>
                 </p>
               </div>
@@ -257,18 +259,26 @@ export default function DashboardPage() {
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label-tertiary" />
                   <Input
                     type="text"
                     placeholder="Search by company or job title..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 glass-light rounded-glass-sm text-label-primary placeholder:text-label-tertiary shadow-glass-subtle"
+                    style={{
+                      border: '1px solid var(--glass-border-medium)',
+                      backdropFilter: 'blur(20px) saturate(180%)',
+                    }}
                   />
                 </div>
               </div>
 
-              <Button onClick={handleOpenNewModal} size="lg" className="w-full sm:w-auto">
+              <Button
+                onClick={handleOpenNewModal}
+                size="lg"
+                className="w-full sm:w-auto btn-glass font-semibold"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 New Application
               </Button>

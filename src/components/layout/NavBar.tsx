@@ -21,26 +21,30 @@ export function NavBar({
     return (
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 border-b border-border bg-background shadow-sm',
+          'fixed top-0 left-0 right-0 z-50 border-b glass-light',
           className
         )}
+        style={{
+          borderColor: 'var(--glass-border-subtle)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+        }}
       >
-        <div className="container mx-auto max-w-7xl px-4 py-4">
+        <div className="container mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 text-xl font-bold gradient-brand-text transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6 text-brand-primary" />
-              JobHunt
+              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+              <span className="gradient-brand-text">JobHunt</span>
             </Link>
 
             {/* Navigation Links & Actions */}
             <div className="flex items-center gap-4">
               <Link
                 href="/signup"
-                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-brand-primary transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-label-primary hover:text-label-secondary transition-colors glass-interactive"
               >
                 Get Started
               </Link>
@@ -50,7 +54,7 @@ export function NavBar({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View on GitHub"
-                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-brand-primary transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-label-primary hover:text-label-secondary transition-colors glass-interactive"
               >
                 <Github className="h-4 w-4" />
                 GitHub
@@ -68,23 +72,27 @@ export function NavBar({
   if (variant === 'authenticated') {
     return (
       <header
-        className={cn('border-b border-border bg-card shadow-sm', className)}
+        className={cn('border-b glass-medium shadow-glass-soft', className)}
+        style={{
+          borderColor: 'var(--glass-border-medium)',
+          backdropFilter: 'blur(30px) saturate(200%)',
+        }}
       >
-        <div className="container mx-auto max-w-7xl px-4 py-4">
+        <div className="container mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-xl font-bold text-foreground transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6 text-brand-primary" />
+              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
               JobHunt
             </Link>
 
             {/* User Info & Actions */}
             <div className="flex items-center gap-4">
               {user && (
-                <span className="hidden sm:inline-block text-sm text-muted-foreground">
+                <span className="hidden sm:inline-block text-sm text-label-secondary font-medium">
                   {user.email}
                 </span>
               )}
@@ -95,7 +103,10 @@ export function NavBar({
                 <button
                   type="submit"
                   aria-label="Sign out of your account"
-                  className="rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-secondary-foreground shadow-sm ring-1 ring-inset ring-border hover:bg-secondary/80 transition-colors"
+                  className="rounded-glass-sm glass-medium px-4 py-2 text-sm font-semibold text-label-primary shadow-glass-subtle hover:glass-heavy transition-all duration-300"
+                  style={{
+                    border: '1px solid var(--glass-border-strong)',
+                  }}
                 >
                   Sign out
                 </button>
@@ -111,17 +122,21 @@ export function NavBar({
   if (variant === 'auth-pages') {
     return (
       <header
-        className={cn('border-b border-border/50 bg-background', className)}
+        className={cn('border-b glass-ultra', className)}
+        style={{
+          borderColor: 'var(--glass-border-subtle)',
+          backdropFilter: 'blur(15px) saturate(150%)',
+        }}
       >
-        <div className="container mx-auto max-w-7xl px-4 py-4">
+        <div className="container mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 text-xl font-bold gradient-brand-text transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6 text-brand-primary" />
-              JobHunt
+              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+              <span className="gradient-brand-text">JobHunt</span>
             </Link>
 
             {/* Theme Toggle */}
