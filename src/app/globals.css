@@ -60,6 +60,10 @@
   --accent-pink-start: 266 85% 68%;        /* purple-400 */
   --accent-pink-end: 328 86% 70%;          /* pink-400 */
 
+  /* Dialog Overlay */
+  --dialog-overlay: 0 0% 0%;               /* black for light mode */
+  --dialog-overlay-opacity: 0.2;           /* 20% opacity */
+
   --radius: 0.5rem;
 }
 
@@ -144,6 +148,10 @@
 
   --accent-pink-start: 266 47% 25%;        /* purple-600 */
   --accent-pink-end: 328 86% 30%;          /* pink-600 */
+
+  /* Dialog Overlay */
+  --dialog-overlay: 0 0% 0%;               /* black for dark mode */
+  --dialog-overlay-opacity: 0.5;           /* 50% opacity */
 }
 
 body {
