@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Briefcase, Github } from 'lucide-react'
+import Image from 'next/image'
+import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { cn } from '@/lib/utils'
 
@@ -36,7 +37,13 @@ export function NavBar({
               href="/"
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+              <Image
+                src="/logo.png"
+                alt="JobHunt Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6"
+              />
               <span className="gradient-brand-text">JobHunt</span>
             </Link>
 
@@ -85,7 +92,13 @@ export function NavBar({
               href="/dashboard"
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+              <Image
+                src="/logo.png"
+                alt="JobHunt Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6"
+              />
               JobHunt
             </Link>
 
@@ -135,7 +148,13 @@ export function NavBar({
               href="/"
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
-              <Briefcase className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+              <Image
+                src="/logo.png"
+                alt="JobHunt Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6"
+              />
               <span className="gradient-brand-text">JobHunt</span>
             </Link>
 
