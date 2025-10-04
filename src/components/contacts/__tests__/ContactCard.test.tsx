@@ -138,12 +138,12 @@ describe('ContactCard', () => {
   })
 
   describe('Responsive Layout', () => {
-    it('should render in a card layout', () => {
+    it('should render in a card layout with glass styling', () => {
       const { container } = renderWithTheme(
         <ContactCard contact={mockContact} onEdit={mockOnEdit} onDelete={mockOnDelete} />
       )
 
-      const card = container.querySelector('.rounded-lg')
+      const card = container.querySelector('.rounded-glass')
       expect(card).toBeInTheDocument()
     })
 

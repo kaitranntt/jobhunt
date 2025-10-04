@@ -67,18 +67,16 @@ describe('NavBar Component', () => {
       expect(header).toHaveClass('right-0')
     })
 
-    it('should have solid background styling with shadow', () => {
+    it('should have glass-light styling for landing variant', () => {
       const { container } = renderWithTheme(<NavBar variant="landing" />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('bg-background')
-      expect(header).toHaveClass('shadow-sm')
+      expect(header).toHaveClass('glass-light')
     })
 
     it('should have border styling', () => {
       const { container } = renderWithTheme(<NavBar variant="landing" />)
       const header = container.querySelector('header')
       expect(header).toHaveClass('border-b')
-      expect(header).toHaveClass('border-border')
     })
 
     it('should apply custom className if provided', () => {
@@ -137,13 +135,12 @@ describe('NavBar Component', () => {
       expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
     })
 
-    it('should have card background styling', () => {
+    it('should have glass-medium styling for authenticated variant', () => {
       const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('bg-card')
+      expect(header).toHaveClass('glass-medium')
       expect(header).toHaveClass('border-b')
-      expect(header).toHaveClass('border-border')
-      expect(header).toHaveClass('shadow-sm')
+      expect(header).toHaveClass('shadow-glass-soft')
     })
 
     it('should not have fixed positioning', () => {
@@ -190,17 +187,11 @@ describe('NavBar Component', () => {
       expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
     })
 
-    it('should have solid background styling', () => {
+    it('should have glass-ultra styling for auth-pages variant', () => {
       const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('bg-background')
-    })
-
-    it('should have border styling', () => {
-      const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
-      const header = container.querySelector('header')
+      expect(header).toHaveClass('glass-ultra')
       expect(header).toHaveClass('border-b')
-      expect(header).toHaveClass('border-border/50')
     })
 
     it('should not render user info', () => {
@@ -314,30 +305,30 @@ describe('NavBar Component', () => {
   describe('Brand Styling', () => {
     it('should apply brand gradient to logo text in landing variant', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo).toHaveClass('gradient-brand-text')
+      const logoText = screen.getByText('JobHunt')
+      expect(logoText).toHaveClass('gradient-brand-text')
     })
 
-    it('should apply brand color to icon in landing variant', () => {
+    it('should use tint-blue color for icon in landing variant', () => {
       renderWithTheme(<NavBar variant="landing" />)
       const logo = screen.getByText('JobHunt').closest('a')
       const icon = logo?.querySelector('svg')
-      expect(icon).toHaveClass('text-brand-primary')
+      expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
     })
 
     it('should apply brand gradient to logo text in auth-pages variant', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo).toHaveClass('gradient-brand-text')
+      const logoText = screen.getByText('JobHunt')
+      expect(logoText).toHaveClass('gradient-brand-text')
     })
 
-    it('should apply brand color to icon in authenticated variant', () => {
+    it('should use tint-blue color for icon in authenticated variant', () => {
       renderWithTheme(
         <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
       )
       const logo = screen.getByText('JobHunt').closest('a')
       const icon = logo?.querySelector('svg')
-      expect(icon).toHaveClass('text-brand-primary')
+      expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
     })
   })
 

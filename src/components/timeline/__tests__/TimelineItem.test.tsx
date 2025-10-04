@@ -111,28 +111,36 @@ describe('TimelineItem', () => {
   })
 
   describe('Activity Type Styling', () => {
-    it('applies blue styling for application activities', () => {
+    it('applies glass-medium styling with blue icon for application activities', () => {
       const { container } = render(<TimelineItem activity={mockApplicationActivity} />)
       const iconWrapper = container.querySelector('[data-testid="activity-icon-application"]')?.parentElement
-      expect(iconWrapper?.className).toMatch(/bg-blue/)
+      expect(iconWrapper?.className).toMatch(/glass-medium/)
+      const icon = container.querySelector('[data-testid="activity-icon-application"]')
+      expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
     })
 
-    it('applies green styling for contact activities', () => {
+    it('applies glass-medium styling with green icon for contact activities', () => {
       const { container } = render(<TimelineItem activity={mockContactActivity} />)
       const iconWrapper = container.querySelector('[data-testid="activity-icon-contact"]')?.parentElement
-      expect(iconWrapper?.className).toMatch(/bg-green/)
+      expect(iconWrapper?.className).toMatch(/glass-medium/)
+      const icon = container.querySelector('[data-testid="activity-icon-contact"]')
+      expect(icon).toHaveStyle({ color: 'var(--tint-green)' })
     })
 
-    it('applies purple styling for document activities', () => {
+    it('applies glass-medium styling with purple icon for document activities', () => {
       const { container } = render(<TimelineItem activity={mockDocumentActivity} />)
       const iconWrapper = container.querySelector('[data-testid="activity-icon-document"]')?.parentElement
-      expect(iconWrapper?.className).toMatch(/bg-purple/)
+      expect(iconWrapper?.className).toMatch(/glass-medium/)
+      const icon = container.querySelector('[data-testid="activity-icon-document"]')
+      expect(icon).toHaveStyle({ color: 'var(--tint-purple)' })
     })
 
-    it('applies orange styling for reminder activities', () => {
+    it('applies glass-medium styling with orange icon for reminder activities', () => {
       const { container } = render(<TimelineItem activity={mockReminderActivity} />)
       const iconWrapper = container.querySelector('[data-testid="activity-icon-reminder"]')?.parentElement
-      expect(iconWrapper?.className).toMatch(/bg-orange/)
+      expect(iconWrapper?.className).toMatch(/glass-medium/)
+      const icon = container.querySelector('[data-testid="activity-icon-reminder"]')
+      expect(icon).toHaveStyle({ color: 'var(--tint-orange)' })
     })
   })
 
