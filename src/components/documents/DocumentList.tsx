@@ -110,9 +110,9 @@ export function DocumentList({ applicationId }: DocumentListProps) {
   // Loading State
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        <span className="ml-2 text-sm text-muted-foreground">Loading documents...</span>
+      <div className="flex items-center justify-center p-8 glass-ultra rounded-glass">
+        <Loader2 className="h-6 w-6 animate-spin text-label-tertiary" />
+        <span className="ml-2 text-sm text-label-secondary">Loading documents...</span>
       </div>
     )
   }
@@ -120,9 +120,9 @@ export function DocumentList({ applicationId }: DocumentListProps) {
   // Error State
   if (error && documents.length === 0) {
     return (
-      <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-center">
-        <p className="text-sm text-destructive mb-3">{error}</p>
-        <Button variant="outline" size="sm" onClick={fetchDocuments}>
+      <div className="glass-light rounded-glass p-6 text-center shadow-glass-soft" style={{ border: '1px solid var(--color-error)' }}>
+        <p className="text-sm mb-3" style={{ color: 'var(--color-error)' }}>{error}</p>
+        <Button variant="outline" size="sm" onClick={fetchDocuments} className="btn-glass">
           Retry
         </Button>
       </div>
@@ -132,10 +132,10 @@ export function DocumentList({ applicationId }: DocumentListProps) {
   // Empty State
   if (documents.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed p-8 text-center">
-        <FileText className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
-        <h3 className="text-sm font-medium mb-1">No documents uploaded</h3>
-        <p className="text-xs text-muted-foreground">
+      <div className="glass-ultra rounded-glass p-8 text-center" style={{ border: '1px dashed var(--glass-border-medium)' }}>
+        <FileText className="h-10 w-10 mx-auto mb-3" style={{ color: 'var(--tint-purple)' }} />
+        <h3 className="text-sm font-semibold text-label-primary mb-1">No documents uploaded</h3>
+        <p className="text-xs text-label-secondary">
           Upload a document to get started
         </p>
       </div>
@@ -146,27 +146,32 @@ export function DocumentList({ applicationId }: DocumentListProps) {
     <>
       {/* Error Message (when documents exist but action failed) */}
       {error && documents.length > 0 && (
-        <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive mb-4">
+        <div className="glass-light rounded-glass p-3 text-sm mb-4 shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
           {error}
         </div>
       )}
 
       {/* Documents List */}
-      <div role="list" className="space-y-3">
+      <div role="list" className="space-y-4">
         {documents.map((document) => (
           <div
             key={document.id}
             role="listitem"
-            className="rounded-lg border bg-card p-4 hover:shadow-sm transition-shadow"
+            className="glass-light rounded-glass-sm p-4 shadow-glass-soft glass-interactive"
+            style={{ border: '1px solid var(--glass-border-medium)' }}
           >
             <div className="flex items-start gap-3">
               {/* File Icon */}
-              <FileText className="h-8 w-8 text-muted-foreground flex-shrink-0 mt-1" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-glass-sm glass-medium shadow-glass-subtle mt-1"
+                style={{ border: '1px solid var(--glass-border-medium)' }}
+              >
+                <FileText className="h-5 w-5" style={{ color: 'var(--tint-purple)' }} />
+              </div>
 
               {/* File Info */}
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-medium truncate mb-1">{document.file_name}</h4>
-                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                <h4 className="text-sm font-semibold text-label-primary truncate mb-1">{document.file_name}</h4>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-label-tertiary font-medium">
                   <span>{getFileTypeLabel(document.file_type)}</span>
                   <span>•</span>
                   <span>{formatFileSize(document.file_size)}</span>
@@ -176,22 +181,24 @@ export function DocumentList({ applicationId }: DocumentListProps) {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center gap-1 flex-shrink-0">
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   onClick={() => handleDownload(document)}
                   aria-label="Download document"
+                  className="glass-ultra rounded-full hover:glass-light"
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-4 w-4 text-label-secondary" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   onClick={() => handleDeleteClick(document)}
                   aria-label="Delete document"
+                  className="glass-ultra rounded-full hover:glass-light"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-4 w-4 text-label-secondary" />
                 </Button>
               </div>
             </div>
@@ -201,22 +208,23 @@ export function DocumentList({ applicationId }: DocumentListProps) {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="glass-heavy rounded-glass shadow-glass-strong" style={{ border: '1px solid var(--glass-border-strong)' }}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-xl font-semibold text-label-primary">Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-label-secondary">
               This will permanently delete "{documentToDelete?.file_name}". This action cannot be
               undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteCancel} disabled={isDeleting}>
+            <AlertDialogCancel onClick={handleDeleteCancel} disabled={isDeleting} className="btn-glass">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
               disabled={isDeleting}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="btn-glass"
+              style={{ background: 'var(--color-error)', color: 'white' }}
             >
               {isDeleting ? (
                 <>
