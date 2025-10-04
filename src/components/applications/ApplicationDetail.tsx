@@ -40,18 +40,18 @@ interface ApplicationDetailProps {
 
 const getStatusColor = (status: ApplicationStatus): string => {
   const statusColorMap: Record<ApplicationStatus, string> = {
-    wishlist: 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100',
-    applied: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
-    phone_screen: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    assessment: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    take_home: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    interviewing: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100',
-    final_round: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100',
-    offered: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-    accepted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-    rejected: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    withdrawn: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    ghosted: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+    wishlist: 'glass-ultra text-label-secondary',
+    applied: 'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
+    phone_screen: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    assessment: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    take_home: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    interviewing: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    final_round: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    offered: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    accepted: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    rejected: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    withdrawn: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    ghosted: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
   }
 
   return statusColorMap[status]
@@ -141,17 +141,19 @@ export function ApplicationDetail({
     <>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
-          <SheetHeader>
+          <SheetHeader className="glass-ultra rounded-t-glass-lg -mx-6 -mt-6 px-6 pt-6 pb-6 mb-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
-                <SheetTitle className="text-2xl font-bold mb-2">
+                <SheetTitle className="text-2xl font-bold mb-2 text-label-primary">
                   {application.company_name}
                 </SheetTitle>
-                <SheetDescription className="text-lg">
+                <SheetDescription className="text-lg text-label-secondary font-medium">
                   {application.job_title}
                 </SheetDescription>
-                <div className="mt-2">
-                  <Badge className={cn('text-sm', statusColor)}>{application.status}</Badge>
+                <div className="mt-3">
+                  <Badge className={cn('text-sm px-3 py-1 rounded-glass-sm', statusColor)}>
+                    {application.status.replace('_', ' ')}
+                  </Badge>
                 </div>
               </div>
               <Button
@@ -159,16 +161,16 @@ export function ApplicationDetail({
                 size="icon"
                 onClick={onClose}
                 aria-label="Close"
-                className="h-8 w-8"
+                className="h-10 w-10 glass-ultra rounded-full hover:glass-light"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5 text-label-secondary" />
               </Button>
             </div>
           </SheetHeader>
 
           <div className="mt-6 space-y-6">
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-sm text-red-800 dark:text-red-200">
+              <div className="glass-light bg-red-500/10 border border-red-300/40 dark:border-red-600/40 rounded-glass-sm p-4 text-sm text-red-700 dark:text-red-300">
                 {error}
               </div>
             )}
@@ -191,57 +193,61 @@ export function ApplicationDetail({
                 />
               </div>
             ) : (
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Company Name</h3>
-                  <p className="text-base">{application.company_name}</p>
+              <div className="space-y-6">
+                <div className="glass-ultra rounded-glass-sm p-4">
+                  <h3 className="text-sm font-semibold text-label-secondary mb-2">Company Name</h3>
+                  <p className="text-base text-label-primary font-medium">{application.company_name}</p>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Job Title</h3>
-                  <p className="text-base">{application.job_title}</p>
+                <div className="glass-ultra rounded-glass-sm p-4">
+                  <h3 className="text-sm font-semibold text-label-secondary mb-2">Job Title</h3>
+                  <p className="text-base text-label-primary font-medium">{application.job_title}</p>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Job URL</h3>
+                <div className="glass-ultra rounded-glass-sm p-4">
+                  <h3 className="text-sm font-semibold text-label-secondary mb-2">Job URL</h3>
                   {application.job_url ? (
                     <a
                       href={application.job_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-base text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"
+                      className="text-base text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-2 font-medium"
                     >
                       View Job Posting
-                      <ExternalLink className="h-3 w-3" />
+                      <ExternalLink className="h-4 w-4" />
                     </a>
                   ) : (
-                    <p className="text-base text-muted-foreground">{formatFieldValue(null)}</p>
+                    <p className="text-base text-label-tertiary">{formatFieldValue(null)}</p>
                   )}
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Location</h3>
-                  <p className="text-base">{formatFieldValue(application.location)}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="glass-ultra rounded-glass-sm p-4">
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Location</h3>
+                    <p className="text-base text-label-primary">{formatFieldValue(application.location)}</p>
+                  </div>
+
+                  <div className="glass-ultra rounded-glass-sm p-4">
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Salary Range</h3>
+                    <p className="text-base text-label-primary">{formatFieldValue(application.salary_range)}</p>
+                  </div>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Salary Range</h3>
-                  <p className="text-base">{formatFieldValue(application.salary_range)}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="glass-ultra rounded-glass-sm p-4">
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Status</h3>
+                    <p className="text-base text-label-primary capitalize">{application.status.replace('_', ' ')}</p>
+                  </div>
+
+                  <div className="glass-ultra rounded-glass-sm p-4">
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Date Applied</h3>
+                    <p className="text-base text-label-primary">{formatDate(application.date_applied)}</p>
+                  </div>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Status</h3>
-                  <p className="text-base capitalize">{application.status.replace('_', ' ')}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Date Applied</h3>
-                  <p className="text-base">{formatDate(application.date_applied)}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Notes</h3>
-                  <p className="text-base whitespace-pre-wrap">
+                <div className="glass-ultra rounded-glass-sm p-4">
+                  <h3 className="text-sm font-semibold text-label-secondary mb-2">Notes</h3>
+                  <p className="text-base text-label-primary whitespace-pre-wrap">
                     {formatFieldValue(application.notes)}
                   </p>
                 </div>
@@ -251,11 +257,13 @@ export function ApplicationDetail({
 
           {/* Phase 2 Features - Only show in view mode */}
           {!isEditMode && (
-            <div className="mt-8 space-y-8 border-t pt-6">
+            <div className="mt-8 space-y-8 border-t border-label-quaternary pt-6">
               {/* Contacts Section */}
               <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Users className="h-5 w-5" />
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-3 text-label-primary">
+                  <div className="glass-ultra rounded-full p-2">
+                    <Users className="h-5 w-5 text-label-secondary" />
+                  </div>
                   Contacts
                 </h3>
                 <ContactList applicationId={application.id} />
@@ -263,8 +271,10 @@ export function ApplicationDetail({
 
               {/* Documents Section */}
               <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-3 text-label-primary">
+                  <div className="glass-ultra rounded-full p-2">
+                    <FileText className="h-5 w-5 text-label-secondary" />
+                  </div>
                   Documents
                 </h3>
                 <DocumentList applicationId={application.id} />
@@ -272,8 +282,10 @@ export function ApplicationDetail({
 
               {/* Reminders Section */}
               <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-3 text-label-primary">
+                  <div className="glass-ultra rounded-full p-2">
+                    <Bell className="h-5 w-5 text-label-secondary" />
+                  </div>
                   Reminders
                 </h3>
                 <ReminderList applicationId={application.id} />
@@ -281,13 +293,13 @@ export function ApplicationDetail({
             </div>
           )}
 
-          <div className="mt-6 flex items-center justify-between gap-3 pt-6 border-t">
+          <div className="mt-6 flex items-center justify-between gap-4 pt-6 border-t border-label-quaternary">
             {isEditMode ? (
-              <Button variant="outline" onClick={handleCancelEdit} disabled={isSubmitting}>
+              <Button variant="outline" onClick={handleCancelEdit} disabled={isSubmitting} className="glass-ultra border-0">
                 Cancel
               </Button>
             ) : (
-              <Button variant="outline" onClick={handleEditClick}>
+              <Button variant="outline" onClick={handleEditClick} className="glass-ultra border-0 hover:glass-light">
                 <Edit2 className="mr-2 h-4 w-4" />
                 Edit
               </Button>
@@ -297,6 +309,7 @@ export function ApplicationDetail({
               variant="destructive"
               onClick={handleDeleteClick}
               disabled={isDeleting || isSubmitting}
+              className="glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40 hover:bg-red-500/20"
             >
               <Trash2 className="mr-2 h-4 w-4" />
               Delete

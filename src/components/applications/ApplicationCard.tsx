@@ -38,18 +38,18 @@ interface ApplicationCardProps {
 
 const getStatusColor = (status: ApplicationStatus): string => {
   const statusColorMap: Record<ApplicationStatus, string> = {
-    wishlist: 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100',
-    applied: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
-    phone_screen: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    assessment: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    take_home: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-    interviewing: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100',
-    final_round: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100',
-    offered: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-    accepted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-    rejected: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    withdrawn: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    ghosted: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+    wishlist: 'glass-ultra text-label-secondary',
+    applied: 'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
+    phone_screen: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    assessment: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    take_home: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    interviewing: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    final_round: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    offered: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    accepted: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    rejected: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    withdrawn: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    ghosted: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
   }
 
   return statusColorMap[status]
@@ -93,32 +93,34 @@ export function ApplicationCard({
       data-testid="application-card"
       onClick={handleCardClick}
       className={cn(
-        'transition-all duration-200 hover:shadow-md',
-        onClick && 'cursor-pointer',
+        'glass-light rounded-glass shadow-glass-soft transition-all duration-300',
+        onClick && 'cursor-pointer glass-interactive',
         isDragging && 'opacity-50 rotate-2'
       )}
     >
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-2">
+      <CardHeader className="pb-3 p-6">
+        <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-3 mb-2">
               <div
                 data-testid="drag-handle"
-                className="cursor-grab active:cursor-grabbing"
+                className="cursor-grab active:cursor-grabbing glass-ultra rounded-full p-1.5 hover:glass-light transition-all"
                 {...dragHandleProps}
               >
-                <GripVertical className="h-4 w-4 text-muted-foreground" />
+                <GripVertical className="h-4 w-4 text-label-secondary" />
               </div>
-              <h3 className="font-semibold text-lg truncate">
+              <h3 className="font-semibold text-lg truncate text-label-primary">
                 {application.company_name}
               </h3>
             </div>
-            <p className="text-sm text-muted-foreground truncate mb-2">
+            <p className="text-base font-medium text-label-secondary truncate mb-2 ml-11">
               {application.job_title}
             </p>
             {application.location && (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin data-testid="map-pin-icon" className="h-3 w-3" />
+              <div className="flex items-center gap-2 text-sm text-label-tertiary ml-11">
+                <div className="glass-ultra rounded-full p-1">
+                  <MapPin data-testid="map-pin-icon" className="h-3 w-3" />
+                </div>
                 <span>{application.location}</span>
               </div>
             )}
@@ -128,13 +130,13 @@ export function ApplicationCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-8 w-8 glass-ultra rounded-full hover:glass-light"
                 aria-label="Application actions"
               >
-                <MoreVertical className="h-4 w-4" />
+                <MoreVertical className="h-4 w-4 text-label-secondary" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="glass-medium rounded-glass-sm border-0">
               <DropdownMenuItem>
                 <Eye className="mr-2 h-4 w-4" />
                 View Details
@@ -161,12 +163,12 @@ export function ApplicationCard({
           </DropdownMenu>
         </div>
       </CardHeader>
-      <CardContent className="pt-0 pb-4">
-        <div className="flex items-center justify-between gap-2">
-          <Badge className={cn('text-xs', statusColor)}>
-            {application.status}
+      <CardContent className="pt-0 pb-6 px-6">
+        <div className="flex items-center justify-between gap-4">
+          <Badge className={cn('text-xs font-medium px-3 py-1 rounded-glass-sm transition-all', statusColor)}>
+            {application.status.replace('_', ' ')}
           </Badge>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-label-tertiary">
             {formatDate(application.date_applied)}
           </span>
         </div>
