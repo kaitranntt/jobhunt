@@ -12,10 +12,11 @@ vi.mock('@/lib/api/documents', () => ({
 describe('DocumentUpload', () => {
   const mockUserId = 'user-123'
   const mockApplicationId = 'app-456'
-  const mockOnUploadComplete = vi.fn()
+  let mockOnUploadComplete: ReturnType<typeof vi.fn>
 
   beforeEach(() => {
     vi.clearAllMocks()
+    mockOnUploadComplete = vi.fn()
   })
 
   describe('Basic Rendering', () => {
