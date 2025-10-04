@@ -26,10 +26,12 @@ describe('NavBar Component', () => {
       expect(logo).toHaveAttribute('href', '/')
     })
 
-    it('should render Briefcase icon', () => {
+    it('should render logo image', () => {
       renderWithTheme(<NavBar variant="landing" />)
       const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo?.querySelector('svg')).toBeInTheDocument()
+      const image = logo?.querySelector('img')
+      expect(image).toBeInTheDocument()
+      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
     })
 
     it('should render Get Started link', () => {
@@ -309,11 +311,12 @@ describe('NavBar Component', () => {
       expect(logoText).toHaveClass('gradient-brand-text')
     })
 
-    it('should use tint-blue color for icon in landing variant', () => {
+    it('should render logo image in landing variant', () => {
       renderWithTheme(<NavBar variant="landing" />)
       const logo = screen.getByText('JobHunt').closest('a')
-      const icon = logo?.querySelector('svg')
-      expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
+      const image = logo?.querySelector('img')
+      expect(image).toBeInTheDocument()
+      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
     })
 
     it('should apply brand gradient to logo text in auth-pages variant', () => {
@@ -322,13 +325,14 @@ describe('NavBar Component', () => {
       expect(logoText).toHaveClass('gradient-brand-text')
     })
 
-    it('should use tint-blue color for icon in authenticated variant', () => {
+    it('should render logo image in authenticated variant', () => {
       renderWithTheme(
         <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
       )
       const logo = screen.getByText('JobHunt').closest('a')
-      const icon = logo?.querySelector('svg')
-      expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
+      const image = logo?.querySelector('img')
+      expect(image).toBeInTheDocument()
+      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
     })
   })
 
