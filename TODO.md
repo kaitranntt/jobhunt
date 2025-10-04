@@ -52,8 +52,8 @@
 - [x] No ESLint warnings (no bypasses)
 - [x] Test end-to-end flows
 - [x] Verify mobile responsiveness
-- [ ] Deploy to Vercel
-- [ ] Test in production
+- [x] Deploy to Vercel
+- [x] Test in production
 
 ---
 
