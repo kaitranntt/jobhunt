@@ -27,7 +27,7 @@ export async function getApplicationsAction(): Promise<Application[]> {
   }
 
   try {
-    const applications = await getApplications()
+    const applications = await getApplications(supabase)
     return applications
   } catch (error) {
     console.error('Failed to fetch applications:', error)
@@ -67,7 +67,7 @@ export async function createApplicationAction(
   }
 
   try {
-    const newApplication = await createApplication(applicationData)
+    const newApplication = await createApplication(supabase, applicationData)
     revalidatePath('/dashboard')
     return newApplication
   } catch (error) {
@@ -109,7 +109,7 @@ export async function updateApplicationAction(
   }
 
   try {
-    const updatedApplication = await updateApplication(id, updates)
+    const updatedApplication = await updateApplication(supabase, id, updates)
     revalidatePath('/dashboard')
     return updatedApplication
   } catch (error) {
@@ -133,7 +133,7 @@ export async function deleteApplicationAction(id: string): Promise<void> {
   }
 
   try {
-    await deleteApplication(id)
+    await deleteApplication(supabase, id)
     revalidatePath('/dashboard')
   } catch (error) {
     console.error('Failed to delete application:', error)
@@ -164,7 +164,7 @@ export async function updateApplicationStatusAction(
   }
 
   try {
-    const updatedApplication = await updateApplication(id, updates)
+    const updatedApplication = await updateApplication(supabase, id, updates)
     revalidatePath('/dashboard')
     return updatedApplication
   } catch (error) {

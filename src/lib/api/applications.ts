@@ -1,13 +1,11 @@
-import { createClient } from '@/lib/supabase/client'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import type {
   Application,
   ApplicationInsert,
   ApplicationUpdate,
 } from '@/lib/types/database.types'
 
-export async function getApplications(): Promise<Application[]> {
-  const supabase = createClient()
-
+export async function getApplications(supabase: SupabaseClient): Promise<Application[]> {
   const { data, error } = await supabase
     .from('applications')
     .select('*')
@@ -18,9 +16,7 @@ export async function getApplications(): Promise<Application[]> {
   return data
 }
 
-export async function getApplication(id: string): Promise<Application> {
-  const supabase = createClient()
-
+export async function getApplication(supabase: SupabaseClient, id: string): Promise<Application> {
   const { data, error } = await supabase.from('applications').select('*').eq('id', id).single()
 
   if (error) throw new Error(`Failed to fetch application: ${error.message}`)
@@ -28,9 +24,7 @@ export async function getApplication(id: string): Promise<Application> {
   return data
 }
 
-export async function createApplication(application: ApplicationInsert): Promise<Application> {
-  const supabase = createClient()
-
+export async function createApplication(supabase: SupabaseClient, application: ApplicationInsert): Promise<Application> {
   const { data, error } = await supabase.from('applications').insert(application).select().single()
 
   if (error) throw new Error(`Failed to create application: ${error.message}`)
@@ -39,11 +33,10 @@ export async function createApplication(application: ApplicationInsert): Promise
 }
 
 export async function updateApplication(
+  supabase: SupabaseClient,
   id: string,
   updates: ApplicationUpdate
 ): Promise<Application> {
-  const supabase = createClient()
-
   const { data, error } = await supabase
     .from('applications')
     .update(updates)
@@ -56,8 +49,7 @@ export async function updateApplication(
   return data
 }
 
-export async function deleteApplication(id: string): Promise<void> {
-  const supabase = createClient()
+export async function deleteApplication(supabase: SupabaseClient, id: string): Promise<void> {
 
   const { error } = await supabase.from('applications').delete().eq('id', id)
 
@@ -65,10 +57,9 @@ export async function deleteApplication(id: string): Promise<void> {
 }
 
 export async function getApplicationsByStatus(
+  supabase: SupabaseClient,
   status: Application['status']
 ): Promise<Application[]> {
-  const supabase = createClient()
-
   const { data, error } = await supabase
     .from('applications')
     .select('*')
