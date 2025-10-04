@@ -91,24 +91,29 @@ echo "🔐 Checking required environment variables..."
 REQUIRED_VARS=("NEXT_PUBLIC_SUPABASE_URL" "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY")
 ENV_CHECK_PASSED=1
 
-# Check environment variables (works for both Vercel and local)
-for VAR in "${REQUIRED_VARS[@]}"; do
-    # First check if variable is set in environment (Vercel builds)
-    if [ -n "${!VAR}" ]; then
-        : # Variable exists in environment, continue
-    # Then check .env.local for local development
-    elif grep -q "^${VAR}=" .env.local 2>/dev/null; then
-        : # Variable exists in .env.local, continue
-    else
-        ENV_CHECK_PASSED=0
-    fi
-done
-
-if [ $ENV_CHECK_PASSED -eq 1 ]; then
-    print_status 0 "Required environment variables present"
+# Skip env check on Vercel (variables are injected at runtime, not during validation)
+if [ -n "$VERCEL" ] || [ -n "$VERCEL_ENV" ]; then
+    print_status 0 "Skipping environment check on Vercel (variables injected at runtime)"
 else
-    print_status 1 "Missing required environment variables"
-    echo -e "${YELLOW}   Check .env.local for: ${REQUIRED_VARS[*]}${NC}"
+    # Check environment variables for local development
+    for VAR in "${REQUIRED_VARS[@]}"; do
+        # First check if variable is set in environment
+        if [ -n "${!VAR}" ]; then
+            : # Variable exists in environment, continue
+        # Then check .env.local for local development
+        elif grep -q "^${VAR}=" .env.local 2>/dev/null; then
+            : # Variable exists in .env.local, continue
+        else
+            ENV_CHECK_PASSED=0
+        fi
+    done
+
+    if [ $ENV_CHECK_PASSED -eq 1 ]; then
+        print_status 0 "Required environment variables present"
+    else
+        print_status 1 "Missing required environment variables"
+        echo -e "${YELLOW}   Check .env.local for: ${REQUIRED_VARS[*]}${NC}"
+    fi
 fi
 
 # 6. Check for Supabase middleware CSP issues
