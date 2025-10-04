@@ -82,14 +82,14 @@ describe('ApplicationCard', () => {
       expect(badge).toBeInTheDocument()
     })
 
-    it('renders wishlist status with gray/zinc styling', () => {
+    it('renders wishlist status with glass-ultra styling', () => {
       const application = createMockApplication({ status: 'wishlist' })
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('wishlist')
       expect(badge).toBeInTheDocument()
-      // Badge should be rendered with proper class
-      expect(badge.className).toContain('bg-zinc-100')
+      // Badge should be rendered with glass styling
+      expect(badge.className).toContain('glass-ultra')
     })
 
     it('renders applied status with blue styling', () => {
@@ -97,47 +97,47 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('applied')
-      expect(badge.className).toContain('bg-blue-100')
+      expect(badge.className).toContain('glass-light')
     })
 
-    it('renders phone_screen status with yellow styling', () => {
+    it('renders phone_screen status with glass-light styling', () => {
       const application = createMockApplication({ status: 'phone_screen' })
       render(<ApplicationCard application={application} />)
 
-      const badge = screen.getByText('phone_screen')
-      expect(badge.className).toContain('bg-yellow-100')
+      const badge = screen.getByText('phone screen')
+      expect(badge.className).toContain('glass-light')
     })
 
-    it('renders assessment status with yellow styling', () => {
+    it('renders assessment status with glass-light styling', () => {
       const application = createMockApplication({ status: 'assessment' })
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('assessment')
-      expect(badge.className).toContain('bg-yellow-100')
+      expect(badge.className).toContain('glass-light')
     })
 
-    it('renders take_home status with yellow styling', () => {
+    it('renders take_home status with glass-light styling', () => {
       const application = createMockApplication({ status: 'take_home' })
       render(<ApplicationCard application={application} />)
 
-      const badge = screen.getByText('take_home')
-      expect(badge.className).toContain('bg-yellow-100')
+      const badge = screen.getByText('take home')
+      expect(badge.className).toContain('glass-light')
     })
 
-    it('renders interviewing status with purple styling', () => {
+    it('renders interviewing status with glass-light styling', () => {
       const application = createMockApplication({ status: 'interviewing' })
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('interviewing')
-      expect(badge.className).toContain('bg-purple-100')
+      expect(badge.className).toContain('glass-light')
     })
 
-    it('renders final_round status with purple styling', () => {
+    it('renders final_round status with glass-light styling', () => {
       const application = createMockApplication({ status: 'final_round' })
       render(<ApplicationCard application={application} />)
 
-      const badge = screen.getByText('final_round')
-      expect(badge.className).toContain('bg-purple-100')
+      const badge = screen.getByText('final round')
+      expect(badge.className).toContain('glass-light')
     })
 
     it('renders offered status with green styling', () => {
@@ -145,7 +145,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('offered')
-      expect(badge.className).toContain('bg-green-100')
+      expect(badge.className).toContain('glass-light')
     })
 
     it('renders accepted status with green styling', () => {
@@ -153,7 +153,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('accepted')
-      expect(badge.className).toContain('bg-green-100')
+      expect(badge.className).toContain('glass-light')
     })
 
     it('renders rejected status with red styling', () => {
@@ -161,7 +161,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('rejected')
-      expect(badge.className).toContain('bg-red-100')
+      expect(badge.className).toContain('glass-light')
     })
 
     it('renders withdrawn status with red styling', () => {
@@ -169,7 +169,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('withdrawn')
-      expect(badge.className).toContain('bg-red-100')
+      expect(badge.className).toContain('glass-light')
     })
 
     it('renders ghosted status with red styling', () => {
@@ -177,7 +177,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const badge = screen.getByText('ghosted')
-      expect(badge.className).toContain('bg-red-100')
+      expect(badge.className).toContain('glass-light')
     })
   })
 
@@ -423,12 +423,13 @@ describe('ApplicationCard', () => {
       expect(badge).toBeVisible()
     })
 
-    it('has hover effects for better interaction feedback', () => {
+    it('has hover effects when onClick is provided', () => {
       const application = createMockApplication()
-      const { container } = render(<ApplicationCard application={application} />)
+      const { container } = render(<ApplicationCard application={application} onClick={vi.fn()} />)
 
       const card = container.querySelector('[role="article"]')
-      expect(card?.className).toContain('hover:shadow-md')
+      expect(card?.className).toContain('glass-interactive')
+      expect(card?.className).toContain('cursor-pointer')
     })
   })
 

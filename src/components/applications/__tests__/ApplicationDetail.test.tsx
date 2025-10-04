@@ -101,7 +101,7 @@ describe('ApplicationDetail', () => {
       )
 
       const badges = screen.getAllByText('applied')
-      const badge = badges.find((el) => el.className.includes('bg-blue-100'))
+      const badge = badges.find((el) => el.className.includes('glass-light'))
       expect(badge).toBeInTheDocument()
     })
 

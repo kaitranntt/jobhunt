@@ -174,7 +174,7 @@ describe('SmartStatsPanel', () => {
 
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()
       // Check that there's at least one "0" in the component (could be active interviews or other metrics)
-      const zeros = container.querySelectorAll('.text-3xl')
+      const zeros = container.querySelectorAll('.text-4xl')
       const hasZero = Array.from(zeros).some((el) => el.textContent === '0')
       expect(hasZero).toBe(true)
     })
@@ -387,10 +387,10 @@ describe('SmartStatsPanel', () => {
       const { container } = render(<SmartStatsPanel applications={applications} />)
 
       // Check for color classes in icon containers
-      const blueIcon = container.querySelector('.bg-blue-100')
-      const greenIcon = container.querySelector('.bg-green-100')
-      const purpleIcon = container.querySelector('.bg-purple-100')
-      const orangeIcon = container.querySelector('.bg-orange-100')
+      const blueIcon = container.querySelector('.bg-blue-500\\/10')
+      const greenIcon = container.querySelector('.bg-green-500\\/10')
+      const purpleIcon = container.querySelector('.bg-purple-500\\/10')
+      const orangeIcon = container.querySelector('.bg-orange-500\\/10')
 
       expect(blueIcon).toBeInTheDocument()
       expect(greenIcon).toBeInTheDocument()
@@ -405,7 +405,7 @@ describe('SmartStatsPanel', () => {
       const { container } = render(<SmartStatsPanel applications={applications} />)
 
       // Check for large text class on stat values
-      const largeText = container.querySelector('.text-3xl')
+      const largeText = container.querySelector('.text-4xl')
       expect(largeText).toBeInTheDocument()
     })
 

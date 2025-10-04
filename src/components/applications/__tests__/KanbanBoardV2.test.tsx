@@ -312,20 +312,24 @@ describe('KanbanBoardV2', () => {
   })
 
   describe('Visual Hierarchy and Color Coding', () => {
-    it('applies distinct color schemes to each group', () => {
+    it('applies distinct glass color schemes to each group', () => {
       render(<KanbanBoardV2 applications={[]} onUpdateStatus={vi.fn()} />)
 
       const activePipelineColumn = screen.getByTestId('group-column-active_pipeline')
-      expect(activePipelineColumn).toHaveClass('bg-blue-50', 'dark:bg-blue-950')
+      expect(activePipelineColumn).toHaveClass('glass-light')
+      expect(activePipelineColumn.className).toContain('bg-blue-500/5')
 
       const inProgressColumn = screen.getByTestId('group-column-in_progress')
-      expect(inProgressColumn).toHaveClass('bg-purple-50', 'dark:bg-purple-950')
+      expect(inProgressColumn).toHaveClass('glass-light')
+      expect(inProgressColumn.className).toContain('bg-purple-500/5')
 
       const offersColumn = screen.getByTestId('group-column-offers')
-      expect(offersColumn).toHaveClass('bg-green-50', 'dark:bg-green-950')
+      expect(offersColumn).toHaveClass('glass-light')
+      expect(offersColumn.className).toContain('bg-green-500/5')
 
       const closedColumn = screen.getByTestId('group-column-closed')
-      expect(closedColumn).toHaveClass('bg-slate-50', 'dark:bg-slate-900')
+      expect(closedColumn).toHaveClass('glass-light')
+      expect(closedColumn.className).toContain('bg-slate-500/5')
     })
 
     it('displays group descriptions for context', () => {
