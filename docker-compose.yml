@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jobhunt-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    env_file:
+      - .env.local
+    restart: unless-stopped
+    networks:
+      - jobhunt-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Supabase Local Stack (Optional - for local development)
+  # Uncomment if you want to run Supabase locally with Docker
+  # supabase-db:
+  #   image: supabase/postgres:15.1.0.117
+  #   container_name: jobhunt-db
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your-super-secret-password}
+  #     POSTGRES_DB: postgres
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
+  #   networks:
+  #     - jobhunt-network
+  #   restart: unless-stopped
+
+  # supabase-studio:
+  #   image: supabase/studio:20231123-64a766a
+  #   container_name: jobhunt-studio
+  #   ports:
+  #     - "3001:3000"
+  #   environment:
+  #     SUPABASE_URL: http://supabase-kong:8000
+  #     STUDIO_PG_META_URL: http://supabase-meta:8080
+  #   networks:
+  #     - jobhunt-network
+  #   depends_on:
+  #     - supabase-db
+  #   restart: unless-stopped
+
+networks:
+  jobhunt-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
