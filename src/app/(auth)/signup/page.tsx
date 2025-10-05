@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { FcGoogle } from 'react-icons/fc'
 import { createClient } from '@/lib/supabase/client'
 import { NavBar } from '@/components/layout/NavBar'
 
@@ -12,6 +13,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,6 +35,28 @@ export default function SignupPage() {
       setError(err instanceof Error ? err.message : 'Signup failed')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGoogleSignup = async () => {
+    setError('')
+    setGoogleLoading(true)
+
+    try {
+      const supabase = createClient()
+      const redirectUrl = `${window.location.origin}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUrl,
+        },
+      })
+
+      if (error) throw error
+    } catch (err) {
+      setGoogleLoading(false)
+      setError(err instanceof Error ? err.message : 'Google sign-up failed')
     }
   }
 
@@ -86,10 +110,26 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="w-full rounded-md btn-brand-gradient px-4 py-2 text-white hover:btn-brand-gradient-hover disabled:opacity-50"
             >
               {loading ? 'Creating account...' : 'Sign up'}
+            </button>
+
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="h-px w-full bg-border" aria-hidden="true" />
+              <span>or</span>
+              <span className="h-px w-full bg-border" aria-hidden="true" />
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGoogleSignup}
+              disabled={googleLoading || loading}
+              className="w-full rounded-md border border-input bg-background px-4 py-2 text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              <FcGoogle className="h-5 w-5" />
+              {googleLoading ? 'Redirecting...' : 'Continue with Google'}
             </button>
 
             <p className="text-center text-sm text-foreground">
