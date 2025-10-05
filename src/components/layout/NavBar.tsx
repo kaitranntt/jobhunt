@@ -1,8 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 interface NavBarProps {
   variant?: 'landing' | 'authenticated' | 'auth-pages'
@@ -17,6 +20,26 @@ export function NavBar({
   showThemeToggle = true,
   className,
 }: NavBarProps) {
+  const router = useRouter()
+
+  const handleSignOut = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await fetch('/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      // Client-side navigation to login after sign out
+      router.push('/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Sign out error:', error)
+      // Fallback: try GET method
+      window.location.href = '/auth/signout'
+    }
+  }
   // Variant 1: Landing Page NavBar
   if (variant === 'landing') {
     return (
@@ -49,12 +72,38 @@ export function NavBar({
 
             {/* Navigation Links & Actions */}
             <div className="flex items-center gap-4">
-              <Link
-                href="/signup"
-                className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-label-primary hover:text-label-secondary transition-colors glass-interactive"
-              >
-                Get Started
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="hidden sm:inline-flex items-center gap-2 rounded-glass-sm glass-medium px-4 py-2 text-sm font-semibold text-label-primary shadow-glass-subtle hover:glass-heavy transition-all duration-300"
+                    style={{
+                      border: '1px solid var(--glass-border-strong)',
+                    }}
+                  >
+                    Go to Dashboard
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-label-primary hover:text-label-secondary transition-colors glass-interactive"
+                  >
+                    Log In
+                  </Link>
+
+                  <Link
+                    href="/signup"
+                    className="hidden sm:inline-flex items-center gap-2 rounded-glass-sm glass-medium px-4 py-2 text-sm font-semibold text-label-primary shadow-glass-subtle hover:glass-heavy transition-all duration-300"
+                    style={{
+                      border: '1px solid var(--glass-border-strong)',
+                    }}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
 
               <Link
                 href="https://github.com/kaitranntt/jobhunt"
@@ -112,7 +161,7 @@ export function NavBar({
 
               {showThemeToggle && <ThemeToggle />}
 
-              <form action="/auth/signout" method="post">
+              <form onSubmit={handleSignOut}>
                 <button
                   type="submit"
                   aria-label="Sign out of your account"
