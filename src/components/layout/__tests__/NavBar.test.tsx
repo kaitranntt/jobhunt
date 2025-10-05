@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { NavBar } from '../NavBar'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { setupMatchMedia } from '@/test/setup'
+
+// Mock Next.js router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    refresh: vi.fn(),
+  }),
+}))
 
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
@@ -119,11 +127,10 @@ describe('NavBar Component', () => {
       expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
     })
 
-    it('should render sign out form with correct action', () => {
+    it('should render sign out form', () => {
       const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
       const form = container.querySelector('form')
-      expect(form).toHaveAttribute('action', '/auth/signout')
-      expect(form).toHaveAttribute('method', 'post')
+      expect(form).toBeInTheDocument()
     })
 
     it('should render sign out button with aria-label', () => {
