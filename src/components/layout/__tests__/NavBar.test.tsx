@@ -104,48 +104,55 @@ describe('NavBar Component', () => {
   })
 
   describe('Authenticated Variant', () => {
-    const mockUser = { email: 'test@example.com' }
+    const authMockUser = {
+      id: 'test-user-id',
+      email: 'test@example.com',
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2024-01-01T00:00:00Z',
+    }
 
     it('should render logo with JobHunt text', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
     })
 
     it('should render logo as link to dashboard', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const logo = screen.getByText('JobHunt').closest('a')
       expect(logo).toHaveAttribute('href', '/dashboard')
     })
 
     it('should render user email', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
     })
 
     it('should render Sign out button', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
     })
 
     it('should render sign out form', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const form = container.querySelector('form')
       expect(form).toBeInTheDocument()
     })
 
     it('should render sign out button with aria-label', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const button = screen.getByRole('button', { name: /sign out of your account/i })
       expect(button).toHaveAttribute('aria-label', 'Sign out of your account')
     })
 
     it('should render ThemeToggle by default', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
     })
 
     it('should have glass-medium styling for authenticated variant', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const header = container.querySelector('header')
       expect(header).toHaveClass('glass-medium')
       expect(header).toHaveClass('border-b')
@@ -153,7 +160,7 @@ describe('NavBar Component', () => {
     })
 
     it('should not have fixed positioning', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const header = container.querySelector('header')
       expect(header).not.toHaveClass('fixed')
     })
@@ -165,14 +172,15 @@ describe('NavBar Component', () => {
     })
 
     it('should handle user without email gracefully', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={{ email: '' }} />)
+      const userWithoutEmail = { ...authMockUser, email: '' }
+      renderWithTheme(<NavBar variant="authenticated" user={userWithoutEmail} />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
     })
 
     it('should apply custom className if provided', () => {
       const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={mockUser} className="custom-auth-class" />
+        <NavBar variant="authenticated" user={authMockUser} className="custom-auth-class" />
       )
       const header = container.querySelector('header')
       expect(header).toHaveClass('custom-auth-class')
@@ -250,7 +258,15 @@ describe('NavBar Component', () => {
     })
 
     it('should hide user email on mobile for authenticated variant', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={{ email: 'test@example.com' }} />)
+      const responsiveUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
+      renderWithTheme(<NavBar variant="authenticated" user={responsiveUser} />)
       const emailSpan = screen.getByText('test@example.com')
       expect(emailSpan).toHaveClass('hidden')
       expect(emailSpan).toHaveClass('sm:inline-block')
@@ -264,11 +280,20 @@ describe('NavBar Component', () => {
     })
 
     it('should have semantic header element for all variants', () => {
+      const accessibilityUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
+
       const { container: landingContainer } = renderWithTheme(<NavBar variant="landing" />)
       expect(landingContainer.querySelector('header')).toBeInTheDocument()
 
       const { container: authContainer } = renderWithTheme(
-        <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
+        <NavBar variant="authenticated" user={accessibilityUser} />
       )
       expect(authContainer.querySelector('header')).toBeInTheDocument()
 
@@ -277,7 +302,15 @@ describe('NavBar Component', () => {
     })
 
     it('should have proper ARIA label on sign out button', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={{ email: 'test@example.com' }} />)
+      const ariaUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
+      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} />)
       expect(screen.getByLabelText('Sign out of your account')).toBeInTheDocument()
     })
   })
@@ -289,8 +322,16 @@ describe('NavBar Component', () => {
     })
 
     it('should not render ThemeToggle when showThemeToggle is false for authenticated', () => {
+      const themeTestUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
       renderWithTheme(
-        <NavBar variant="authenticated" user={{ email: 'test@example.com' }} showThemeToggle={false} />
+        <NavBar variant="authenticated" user={themeTestUser} showThemeToggle={false} />
       )
       expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
     })
@@ -333,8 +374,16 @@ describe('NavBar Component', () => {
     })
 
     it('should render logo image in authenticated variant', () => {
+      const brandUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
       renderWithTheme(
-        <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
+        <NavBar variant="authenticated" user={brandUser} />
       )
       const logo = screen.getByText('JobHunt').closest('a')
       const image = logo?.querySelector('img')
@@ -351,8 +400,16 @@ describe('NavBar Component', () => {
     })
 
     it('should use flex layout for authenticated variant', () => {
+      const layoutUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
       const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
+        <NavBar variant="authenticated" user={layoutUser} />
       )
       const flexContainer = container.querySelector('.flex.items-center.justify-between')
       expect(flexContainer).toBeInTheDocument()
@@ -371,8 +428,16 @@ describe('NavBar Component', () => {
     })
 
     it('should group user actions in flex container for authenticated', () => {
+      const groupUser = {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2024-01-01T00:00:00Z',
+      }
       const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={{ email: 'test@example.com' }} />
+        <NavBar variant="authenticated" user={groupUser} />
       )
       const actionsGroup = container.querySelector('.flex.items-center.gap-4')
       expect(actionsGroup).toBeInTheDocument()
