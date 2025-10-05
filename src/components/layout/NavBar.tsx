@@ -30,7 +30,7 @@ export function NavBar({
           backdropFilter: 'blur(20px) saturate(180%)',
         }}
       >
-        <div className="container mx-auto w-[85%] px-6 py-4">
+        <div className="mx-auto w-[85%] px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
@@ -85,7 +85,7 @@ export function NavBar({
           backdropFilter: 'blur(30px) saturate(200%)',
         }}
       >
-        <div className="container mx-auto w-[85%] px-6 py-4">
+        <div className="mx-auto w-[85%] px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
@@ -141,7 +141,7 @@ export function NavBar({
           backdropFilter: 'blur(15px) saturate(150%)',
         }}
       >
-        <div className="container mx-auto w-[85%] px-6 py-4">
+        <div className="mx-auto w-[85%] px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link

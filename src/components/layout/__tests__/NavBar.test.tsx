@@ -87,11 +87,11 @@ describe('NavBar Component', () => {
       expect(header).toHaveClass('custom-class')
     })
 
-    it('should use container max-width layout', () => {
+    it('should use 85% width layout', () => {
       const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const containerDiv = container.querySelector('.container')
-      expect(containerDiv).toHaveClass('max-w-7xl')
-      expect(containerDiv).toHaveClass('mx-auto')
+      const navContent = container.querySelector('header > div')
+      expect(navContent).toHaveClass('w-[85%]')
+      expect(navContent).toHaveClass('mx-auto')
     })
   })
 
@@ -219,11 +219,11 @@ describe('NavBar Component', () => {
       expect(header).toHaveClass('custom-auth-pages-class')
     })
 
-    it('should use container max-width layout', () => {
+    it('should use 85% width layout', () => {
       const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
-      const containerDiv = container.querySelector('.container')
-      expect(containerDiv).toHaveClass('max-w-7xl')
-      expect(containerDiv).toHaveClass('mx-auto')
+      const navContent = container.querySelector('header > div')
+      expect(navContent).toHaveClass('w-[85%]')
+      expect(navContent).toHaveClass('mx-auto')
     })
   })
 
