@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { type NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+async function handleSignOut(request: NextRequest) {
   const supabase = await createClient()
 
   const {
@@ -12,7 +12,18 @@ export async function POST(request: NextRequest) {
     await supabase.auth.signOut()
   }
 
-  // Use request.url as base for reliable URL construction
-  const url = new URL('/login', new URL(request.url).origin)
-  return NextResponse.redirect(url)
+  // Use NEXT_PUBLIC_SITE_URL for consistent redirect, fallback to request origin
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin
+  const url = new URL('/login', siteUrl)
+
+  return NextResponse.redirect(url, { status: 303 })
+}
+
+// Support both POST (form submission) and GET (direct navigation)
+export async function POST(request: NextRequest) {
+  return handleSignOut(request)
+}
+
+export async function GET(request: NextRequest) {
+  return handleSignOut(request)
 }
