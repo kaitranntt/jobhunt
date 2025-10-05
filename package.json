@@ -1,7 +1,26 @@
 {
   "name": "jobhunt",
   "version": "0.1.0",
-  "private": true,
+  "description": "Modern job application tracking system with Kanban board interface",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaitranntt/jobhunt.git"
+  },
+  "keywords": [
+    "job-tracker",
+    "job-hunt",
+    "application-tracker",
+    "kanban",
+    "nextjs",
+    "supabase",
+    "typescript"
+  ],
+  "author": "Kai Tran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kaitranntt/jobhunt/issues"
+  },
+  "homepage": "https://github.com/kaitranntt/jobhunt#readme",
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --port 3000",
     "build": "./scripts/validate-build.sh && next build",
@@ -16,7 +35,17 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate": "./scripts/validate-build.sh",
-    "precommit": "yarn lint && yarn typecheck && yarn test"
+    "precommit": "yarn lint && yarn typecheck && yarn test",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -43,6 +72,8 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@eslint/eslintrc": "^3",
     "@next/eslint-plugin-next": "^15.5.4",
     "@radix-ui/react-slot": "^1.2.3",
@@ -63,7 +94,9 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "eslint-plugin-react-hooks": "^6.1.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lint-staged": "^15.3.0",
     "lucide-react": "^0.544.0",
     "prettier": "^3.6.2",
     "tailwind-merge": "^3.3.1",

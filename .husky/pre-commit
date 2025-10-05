@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Run lint-staged for file-specific linting and formatting
+echo "🎨 Running lint-staged..."
+yarn lint-staged
+
+# Run quality gates
+echo "🔍 Running quality gates..."
+yarn lint && yarn typecheck && yarn test
+
+echo "✅ All quality gates passed!"
