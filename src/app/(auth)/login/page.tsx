@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { FcGoogle } from 'react-icons/fc'
 import { createClient } from '@/lib/supabase/client'
 import { NavBar } from '@/components/layout/NavBar'
+import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -75,7 +76,7 @@ export default function LoginPage() {
   }
 
   return (
-    <>
+    <AnimatedBackground>
       <NavBar variant="auth-pages" />
       <div className="flex min-h-screen items-center justify-center">
         <div className="w-full max-w-md space-y-8 p-6">
@@ -154,6 +155,6 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
-    </>
+    </AnimatedBackground>
   )
 }
