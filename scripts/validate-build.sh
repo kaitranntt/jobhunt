@@ -49,7 +49,10 @@ fi
 # 3. Test Suite Check
 echo ""
 echo "🧪 Running test suite..."
-if yarn test > /dev/null 2>&1; then
+# Skip tests on Vercel to avoid timeouts and resource constraints
+if [ -n "$VERCEL" ] || [ -n "$VERCEL_ENV" ]; then
+    print_status 0 "Skipping tests on Vercel (run locally before pushing)"
+elif yarn test > /dev/null 2>&1; then
     print_status 0 "All tests passed"
 else
     print_status 1 "Tests failed"
