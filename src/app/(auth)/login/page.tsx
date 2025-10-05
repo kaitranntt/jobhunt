@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { FcGoogle } from 'react-icons/fc'
@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -59,7 +59,9 @@ export default function LoginPage() {
 
     try {
       const supabase = createClient()
-      const redirectUrl = `${window.location.origin}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
+      // Use environment variable or fall back to window.location.origin
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '')
+      const redirectUrl = `${siteUrl}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -76,18 +78,16 @@ export default function LoginPage() {
   }
 
   return (
-    <AnimatedBackground>
-      <NavBar variant="auth-pages" />
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="w-full max-w-md space-y-8 p-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-foreground">Sign in to JobHunt</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Track your job applications efficiently
-            </p>
-          </div>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-md space-y-8 p-6">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-foreground">Sign in to JobHunt</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Track your job applications efficiently
+          </p>
+        </div>
 
-          <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             {error && (
               <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">{error}</div>
             )}
@@ -146,15 +146,33 @@ export default function LoginPage() {
               {googleLoading ? 'Redirecting...' : 'Continue with Google'}
             </button>
 
-            <p className="text-center text-sm text-foreground">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-medium text-brand-primary hover:text-brand-primary/80">
-                Sign up
-              </Link>
-            </p>
-          </form>
-        </div>
+          <p className="text-center text-sm text-foreground">
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="font-medium text-brand-primary hover:text-brand-primary/80">
+              Sign up
+            </Link>
+          </p>
+        </form>
       </div>
+    </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <AnimatedBackground>
+      <NavBar variant="auth-pages" />
+      <Suspense fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="w-full max-w-md space-y-8 p-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            </div>
+          </div>
+        </div>
+      }>
+        <LoginForm />
+      </Suspense>
     </AnimatedBackground>
   )
 }
