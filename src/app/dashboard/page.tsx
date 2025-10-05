@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Plus, Search, Rocket, Lightbulb } from 'lucide-react'
 import { NavBar } from '@/components/layout/NavBar'
+import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
 import { KanbanBoardV2 } from '@/components/applications/KanbanBoardV2'
 import { SmartStatsPanel } from '@/components/applications/SmartStatsPanel'
 import ApplicationForm from '@/components/applications/ApplicationForm'
@@ -180,22 +181,25 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
-        <NavBar variant="authenticated" user={{ email: userEmail }} />
-        <main className="mx-auto max-w-7xl px-6 py-8">
-          <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
-            <p className="text-label-secondary">Loading applications...</p>
-          </div>
-        </main>
-      </div>
+      <AnimatedBackground variant="minimal">
+        <div className="min-h-screen">
+          <NavBar variant="authenticated" user={{ email: userEmail }} />
+          <main className="mx-auto w-[85%] px-6 py-8">
+            <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
+              <p className="text-label-secondary">Loading applications...</p>
+            </div>
+          </main>
+        </div>
+      </AnimatedBackground>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
-        <NavBar variant="authenticated" user={{ email: userEmail }} />
-        <main className="mx-auto max-w-7xl px-6 py-8">
+      <AnimatedBackground variant="minimal">
+        <div className="min-h-screen">
+          <NavBar variant="authenticated" user={{ email: userEmail }} />
+        <main className="mx-auto w-[85%] px-6 py-8">
           <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
             <div className="text-center">
               <p className="text-label-primary font-medium mb-4" style={{ color: 'var(--color-error)' }}>
@@ -210,15 +214,17 @@ export default function DashboardPage() {
             </div>
           </div>
         </main>
-      </div>
+        </div>
+      </AnimatedBackground>
     )
   }
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--macos-bg-primary)' }}>
-      <NavBar variant="authenticated" user={{ email: userEmail }} />
+    <AnimatedBackground variant="minimal">
+      <div className="min-h-screen">
+        <NavBar variant="authenticated" user={{ email: userEmail }} />
 
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto w-[85%] px-6 py-8">
         {applications.length === 0 && !isNewApplicationModalOpen ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
             <div className="max-w-md text-center space-y-6 glass-ultra rounded-glass-lg p-8 shadow-glass-soft">
@@ -356,6 +362,7 @@ export default function DashboardPage() {
           isOpen={true}
         />
       )}
-    </div>
+      </div>
+    </AnimatedBackground>
   )
 }
