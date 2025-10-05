@@ -1,8 +1,15 @@
 # JobHunt
 
-Job application tracking system built with Next.js 15, TypeScript, Supabase, and Shadcn UI.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.x-black.svg)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green.svg)](https://supabase.com/)
 
-Track your job applications with a modern, intuitive Kanban board interface. Manage company information, interview stages, and application status all in one place.
+> **A modern, open-source job application tracking system with beautiful UI and powerful features.**
+
+Track your job applications with an intuitive Kanban board interface. Manage company information, interview stages, and application status all in one place. Built with modern web technologies and best practices.
+
+**[Live Demo](https://jobhunt.kaitran.ca/)** • **[Documentation](./CONTRIBUTING.md)** • **[Report Bug](../../issues)** • **[Request Feature](../../issues)**
 
 ## Features
 
@@ -24,6 +31,26 @@ Track your job applications with a modern, intuitive Kanban board interface. Man
 - **React Hook Form + Zod** - Form validation
 
 ## Quick Start
+
+### Option 1: Docker (Easiest)
+
+```bash
+# Clone and setup
+git clone https://github.com/kaitranntt/jobhunt.git
+cd jobhunt
+cp .env.example .env.local
+
+# Edit .env.local with your Supabase credentials
+
+# Run with Docker
+docker-compose up -d
+```
+
+Visit [http://localhost:3000](http://localhost:3000)
+
+See [DOCKER.md](./DOCKER.md) for detailed Docker instructions.
+
+### Option 2: Local Development
 
 ```bash
 # Install dependencies
@@ -81,7 +108,7 @@ yarn lint && yarn typecheck && yarn test
 
 ## Deployment
 
-Deploy to Vercel:
+### Vercel (Recommended)
 
 ```bash
 vercel
@@ -91,6 +118,19 @@ Add environment variables in Vercel dashboard:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+
+### Docker
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build Docker image
+docker build -t jobhunt:latest .
+docker run -p 3000:3000 --env-file .env.local jobhunt:latest
+```
+
+See [DOCKER.md](./DOCKER.md) for detailed deployment instructions.
 
 ## Design System
 
@@ -113,11 +153,75 @@ All design tokens are available at:
 - Spacing: `/src/lib/design-tokens/spacing.ts`
 - Global styles: `/src/app/globals.css`
 
-## Documentation
+## 🤝 Contributing
 
-- **[TODO.md](./TODO.md)** - Development checklist and roadmap
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on:
+
+- Setting up your development environment
+- Code quality standards and testing requirements
+- Commit message conventions (Conventional Commits enforced)
+- CI/CD pipeline and automated quality gates
+- Submitting pull requests
+- Reporting bugs and requesting features
+
+**Quick start for contributors:**
+
+```bash
+# Fork and clone the repo
+git clone https://github.com/kaitranntt/jobhunt.git
+
+# Install dependencies
+yarn install
+
+# Set up local Supabase
+supabase start
+supabase db reset
+
+# Run development server
+yarn dev
+```
+
+## 📖 Documentation
+
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution guidelines and setup
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture overview
+- **[DOCKER.md](./DOCKER.md)** - Docker deployment guide
+- **[CI/CD](./.github/CICD.md)** - CI/CD pipeline documentation
+- **[TODO.md](./TODO.md)** - Development roadmap and progress
 - **[CLAUDE.md](./CLAUDE.md)** - AI assistant development guidelines
 
-## License
+## 🗺️ Roadmap
 
-Private project - All rights reserved
+See [TODO.md](./TODO.md) for detailed development phases and progress.
+
+**Upcoming features:**
+
+- Advanced filtering and search
+- Analytics dashboard
+- Email notifications
+- Resume management
+- Interview preparation tools
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+Built with amazing open-source technologies:
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Supabase](https://supabase.com/) - Backend platform
+- [Shadcn UI](https://ui.shadcn.com/) - Component library
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+
+## 💬 Support
+
+- 📖 [Documentation](./CONTRIBUTING.md)
+- 🐛 [Report Issues](../../issues)
+- 💡 [Request Features](../../issues)
+- ⭐ Star this repo if you find it helpful!
+
+---
+
+**Made with ❤️ for job seekers everywhere**
