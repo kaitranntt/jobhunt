@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dialog'
 import type { Application } from '@/lib/types/database.types'
 import type { ApplicationFormData } from '@/lib/schemas/application.schema'
+import { createClient } from '@/lib/supabase/client'
 import {
   createApplicationAction,
   updateApplicationAction,
@@ -47,30 +48,40 @@ export default function DashboardPage() {
   const [userEmail, setUserEmail] = React.useState<string>('')
   const [userId, setUserId] = React.useState<string>('')
 
-  // Load applications on mount
+  // Load user session and applications on mount
   React.useEffect(() => {
-    async function loadApplications() {
+    async function loadData() {
       try {
         setIsLoading(true)
         setError(null)
+
+        // Get authenticated user session
+        const supabase = createClient()
+        const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+        if (authError || !user) {
+          console.error('Authentication error:', authError)
+          setError('Authentication required. Please log in.')
+          return
+        }
+
+        // Set user information
+        setUserEmail(user.email ?? '')
+        setUserId(user.id)
+
+        // Load applications
         const apps = await getApplicationsAction()
         setApplications(apps)
         setFilteredApplications(apps)
-
-        // Get user email and ID from first application
-        if (apps.length > 0) {
-          setUserEmail('user@example.com') // In real app, would get from auth
-          setUserId(apps[0].user_id) // Get user ID from first application
-        }
       } catch (err) {
-        console.error('Failed to load applications:', err)
+        console.error('Failed to load data:', err)
         setError('Failed to load applications. Please try again.')
       } finally {
         setIsLoading(false)
       }
     }
 
-    loadApplications()
+    loadData()
   }, [])
 
   // Filter applications when search query changes

@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { setupMatchMedia } from '@/test/setup'
 import type { Application } from '@/lib/types/database.types'
 import * as actions from '../actions'
+import { createClient } from '@/lib/supabase/client'
 
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
@@ -27,6 +28,11 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
   }),
+}))
+
+// Mock Supabase client
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: vi.fn(),
 }))
 
 describe('DashboardPage', () => {
@@ -80,6 +86,21 @@ describe('DashboardPage', () => {
     setupMatchMedia()
     mockPush.mockClear()
     vi.mocked(actions.getApplicationsAction).mockResolvedValue(mockApplications)
+
+    // Mock authenticated user
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({
+          data: {
+            user: {
+              id: 'user-123',
+              email: 'test@example.com',
+            },
+          },
+          error: null,
+        }),
+      },
+    } as unknown as ReturnType<typeof createClient>)
   })
 
   describe('Rendering and Layout', () => {
