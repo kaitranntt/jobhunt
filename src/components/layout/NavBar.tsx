@@ -6,10 +6,11 @@ import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
+import type { User } from '@supabase/supabase-js'
 
 interface NavBarProps {
   variant?: 'landing' | 'authenticated' | 'auth-pages'
-  user?: { email: string } | null
+  user?: User | null
   showThemeToggle?: boolean
   className?: string
 }

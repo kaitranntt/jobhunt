@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dialog'
 import type { Application } from '@/lib/types/database.types'
 import type { ApplicationFormData } from '@/lib/schemas/application.schema'
+import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import {
   createApplicationAction,
@@ -45,8 +46,8 @@ export default function DashboardPage() {
   const [isCreating, setIsCreating] = React.useState(false)
   const [createError, setCreateError] = React.useState<string | null>(null)
 
-  // User email and ID for NavBar and Timeline
-  const [userEmail, setUserEmail] = React.useState<string>('')
+  // User state for NavBar and Timeline
+  const [user, setUser] = React.useState<User | null>(null)
   const [userId, setUserId] = React.useState<string>('')
 
   // Load user session and applications on mount
@@ -58,17 +59,17 @@ export default function DashboardPage() {
 
         // Get authenticated user session
         const supabase = createClient()
-        const { data: { user }, error: authError } = await supabase.auth.getUser()
+        const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser()
 
-        if (authError || !user) {
+        if (authError || !currentUser) {
           console.error('Authentication error:', authError)
           setError('Authentication required. Please log in.')
           return
         }
 
         // Set user information
-        setUserEmail(user.email ?? '')
-        setUserId(user.id)
+        setUser(currentUser)
+        setUserId(currentUser.id)
 
         // Load applications
         const apps = await getApplicationsAction()
@@ -183,7 +184,7 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={{ email: userEmail }} />
+          <NavBar variant="authenticated" user={user} />
           <main className="mx-auto w-[85%] px-6 py-8">
             <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
               <p className="text-label-secondary">Loading applications...</p>
@@ -198,7 +199,7 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={{ email: userEmail }} />
+          <NavBar variant="authenticated" user={user} />
         <main className="mx-auto w-[85%] px-6 py-8">
           <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
             <div className="text-center">
@@ -222,7 +223,7 @@ export default function DashboardPage() {
   return (
     <AnimatedBackground variant="minimal">
       <div className="min-h-screen">
-        <NavBar variant="authenticated" user={{ email: userEmail }} />
+        <NavBar variant="authenticated" user={user} />
 
       <main className="mx-auto w-[85%] px-6 py-8">
         {applications.length === 0 && !isNewApplicationModalOpen ? (
