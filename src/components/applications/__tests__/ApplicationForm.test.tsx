@@ -361,7 +361,7 @@ describe('ApplicationForm', () => {
       const salaryLabel = screen.getByText(/salary range/i)
       const statusLabel = screen.getByText(/status/i)
       const dateLabel = screen.getByText(/date applied/i)
-      const notesLabel = screen.getByText(/notes/i)
+      const notesLabel = screen.getByRole('textbox', { name: /notes/i })
 
       expect(companyLabel).toBeInTheDocument()
       expect(jobTitleLabel).toBeInTheDocument()
