@@ -103,6 +103,19 @@
   --brand-secondary-dark: 221 83% 43%;
   --brand-secondary-light: 221 83% 63%;
 
+  /* Animated Background Gradients */
+  --gradient-light-start: 220 70% 98%;
+  --gradient-light-mid: 240 60% 97%;
+  --gradient-light-end: 260 65% 96%;
+  --gradient-accent-start: 266 85% 58%;
+  --gradient-accent-end: 221 83% 53%;
+
+  /* Floating Orb Colors */
+  --accent-pink-start: 340 82% 65%;
+  --accent-pink-end: 320 85% 58%;
+  --accent-gradient-start: 180 85% 65%;
+  --accent-gradient-end: 200 85% 60%;
+
   --radius: 0.5rem;
 }
 
@@ -238,6 +251,19 @@
   --brand-secondary: 221 83% 63%;
   --brand-secondary-dark: 221 83% 53%;
   --brand-secondary-light: 221 83% 73%;
+
+  /* Animated Background Gradients (Dark Mode) */
+  --gradient-light-start: 222 47% 13%;
+  --gradient-light-mid: 217 33% 17%;
+  --gradient-light-end: 222 47% 15%;
+  --gradient-accent-start: 266 85% 68%;
+  --gradient-accent-end: 221 83% 63%;
+
+  /* Floating Orb Colors (Dark Mode) */
+  --accent-pink-start: 340 82% 55%;
+  --accent-pink-end: 320 85% 48%;
+  --accent-gradient-start: 180 85% 55%;
+  --accent-gradient-end: 200 85% 50%;
 }
 
 body {
