@@ -63,6 +63,7 @@
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.58.0",
     "@testing-library/dom": "^10.4.1",
+    "@vercel/analytics": "^1.5.0",
     "date-fns": "^4.1.0",
     "next": "15.5.4",
     "react": "18",
