@@ -74,3 +74,22 @@ export interface Document {
 
 export type DocumentInsert = Omit<Document, 'id' | 'created_at'>
 export type DocumentUpdate = Partial<Omit<Document, 'id' | 'user_id' | 'created_at'>>
+
+export interface UserProfile {
+  id: string
+  user_id: string
+  full_name: string
+  phone: string | null
+  location: string | null
+  job_role: string | null
+  desired_roles: string[] | null
+  desired_industries: string[] | null
+  experience_years: number | null
+  linkedin_url: string | null
+  portfolio_url: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type UserProfileInsert = Omit<UserProfile, 'id' | 'created_at' | 'updated_at'>
+export type UserProfileUpdate = Partial<Omit<UserProfile, 'id' | 'user_id'>>
