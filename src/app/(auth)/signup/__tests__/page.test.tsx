@@ -13,6 +13,11 @@ vi.mock('@/lib/api/profiles', () => ({
   updateUserProfile: vi.fn(),
 }))
 
+// Mock the server actions
+vi.mock('../actions', () => ({
+  createUserProfileAction: vi.fn(),
+}))
+
 function renderWithTheme(ui: React.ReactElement) {
   return render(<ThemeProvider>{ui}</ThemeProvider>)
 }
@@ -46,8 +51,10 @@ describe('SignupPage', () => {
       },
     } as unknown as ReturnType<typeof createClient>)
 
-    // Import and setup the mocked function
+    // Import and setup the mocked functions
     const { createUserProfile } = await import('@/lib/api/profiles')
+    const { createUserProfileAction } = await import('../actions')
+
     vi.mocked(createUserProfile).mockResolvedValue({
       id: 'profile-1',
       user_id: 'user-123',
@@ -62,6 +69,26 @@ describe('SignupPage', () => {
       portfolio_url: null,
       created_at: '2025-10-04T10:00:00Z',
       updated_at: '2025-10-04T10:00:00Z',
+    })
+
+    vi.mocked(createUserProfileAction).mockResolvedValue({
+      success: true,
+      data: {
+        id: 'profile-1',
+        user_id: 'user-123',
+        full_name: 'Test User',
+        phone: null,
+        location: null,
+        job_role: null,
+        desired_roles: null,
+        desired_industries: null,
+        experience_years: null,
+        linkedin_url: null,
+        portfolio_url: null,
+        created_at: '2025-10-04T10:00:00Z',
+        updated_at: '2025-10-04T10:00:00Z',
+      },
+      error: null,
     })
   })
 
@@ -143,7 +170,7 @@ describe('SignupPage', () => {
     })
   })
 
-  it('should require full name in step 2', async () => {
+  it('should require first and last name in step 2', async () => {
     renderWithTheme(<SignupPage />)
 
     const emailInput = screen.getByLabelText(/email address/i)
@@ -161,7 +188,7 @@ describe('SignupPage', () => {
     fireEvent.click(nextButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/full name is required/i)).toBeInTheDocument()
+      expect(screen.getByText(/first name is required/i)).toBeInTheDocument()
     })
   })
 
@@ -179,8 +206,10 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
     })
 
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const firstNameInput = screen.getByLabelText(/first name/i)
+    const lastNameInput = screen.getByLabelText(/last name/i)
+    fireEvent.change(firstNameInput, { target: { value: 'John' } })
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } })
 
     const skipButton = screen.getByRole('button', { name: /^skip$/i })
     fireEvent.click(skipButton)
@@ -192,26 +221,30 @@ describe('SignupPage', () => {
   })
 
   it('should complete full signup flow with all steps', async () => {
-    const { createUserProfile } = await import('@/lib/api/profiles')
+    const { createUserProfileAction } = await import('../actions')
 
     mockSignUp.mockResolvedValue({
       data: { user: { id: 'user-123' } },
       error: null,
     })
-    vi.mocked(createUserProfile).mockResolvedValue({
-      id: 'profile-1',
-      user_id: 'user-123',
-      full_name: 'John Doe',
-      phone: null,
-      location: null,
-      job_role: null,
-      desired_roles: null,
-      desired_industries: null,
-      experience_years: null,
-      linkedin_url: null,
-      portfolio_url: null,
-      created_at: '2025-10-04T10:00:00Z',
-      updated_at: '2025-10-04T10:00:00Z',
+    vi.mocked(createUserProfileAction).mockResolvedValue({
+      success: true,
+      data: {
+        id: 'profile-1',
+        user_id: 'user-123',
+        full_name: 'John Doe',
+        phone: '+1234567890',
+        location: 'San Francisco, CA',
+        job_role: 'Software Engineer',
+        desired_roles: ['Senior Engineer', 'Tech Lead'],
+        desired_industries: ['Technology', 'FinTech'],
+        experience_years: 5,
+        linkedin_url: 'https://linkedin.com/in/johndoe',
+        portfolio_url: null,
+        created_at: '2025-10-04T10:00:00Z',
+        updated_at: '2025-10-04T10:00:00Z',
+      },
+      error: null,
     })
 
     renderWithTheme(<SignupPage />)
@@ -224,7 +257,8 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
     })
 
-    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } })
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
     fireEvent.change(screen.getByLabelText(/phone/i), { target: { value: '+1234567890' } })
     fireEvent.change(screen.getByLabelText(/location/i), { target: { value: 'San Francisco, CA' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
@@ -255,7 +289,7 @@ describe('SignupPage', () => {
         email: 'test@example.com',
         password: 'password123',
       })
-      expect(createUserProfile).toHaveBeenCalledWith(
+      expect(createUserProfileAction).toHaveBeenCalledWith(
         expect.objectContaining({
           user_id: 'user-123',
           full_name: 'John Doe',
@@ -287,7 +321,8 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
     })
 
-    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } })
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
 
     await waitFor(() => {
@@ -321,7 +356,8 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
     })
 
-    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'John Doe' } })
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
 
     await waitFor(() => {
