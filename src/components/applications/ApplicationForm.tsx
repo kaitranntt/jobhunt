@@ -224,13 +224,13 @@ export default function ApplicationForm({
                   disabled={isLoading}
                 >
                   <FormControl>
-                    <SelectTrigger aria-label="Status">
+                    <SelectTrigger aria-label="Status" variant="glass">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent variant="glass">
                     {STATUS_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.value} variant="glass">
                         {option.label}
                       </SelectItem>
                     ))}
