@@ -2,14 +2,14 @@
 
 import * as React from 'react'
 import { format } from 'date-fns'
-import { X, Edit2, Trash2, ExternalLink, Users, FileText, Bell } from 'lucide-react'
+import { Edit2, Trash2, ExternalLink, Users, FileText, Bell } from 'lucide-react'
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+  NonDimmingModal,
+  NonDimmingModalContent,
+  NonDimmingModalDescription,
+  NonDimmingModalHeader,
+  NonDimmingModalTitle,
+} from '@/components/ui/non-dimming-modal'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,17 +41,28 @@ interface ApplicationDetailProps {
 const getStatusColor = (status: ApplicationStatus): string => {
   const statusColorMap: Record<ApplicationStatus, string> = {
     wishlist: 'glass-ultra text-label-secondary',
-    applied: 'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
-    phone_screen: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    assessment: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    take_home: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    interviewing: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    final_round: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    offered: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    accepted: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    rejected: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    withdrawn: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    ghosted: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    applied:
+      'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
+    phone_screen:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    assessment:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    take_home:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    interviewing:
+      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    final_round:
+      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    offered:
+      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    accepted:
+      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    rejected:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    withdrawn:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    ghosted:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
   }
 
   return statusColorMap[status]
@@ -139,34 +150,25 @@ export function ApplicationDetail({
 
   return (
     <>
-      <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-2xl overflow-y-auto">
-          <SheetHeader className="glass-ultra rounded-t-glass-lg -mx-6 -mt-6 px-6 pt-6 pb-6 mb-6">
+      <NonDimmingModal open={isOpen} onOpenChange={onClose}>
+        <NonDimmingModalContent className="w-full sm:max-w-2xl overflow-y-auto">
+          <NonDimmingModalHeader className="glass-ultra rounded-t-glass-lg -mx-6 -mt-6 px-6 pt-6 pb-6 mb-6">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
-                <SheetTitle className="text-2xl font-bold mb-2 text-label-primary">
+                <NonDimmingModalTitle className="text-2xl font-bold mb-2 text-label-primary">
                   {application.company_name}
-                </SheetTitle>
-                <SheetDescription className="text-lg text-label-secondary font-medium">
+                </NonDimmingModalTitle>
+                <NonDimmingModalDescription className="text-lg text-label-secondary font-medium">
                   {application.job_title}
-                </SheetDescription>
+                </NonDimmingModalDescription>
                 <div className="mt-3">
                   <Badge className={cn('text-sm px-3 py-1 rounded-glass-sm', statusColor)}>
                     {application.status.replace('_', ' ')}
                   </Badge>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                aria-label="Close"
-                className="h-10 w-10 glass-ultra rounded-full hover:glass-light"
-              >
-                <X className="h-5 w-5 text-label-secondary" />
-              </Button>
             </div>
-          </SheetHeader>
+          </NonDimmingModalHeader>
 
           <div className="mt-6 space-y-6">
             {error && (
@@ -196,12 +198,16 @@ export function ApplicationDetail({
               <div className="space-y-6">
                 <div className="glass-ultra rounded-glass-sm p-4">
                   <h3 className="text-sm font-semibold text-label-secondary mb-2">Company Name</h3>
-                  <p className="text-base text-label-primary font-medium">{application.company_name}</p>
+                  <p className="text-base text-label-primary font-medium">
+                    {application.company_name}
+                  </p>
                 </div>
 
                 <div className="glass-ultra rounded-glass-sm p-4">
                   <h3 className="text-sm font-semibold text-label-secondary mb-2">Job Title</h3>
-                  <p className="text-base text-label-primary font-medium">{application.job_title}</p>
+                  <p className="text-base text-label-primary font-medium">
+                    {application.job_title}
+                  </p>
                 </div>
 
                 <div className="glass-ultra rounded-glass-sm p-4">
@@ -224,24 +230,36 @@ export function ApplicationDetail({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="glass-ultra rounded-glass-sm p-4">
                     <h3 className="text-sm font-semibold text-label-secondary mb-2">Location</h3>
-                    <p className="text-base text-label-primary">{formatFieldValue(application.location)}</p>
+                    <p className="text-base text-label-primary">
+                      {formatFieldValue(application.location)}
+                    </p>
                   </div>
 
                   <div className="glass-ultra rounded-glass-sm p-4">
-                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Salary Range</h3>
-                    <p className="text-base text-label-primary">{formatFieldValue(application.salary_range)}</p>
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">
+                      Salary Range
+                    </h3>
+                    <p className="text-base text-label-primary">
+                      {formatFieldValue(application.salary_range)}
+                    </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="glass-ultra rounded-glass-sm p-4">
                     <h3 className="text-sm font-semibold text-label-secondary mb-2">Status</h3>
-                    <p className="text-base text-label-primary capitalize">{application.status.replace('_', ' ')}</p>
+                    <p className="text-base text-label-primary capitalize">
+                      {application.status.replace('_', ' ')}
+                    </p>
                   </div>
 
                   <div className="glass-ultra rounded-glass-sm p-4">
-                    <h3 className="text-sm font-semibold text-label-secondary mb-2">Date Applied</h3>
-                    <p className="text-base text-label-primary">{formatDate(application.date_applied)}</p>
+                    <h3 className="text-sm font-semibold text-label-secondary mb-2">
+                      Date Applied
+                    </h3>
+                    <p className="text-base text-label-primary">
+                      {formatDate(application.date_applied)}
+                    </p>
                   </div>
                 </div>
 
@@ -295,11 +313,20 @@ export function ApplicationDetail({
 
           <div className="mt-6 flex items-center justify-between gap-4 pt-6 border-t border-label-quaternary">
             {isEditMode ? (
-              <Button variant="outline" onClick={handleCancelEdit} disabled={isSubmitting} className="glass-ultra border-0">
+              <Button
+                variant="outline"
+                onClick={handleCancelEdit}
+                disabled={isSubmitting}
+                className="glass-ultra border-0"
+              >
                 Cancel
               </Button>
             ) : (
-              <Button variant="outline" onClick={handleEditClick} className="glass-ultra border-0 hover:glass-light">
+              <Button
+                variant="outline"
+                onClick={handleEditClick}
+                className="glass-ultra border-0 hover:glass-light"
+              >
                 <Edit2 className="mr-2 h-4 w-4" />
                 Edit
               </Button>
@@ -315,8 +342,8 @@ export function ApplicationDetail({
               Delete
             </Button>
           </div>
-        </SheetContent>
-      </Sheet>
+        </NonDimmingModalContent>
+      </NonDimmingModal>
 
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>

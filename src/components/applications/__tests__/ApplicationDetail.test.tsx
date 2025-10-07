@@ -101,7 +101,7 @@ describe('ApplicationDetail', () => {
       )
 
       const badges = screen.getAllByText('applied')
-      const badge = badges.find((el) => el.className.includes('glass-light'))
+      const badge = badges.find(el => el.className.includes('glass-light'))
       expect(badge).toBeInTheDocument()
     })
 
@@ -288,7 +288,7 @@ describe('ApplicationDetail', () => {
       const application = createMockApplication()
 
       // Make onUpdate take some time
-      mockOnUpdate.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)))
+      mockOnUpdate.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
 
       render(
         <ApplicationDetail
@@ -537,8 +537,8 @@ describe('ApplicationDetail', () => {
     })
   })
 
-  describe('Sheet Visibility', () => {
-    it('shows Sheet when isOpen is true', () => {
+  describe('Modal Visibility', () => {
+    it('shows Modal when isOpen is true', () => {
       const application = createMockApplication()
       render(
         <ApplicationDetail
@@ -550,11 +550,11 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Sheet should be visible
+      // Modal should be visible
       expect(screen.getAllByText('TechCorp Inc').length).toBeGreaterThan(0)
     })
 
-    it('hides Sheet when isOpen is false', () => {
+    it('hides Modal when isOpen is false', () => {
       const application = createMockApplication()
       render(
         <ApplicationDetail
@@ -566,13 +566,13 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Sheet content should not be visible
+      // Modal content should not be visible
       expect(screen.queryByText('TechCorp Inc')).not.toBeInTheDocument()
     })
   })
 
   describe('Mobile-Friendly Design', () => {
-    it('uses Sheet component for mobile-friendly modal', () => {
+    it('uses NonDimmingModal component for mobile-friendly modal', () => {
       const application = createMockApplication()
       render(
         <ApplicationDetail
@@ -584,9 +584,9 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Sheet component should be present (Portal rendered)
-      const sheet = screen.getByRole('dialog')
-      expect(sheet).toBeInTheDocument()
+      // Modal component should be present (Portal rendered)
+      const modal = screen.getByRole('dialog')
+      expect(modal).toBeInTheDocument()
     })
   })
 
@@ -611,6 +611,7 @@ describe('ApplicationDetail', () => {
     it('supports keyboard navigation', async () => {
       const user = userEvent.setup()
       const application = createMockApplication()
+
       render(
         <ApplicationDetail
           application={application}
@@ -621,13 +622,42 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Tab should focus the first interactive element in the Sheet
-      await user.tab()
+      // Radix UI's DialogPrimitive automatically focuses the first focusable element
+      // when the modal opens (typically the close button)
+      const modalButtons = screen.getAllByRole('button')
+      expect(modalButtons.length).toBeGreaterThan(0)
 
-      // Verify some button has focus (Sheet focuses first element automatically)
-      const allButtons = screen.getAllByRole('button')
-      const hasFocus = allButtons.some((button) => button === document.activeElement)
-      expect(hasFocus).toBe(true)
+      // Verify that focus is inside the modal (Radix UI handles this automatically)
+      const initialFocusedElement = document.activeElement
+      expect(modalButtons.includes(initialFocusedElement as HTMLElement)).toBe(true)
+
+      // Test that we can activate a button with Enter key
+      // This is a more reliable test of keyboard navigation than Tab
+      const editButtons = screen.getAllByRole('button', { name: /edit/i })
+      editButtons[0].focus()
+      await user.keyboard('{Enter}')
+
+      // Verify that edit mode was activated (form fields should appear)
+      expect(screen.getByRole('textbox', { name: /company name/i })).toBeInTheDocument()
+
+      // Test that we can navigate to form fields with keyboard
+      // Focus the first input field manually since focus management in forms can be complex
+      const companyInput = screen.getByRole('textbox', { name: /company name/i })
+      companyInput.focus()
+      expect(companyInput).toHaveFocus()
+
+      // Test that we can type in the focused input
+      await user.keyboard(' Updated')
+      expect(companyInput).toHaveValue('TechCorp Inc Updated')
+
+      // Test that we can navigate to the next field with Tab
+      await user.tab()
+      const jobTitleInput = screen.getByRole('textbox', { name: /job title/i })
+      expect(jobTitleInput).toHaveFocus()
+
+      // Test that we can go back with Shift+Tab
+      await user.tab({ shift: true })
+      expect(companyInput).toHaveFocus()
     })
   })
 })
