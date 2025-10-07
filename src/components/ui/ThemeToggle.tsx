@@ -41,8 +41,12 @@ export function ThemeToggle() {
           <span className="sr-only">Toggle theme menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={12} className="min-w-[200px] mt-1">
-        {themes.map((themeOption) => {
+      <DropdownMenuContent
+        align="end"
+        sideOffset={12}
+        className="min-w-[200px] mt-1 glass-medium border-opacity-80"
+      >
+        {themes.map(themeOption => {
           const Icon = themeOption.icon
           const isActive = theme === themeOption.value
 
@@ -50,12 +54,12 @@ export function ThemeToggle() {
             <DropdownMenuItem
               key={themeOption.value}
               onClick={() => setTheme(themeOption.value)}
-              className="flex items-center justify-between gap-2 cursor-pointer"
+              className="flex items-center justify-between gap-2 cursor-pointer hover:bg-accent/80 transition-colors"
               aria-label={`Switch to ${themeOption.label.toLowerCase()} theme`}
             >
               <span className="flex items-center gap-2">
-                <Icon className="h-5 w-5" aria-hidden="true" />
-                <span className="font-medium">{themeOption.label}</span>
+                <Icon className="h-5 w-5 text-foreground/90" aria-hidden="true" />
+                <span className="font-medium text-foreground">{themeOption.label}</span>
               </span>
               {isActive && (
                 <Check
