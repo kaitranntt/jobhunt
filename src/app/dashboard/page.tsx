@@ -10,7 +10,6 @@ import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
 import Timeline from '@/components/timeline/Timeline'
 import UpcomingReminders from '@/components/reminders/UpcomingReminders'
-import { ProfileCard } from '@/components/profile/ProfileCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -60,7 +59,10 @@ export default function DashboardPage() {
 
         // Get authenticated user session
         const supabase = createClient()
-        const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser()
+        const {
+          data: { user: currentUser },
+          error: authError,
+        } = await supabase.auth.getUser()
 
         if (authError || !currentUser) {
           console.error('Authentication error:', authError)
@@ -124,9 +126,7 @@ export default function DashboardPage() {
   const handleUpdateApplication = async (id: string, formData: ApplicationFormData) => {
     try {
       const updatedApplication = await updateApplicationAction(id, formData)
-      setApplications(prev =>
-        prev.map(app => (app.id === id ? updatedApplication : app))
-      )
+      setApplications(prev => prev.map(app => (app.id === id ? updatedApplication : app)))
       setSelectedApplication(null)
     } catch (err) {
       console.error('Failed to update application:', err)
@@ -150,9 +150,7 @@ export default function DashboardPage() {
   const handleUpdateStatus = async (id: string, newStatus: Application['status']) => {
     try {
       const updatedApplication = await updateApplicationStatusAction(id, newStatus)
-      setApplications(prev =>
-        prev.map(app => (app.id === id ? updatedApplication : app))
-      )
+      setApplications(prev => prev.map(app => (app.id === id ? updatedApplication : app)))
     } catch (err) {
       console.error('Failed to update status:', err)
       throw err // Re-throw to let KanbanBoard handle the error
@@ -185,7 +183,7 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={user} />
+          <NavBar variant="authenticated" user={user} userId={userId} />
           <main className="mx-auto w-[85%] px-6 py-8">
             <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
               <p className="text-label-secondary">Loading applications...</p>
@@ -200,22 +198,22 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={user} />
-        <main className="mx-auto w-[85%] px-6 py-8">
-          <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
-            <div className="text-center">
-              <p className="text-label-primary font-medium mb-4" style={{ color: 'var(--color-error)' }}>
-                {error}
-              </p>
-              <Button
-                onClick={() => window.location.reload()}
-                className="mt-4 btn-glass"
-              >
-                Retry
-              </Button>
+          <NavBar variant="authenticated" user={user} userId={userId} />
+          <main className="mx-auto w-[85%] px-6 py-8">
+            <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
+              <div className="text-center">
+                <p
+                  className="text-label-primary font-medium mb-4"
+                  style={{ color: 'var(--color-error)' }}
+                >
+                  {error}
+                </p>
+                <Button onClick={() => window.location.reload()} className="mt-4 btn-glass">
+                  Retry
+                </Button>
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
         </div>
       </AnimatedBackground>
     )
@@ -224,151 +222,144 @@ export default function DashboardPage() {
   return (
     <AnimatedBackground variant="minimal">
       <div className="min-h-screen">
-        <NavBar variant="authenticated" user={user} />
+        <NavBar variant="authenticated" user={user} userId={userId} />
 
-      <main className="mx-auto w-[85%] px-6 py-8">
-        {applications.length === 0 && !isNewApplicationModalOpen ? (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-            <div className="max-w-md text-center space-y-6 glass-ultra rounded-glass-lg p-8 shadow-glass-soft">
-              <div className="flex justify-center">
-                <Rocket className="h-24 w-24" style={{ color: 'var(--tint-blue)' }} />
-              </div>
+        <main className="mx-auto w-[85%] px-6 py-8">
+          {applications.length === 0 && !isNewApplicationModalOpen ? (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+              <div className="max-w-md text-center space-y-6 glass-ultra rounded-glass-lg p-8 shadow-glass-soft">
+                <div className="flex justify-center">
+                  <Rocket className="h-24 w-24" style={{ color: 'var(--tint-blue)' }} />
+                </div>
 
-              <div className="space-y-2">
-                <h2 className="text-3xl font-semibold text-label-primary">
-                  Start Your Job Hunt Journey
-                </h2>
-                <p className="text-label-secondary text-lg">
-                  Track applications, ace interviews, land your dream job
-                </p>
-              </div>
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-semibold text-label-primary">
+                    Start Your Job Hunt Journey
+                  </h2>
+                  <p className="text-label-secondary text-lg">
+                    Track applications, ace interviews, land your dream job
+                  </p>
+                </div>
 
-              <Button
-                onClick={handleOpenNewModal}
-                size="lg"
-                className="w-full sm:w-auto btn-glass font-semibold"
-              >
-                <Plus className="mr-2 h-5 w-5" />
-                Add Your First Application
-              </Button>
+                <Button
+                  onClick={handleOpenNewModal}
+                  size="lg"
+                  className="w-full sm:w-auto btn-glass font-semibold"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Add Your First Application
+                </Button>
 
-              <div className="glass-medium rounded-glass-sm p-4 shadow-glass-subtle" style={{ border: '1px solid var(--glass-border-medium)' }}>
-                <p className="text-sm text-label-primary flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4" style={{ color: 'var(--tint-yellow)' }} />
-                  <span>Tip: Start by adding jobs you&apos;re interested in to your wishlist</span>
-                </p>
+                <div
+                  className="glass-medium rounded-glass-sm p-4 shadow-glass-subtle"
+                  style={{ border: '1px solid var(--glass-border-medium)' }}
+                >
+                  <p className="text-sm text-label-primary flex items-center gap-2">
+                    <Lightbulb className="h-4 w-4" style={{ color: 'var(--tint-yellow)' }} />
+                    <span>
+                      Tip: Start by adding jobs you&apos;re interested in to your wishlist
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ) : applications.length > 0 ? (
-          <>
-            {/* Top Section - Global Dashboard (Most Important) */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
-              <div className="lg:col-span-2">
-                <SmartStatsPanel applications={filteredApplications} />
-              </div>
-              {userId && (
-                <>
-                  <div className="lg:col-span-1">
-                    <ProfileCard userId={userId} user={{ email: user?.email }} />
-                  </div>
+          ) : applications.length > 0 ? (
+            <>
+              {/* Top Section - Global Dashboard (Most Important) */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div className="lg:col-span-2">
+                  <SmartStatsPanel applications={filteredApplications} />
+                </div>
+                {userId && (
                   <div className="lg:col-span-1">
                     <UpcomingReminders userId={userId} />
                   </div>
-                </>
-              )}
-            </div>
-
-            {/* Middle Section - Action Bar (Secondary) */}
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label-tertiary" />
-                  <Input
-                    type="text"
-                    placeholder="Search by company or job title..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="pl-10 glass-light rounded-glass-sm text-label-primary placeholder:text-label-tertiary shadow-glass-subtle"
-                    style={{
-                      border: '1px solid var(--glass-border-medium)',
-                      backdropFilter: 'blur(20px) saturate(180%)',
-                    }}
-                  />
-                </div>
+                )}
               </div>
 
-              <Button
-                onClick={handleOpenNewModal}
-                size="lg"
-                className="w-full sm:w-auto btn-glass font-semibold"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                New Application
-              </Button>
-            </div>
+              {/* Middle Section - Action Bar (Secondary) */}
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label-tertiary" />
+                    <Input
+                      type="text"
+                      placeholder="Search by company or job title..."
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className="pl-10 glass-light rounded-glass-sm text-label-primary placeholder:text-label-tertiary shadow-glass-subtle"
+                      style={{
+                        border: '1px solid var(--glass-border-medium)',
+                        backdropFilter: 'blur(20px) saturate(180%)',
+                      }}
+                    />
+                  </div>
+                </div>
 
-            {/* Bottom Section - Kanban Board (Detailed View) */}
-            <KanbanBoardV2
-              applications={filteredApplications}
-              onUpdateStatus={handleUpdateStatus}
-              onApplicationClick={handleApplicationClick}
-              isLoading={false}
-            />
+                <Button
+                  onClick={handleOpenNewModal}
+                  size="lg"
+                  className="w-full sm:w-auto btn-glass font-semibold"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Application
+                </Button>
+              </div>
 
-            {/* Timeline Section */}
-            {userId && (
-              <div className="mt-8">
-                <Timeline userId={userId} />
+              {/* Bottom Section - Kanban Board (Detailed View) */}
+              <KanbanBoardV2
+                applications={filteredApplications}
+                onUpdateStatus={handleUpdateStatus}
+                onApplicationClick={handleApplicationClick}
+                isLoading={false}
+              />
+
+              {/* Timeline Section */}
+              {userId && (
+                <div className="mt-8">
+                  <Timeline userId={userId} />
+                </div>
+              )}
+            </>
+          ) : null}
+        </main>
+
+        {/* New Application Modal */}
+        <Dialog open={isNewApplicationModalOpen} onOpenChange={handleCloseNewModal}>
+          <DialogContent variant="glass" className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Add New Application</DialogTitle>
+              <DialogDescription>
+                Fill in the details of your job application below.
+              </DialogDescription>
+            </DialogHeader>
+
+            {createError && (
+              <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-800 dark:text-red-200">
+                {createError}
               </div>
             )}
-          </>
-        ) : null}
-      </main>
 
-      {/* New Application Modal */}
-      <Dialog open={isNewApplicationModalOpen} onOpenChange={handleCloseNewModal}>
-        <DialogContent variant="glass" className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add New Application</DialogTitle>
-            <DialogDescription>
-              Fill in the details of your job application below.
-            </DialogDescription>
-          </DialogHeader>
+            <ApplicationForm onSubmit={handleCreateApplication} isLoading={isCreating} />
 
-          {createError && (
-            <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-800 dark:text-red-200">
-              {createError}
+            <div className="flex justify-end gap-3 pt-4 border-t">
+              <Button variant="outline" onClick={handleCloseNewModal} disabled={isCreating}>
+                Cancel
+              </Button>
             </div>
-          )}
+          </DialogContent>
+        </Dialog>
 
-          <ApplicationForm
-            onSubmit={handleCreateApplication}
-            isLoading={isCreating}
+        {/* Application Detail Sheet */}
+        {selectedApplication && (
+          <ApplicationDetail
+            application={selectedApplication}
+            onUpdate={handleUpdateApplication}
+            onDelete={handleDeleteApplication}
+            onClose={handleCloseDetail}
+            isOpen={true}
           />
-
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button
-              variant="outline"
-              onClick={handleCloseNewModal}
-              disabled={isCreating}
-            >
-              Cancel
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Application Detail Sheet */}
-      {selectedApplication && (
-        <ApplicationDetail
-          application={selectedApplication}
-          onUpdate={handleUpdateApplication}
-          onDelete={handleDeleteApplication}
-          onClose={handleCloseDetail}
-          isOpen={true}
-        />
-      )}
+        )}
       </div>
     </AnimatedBackground>
   )
