@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { NavBar } from '../NavBar'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
@@ -11,6 +11,27 @@ vi.mock('next/navigation', () => ({
     refresh: vi.fn(),
   }),
 }))
+
+// Mock Supabase client for ProfileDropdown
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: () => ({
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: { code: 'PGRST116', message: 'No rows found' },
+            })
+          ),
+        })),
+      })),
+    })),
+  }),
+}))
+
+// Mock fetch for sign out
+global.fetch = vi.fn()
 
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
@@ -124,26 +145,47 @@ describe('NavBar Component', () => {
       expect(logo).toHaveAttribute('href', '/dashboard')
     })
 
-    it('should render user email', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+    it('should render user email', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
+      // Wait for ProfileDropdown to load and render the email
+      await waitFor(() => {
+        expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      })
     })
 
-    it('should render Sign out button', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
+    it('should render ProfileDropdown for authenticated user', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
+      // Wait for ProfileDropdown to load
+      await waitFor(() => {
+        // ProfileDropdown should render a button with user initials
+        const buttons = screen.getAllByRole('button')
+        // Should have at least 2 buttons: ProfileDropdown and ThemeToggle
+        expect(buttons.length).toBeGreaterThanOrEqual(2)
+      })
     })
 
-    it('should render sign out form', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      const form = container.querySelector('form')
-      expect(form).toBeInTheDocument()
+    it('should render user email in ProfileDropdown', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
+      // Wait for ProfileDropdown to load
+      await waitFor(() => {
+        expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      })
     })
 
-    it('should render sign out button with aria-label', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      const button = screen.getByRole('button', { name: /sign out of your account/i })
-      expect(button).toHaveAttribute('aria-label', 'Sign out of your account')
+    it('should render ProfileDropdown with proper accessibility', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
+      // Wait for ProfileDropdown to load
+      await waitFor(() => {
+        // ProfileDropdown should have a button trigger
+        const buttons = screen.getAllByRole('button')
+        const profileButton = buttons.find(
+          button =>
+            button.getAttribute('aria-haspopup') === 'menu' &&
+            button.getAttribute('aria-label') !== 'Choose theme'
+        )
+        expect(profileButton).toBeInTheDocument()
+        expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
+      })
     })
 
     it('should render ThemeToggle by default', () => {
@@ -166,16 +208,26 @@ describe('NavBar Component', () => {
     })
 
     it('should handle null user gracefully', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={null} />)
+      renderWithTheme(<NavBar variant="authenticated" user={null} userId="test-user-id" />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
+      // Should not render ProfileDropdown when user is null
+      const buttons = screen.getAllByRole('button')
+      // Should only have ThemeToggle button
+      expect(buttons.length).toBe(1)
+      expect(buttons[0]).toHaveAttribute('aria-label', 'Choose theme')
     })
 
-    it('should handle user without email gracefully', () => {
+    it('should handle user without email gracefully', async () => {
       const userWithoutEmail = { ...authMockUser, email: '' }
-      renderWithTheme(<NavBar variant="authenticated" user={userWithoutEmail} />)
+      renderWithTheme(
+        <NavBar variant="authenticated" user={userWithoutEmail} userId="test-user-id" />
+      )
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
+      // Should still render ProfileDropdown even without email
+      await waitFor(() => {
+        const buttons = screen.getAllByRole('button')
+        expect(buttons.length).toBeGreaterThanOrEqual(2)
+      })
     })
 
     it('should apply custom className if provided', () => {
@@ -257,7 +309,7 @@ describe('NavBar Component', () => {
       expect(githubLink).toHaveClass('sm:inline-flex')
     })
 
-    it('should hide user email on mobile for authenticated variant', () => {
+    it('should hide user email on mobile for authenticated variant', async () => {
       const responsiveUser = {
         id: 'test-user-id',
         email: 'test@example.com',
@@ -266,10 +318,17 @@ describe('NavBar Component', () => {
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      renderWithTheme(<NavBar variant="authenticated" user={responsiveUser} />)
-      const emailSpan = screen.getByText('test@example.com')
-      expect(emailSpan).toHaveClass('hidden')
-      expect(emailSpan).toHaveClass('sm:inline-block')
+      renderWithTheme(
+        <NavBar variant="authenticated" user={responsiveUser} userId="test-user-id" />
+      )
+      await waitFor(() => {
+        const emailSpan = screen.getByText('test@example.com')
+        // The email span itself doesn't have the responsive classes, its parent does
+        const emailContainer = emailSpan.parentElement
+        expect(emailContainer).toBeInTheDocument()
+        expect(emailContainer).toHaveClass('hidden')
+        expect(emailContainer).toHaveClass('sm:block')
+      })
     })
   })
 
@@ -301,7 +360,7 @@ describe('NavBar Component', () => {
       expect(authPagesContainer.querySelector('header')).toBeInTheDocument()
     })
 
-    it('should have proper ARIA label on sign out button', () => {
+    it('should have proper ARIA label on ProfileDropdown trigger', async () => {
       const ariaUser = {
         id: 'test-user-id',
         email: 'test@example.com',
@@ -310,8 +369,18 @@ describe('NavBar Component', () => {
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} />)
-      expect(screen.getByLabelText('Sign out of your account')).toBeInTheDocument()
+      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} userId="test-user-id" />)
+      await waitFor(() => {
+        // ProfileDropdown trigger should have proper ARIA attributes
+        const buttons = screen.getAllByRole('button')
+        const profileButton = buttons.find(
+          button =>
+            button.getAttribute('aria-haspopup') === 'menu' &&
+            button.getAttribute('aria-label') !== 'Choose theme'
+        )
+        expect(profileButton).toBeInTheDocument()
+        expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
+      })
     })
   })
 
@@ -382,9 +451,7 @@ describe('NavBar Component', () => {
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      renderWithTheme(
-        <NavBar variant="authenticated" user={brandUser} />
-      )
+      renderWithTheme(<NavBar variant="authenticated" user={brandUser} />)
       const logo = screen.getByText('JobHunt').closest('a')
       const image = logo?.querySelector('img')
       expect(image).toBeInTheDocument()
@@ -408,9 +475,7 @@ describe('NavBar Component', () => {
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={layoutUser} />
-      )
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={layoutUser} />)
       const flexContainer = container.querySelector('.flex.items-center.justify-between')
       expect(flexContainer).toBeInTheDocument()
     })
@@ -436,9 +501,7 @@ describe('NavBar Component', () => {
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={groupUser} />
-      )
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={groupUser} />)
       const actionsGroup = container.querySelector('.flex.items-center.gap-4')
       expect(actionsGroup).toBeInTheDocument()
     })

@@ -4,13 +4,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { ProfileDropdown } from '@/components/profile/ProfileDropdown'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 
 interface NavBarProps {
   variant?: 'landing' | 'authenticated' | 'auth-pages'
   user?: User | null
+  userId?: string
   showThemeToggle?: boolean
   className?: string
 }
@@ -18,37 +19,15 @@ interface NavBarProps {
 export function NavBar({
   variant = 'landing',
   user,
+  userId,
   showThemeToggle = true,
   className,
 }: NavBarProps) {
-  const router = useRouter()
-
-  const handleSignOut = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      await fetch('/auth/signout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      // Client-side navigation to login after sign out
-      router.push('/login')
-      router.refresh()
-    } catch (error) {
-      console.error('Sign out error:', error)
-      // Fallback: try GET method
-      window.location.href = '/auth/signout'
-    }
-  }
   // Variant 1: Landing Page NavBar
   if (variant === 'landing') {
     return (
       <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 border-b glass-light',
-          className
-        )}
+        className={cn('fixed top-0 left-0 right-0 z-50 border-b glass-light', className)}
         style={{
           borderColor: 'var(--glass-border-subtle)',
           backdropFilter: 'blur(20px) saturate(180%)',
@@ -154,26 +133,9 @@ export function NavBar({
 
             {/* User Info & Actions */}
             <div className="flex items-center gap-4">
-              {user && (
-                <span className="hidden sm:inline-block text-sm text-label-secondary font-medium">
-                  {user.email}
-                </span>
-              )}
+              {user && userId && <ProfileDropdown userId={userId} user={{ email: user.email }} />}
 
               {showThemeToggle && <ThemeToggle />}
-
-              <form onSubmit={handleSignOut}>
-                <button
-                  type="submit"
-                  aria-label="Sign out of your account"
-                  className="rounded-glass-sm glass-medium px-4 py-2 text-sm font-semibold text-label-primary shadow-glass-subtle hover:glass-heavy transition-all duration-300"
-                  style={{
-                    border: '1px solid var(--glass-border-strong)',
-                  }}
-                >
-                  Sign out
-                </button>
-              </form>
             </div>
           </div>
         </div>
