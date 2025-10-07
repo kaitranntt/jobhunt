@@ -10,6 +10,7 @@ import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
 import Timeline from '@/components/timeline/Timeline'
 import UpcomingReminders from '@/components/reminders/UpcomingReminders'
+import { ProfileCard } from '@/components/profile/ProfileCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -262,14 +263,19 @@ export default function DashboardPage() {
         ) : applications.length > 0 ? (
           <>
             {/* Top Section - Global Dashboard (Most Important) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
               <div className="lg:col-span-2">
                 <SmartStatsPanel applications={filteredApplications} />
               </div>
               {userId && (
-                <div className="lg:col-span-1">
-                  <UpcomingReminders userId={userId} />
-                </div>
+                <>
+                  <div className="lg:col-span-1">
+                    <ProfileCard userId={userId} user={{ email: user?.email }} />
+                  </div>
+                  <div className="lg:col-span-1">
+                    <UpcomingReminders userId={userId} />
+                  </div>
+                </>
               )}
             </div>
 
@@ -322,7 +328,7 @@ export default function DashboardPage() {
 
       {/* New Application Modal */}
       <Dialog open={isNewApplicationModalOpen} onOpenChange={handleCloseNewModal}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent variant="glass" className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Add New Application</DialogTitle>
             <DialogDescription>
