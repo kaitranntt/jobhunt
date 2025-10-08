@@ -75,7 +75,7 @@ const STATUS_LABELS: Record<ApplicationStatus, string> = {
 const EMPTY_STATE_GUIDANCE: Record<StatusGroup, { heading: string; text: string; cta?: string }> = {
   active_pipeline: {
     heading: 'No active applications yet',
-    text: 'Start by adding jobs to your wishlist or track applications you\'ve submitted',
+    text: "Start by adding jobs to your wishlist or track applications you've submitted",
     cta: 'Add your first application',
   },
   in_progress: {
@@ -88,7 +88,7 @@ const EMPTY_STATE_GUIDANCE: Record<StatusGroup, { heading: string; text: string;
   },
   closed: {
     heading: 'No archived applications',
-    text: 'Applications that didn\'t work out will be stored here for future reference',
+    text: "Applications that didn't work out will be stored here for future reference",
   },
 }
 
@@ -98,14 +98,19 @@ interface SortableApplicationProps {
   onApplicationClick?: (application: Application) => void
 }
 
-function SortableApplication({ application, isDragging, onApplicationClick }: SortableApplicationProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, setActivatorNodeRef } = useSortable({
-    id: application.id,
-    data: {
-      applicationId: application.id,
-      currentStatus: application.status,
-    },
-  })
+function SortableApplication({
+  application,
+  isDragging,
+  onApplicationClick,
+}: SortableApplicationProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, setActivatorNodeRef } =
+    useSortable({
+      id: application.id,
+      data: {
+        applicationId: application.id,
+        currentStatus: application.status,
+      },
+    })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -131,7 +136,12 @@ interface SubStageColumnProps {
   onApplicationClick?: (application: Application) => void
 }
 
-function SubStageColumn({ status, applications, activeId, onApplicationClick }: SubStageColumnProps) {
+function SubStageColumn({
+  status,
+  applications,
+  activeId,
+  onApplicationClick,
+}: SubStageColumnProps) {
   return (
     <div className="ml-4 glass-ultra rounded-glass-sm p-4 border-0">
       <div className="mb-4 flex items-center justify-between">
@@ -140,9 +150,12 @@ function SubStageColumn({ status, applications, activeId, onApplicationClick }: 
           {applications.length}
         </Badge>
       </div>
-      <SortableContext items={applications.map((app) => app.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={applications.map(app => app.id)}
+        strategy={verticalListSortingStrategy}
+      >
         <div className="flex flex-col gap-3">
-          {applications.map((application) => (
+          {applications.map(application => (
             <SortableApplication
               key={application.id}
               application={application}
@@ -240,7 +253,11 @@ function GroupColumn({
           )}
           <h3 className="text-lg font-semibold text-label-primary">{GROUP_LABELS[group]}</h3>
         </div>
-        <Badge variant="secondary" className="text-xs glass-ultra border-0 px-3 py-1" data-testid={`count-badge-${group}`}>
+        <Badge
+          variant="secondary"
+          className="text-xs glass-ultra border-0 px-3 py-1"
+          data-testid={`count-badge-${group}`}
+        >
           {count}
         </Badge>
       </div>
@@ -248,7 +265,7 @@ function GroupColumn({
       <p className="mb-6 text-sm text-label-secondary">{GROUP_DESCRIPTIONS[group]}</p>
 
       <SortableContext
-        items={applications.map((app) => app.id)}
+        items={applications.map(app => app.id)}
         strategy={verticalListSortingStrategy}
       >
         <div className="flex flex-1 flex-col gap-3">
@@ -256,7 +273,7 @@ function GroupColumn({
             <EmptyState group={group} Icon={Icon} />
           ) : isExpandable && isExpanded ? (
             <div className="flex flex-col gap-3">
-              {STATUS_GROUPS[group].map((status) => {
+              {STATUS_GROUPS[group].map(status => {
                 const statusApps = applicationsByStatus[status]
                 if (statusApps.length === 0) return null
                 return (
@@ -271,7 +288,7 @@ function GroupColumn({
               })}
             </div>
           ) : (
-            applications.map((application) => (
+            applications.map(application => (
               <SortableApplication
                 key={application.id}
                 application={application}
@@ -293,7 +310,8 @@ export function KanbanBoardV2({
   isLoading = false,
 }: KanbanBoardV2Props) {
   const [activeId, setActiveId] = React.useState<string | null>(null)
-  const [optimisticApplications, setOptimisticApplications] = React.useState<Application[]>(applications)
+  const [optimisticApplications, setOptimisticApplications] =
+    React.useState<Application[]>(applications)
   const [announcement, setAnnouncement] = React.useState<string>('')
   const [expandedGroups, setExpandedGroups] = React.useState<Set<StatusGroup>>(new Set())
 
@@ -311,8 +329,11 @@ export function KanbanBoardV2({
       closed: [],
     }
 
-    optimisticApplications.forEach((app) => {
-      for (const [group, statuses] of Object.entries(STATUS_GROUPS) as [StatusGroup, ApplicationStatus[]][]) {
+    optimisticApplications.forEach(app => {
+      for (const [group, statuses] of Object.entries(STATUS_GROUPS) as [
+        StatusGroup,
+        ApplicationStatus[],
+      ][]) {
         if (statuses.includes(app.status)) {
           grouped[group].push(app)
           break
@@ -340,7 +361,7 @@ export function KanbanBoardV2({
       ghosted: [],
     }
 
-    optimisticApplications.forEach((app) => {
+    optimisticApplications.forEach(app => {
       if (grouped[app.status]) {
         grouped[app.status].push(app)
       }
@@ -362,6 +383,12 @@ export function KanbanBoardV2({
     setActiveId(active.id as string)
   }
 
+  // Helper function to check if a string is a UUID
+  const isUUID = (str: string): boolean => {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    return uuidRegex.test(str)
+  }
+
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
 
@@ -372,19 +399,63 @@ export function KanbanBoardV2({
     }
 
     const applicationId = active.id as string
-    const newStatus = over.id as ApplicationStatus
+    const dropTargetId = over.id as string
 
     // Find the application being dragged
-    const application = optimisticApplications.find((app) => app.id === applicationId)
+    const application = optimisticApplications.find(app => app.id === applicationId)
 
-    if (!application || application.status === newStatus) {
+    if (!application) {
+      return
+    }
+
+    // Determine the new status based on the drop target
+    let newStatus: ApplicationStatus
+
+    // Check if the drop target is a UUID (another application card)
+    if (isUUID(dropTargetId)) {
+      // Find the target application and use its status
+      const targetApplication = optimisticApplications.find(app => app.id === dropTargetId)
+      if (targetApplication) {
+        newStatus = targetApplication.status
+      } else {
+        // If we can't find the target application, fallback to current status
+        console.error('Target application not found:', dropTargetId)
+        return
+      }
+    } else if (Object.keys(STATUS_LABELS).includes(dropTargetId)) {
+      // Check if the drop target is a valid status
+      newStatus = dropTargetId as ApplicationStatus
+    } else {
+      // If dropping on a group, determine the appropriate status
+      // Find the first status in the group or use a default
+      const groupStatuses = Object.entries(STATUS_GROUPS).find(
+        ([group, statuses]) => dropTargetId === group || statuses.some(s => s === dropTargetId)
+      )
+
+      if (groupStatuses) {
+        const [, statuses] = groupStatuses
+        // If dropping on a specific status within the group, use that
+        if (statuses.includes(dropTargetId as ApplicationStatus)) {
+          newStatus = dropTargetId as ApplicationStatus
+        } else {
+          // Otherwise, use the first status in the group as a default
+          newStatus = statuses[0]
+        }
+      } else {
+        // Fallback to current status if we can't determine the target
+        console.error('Invalid drop target:', dropTargetId)
+        return
+      }
+    }
+
+    if (application.status === newStatus) {
       return
     }
 
     const oldStatus = application.status
 
     // Optimistic update: Update UI immediately
-    const updatedApplications = optimisticApplications.map((app) =>
+    const updatedApplications = optimisticApplications.map(app =>
       app.id === applicationId ? { ...app, status: newStatus } : app
     )
     setOptimisticApplications(updatedApplications)
@@ -406,12 +477,12 @@ export function KanbanBoardV2({
   }
 
   const activeApplication = React.useMemo(
-    () => optimisticApplications.find((app) => app.id === activeId),
+    () => optimisticApplications.find(app => app.id === activeId),
     [activeId, optimisticApplications]
   )
 
   const toggleGroupExpansion = (group: StatusGroup) => {
-    setExpandedGroups((prev) => {
+    setExpandedGroups(prev => {
       const newSet = new Set(prev)
       if (newSet.has(group)) {
         newSet.delete(group)
@@ -451,7 +522,7 @@ export function KanbanBoardV2({
       >
         <div data-testid="kanban-dnd-context" className="h-full w-full">
           <div className="flex flex-wrap gap-4 p-4 pb-8">
-            {orderedGroups.map((group) => (
+            {orderedGroups.map(group => (
               <GroupColumn
                 key={group}
                 group={group}
