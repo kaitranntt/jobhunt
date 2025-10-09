@@ -38,6 +38,8 @@ describe('ThemeProvider', () => {
   afterEach(() => {
     vi.clearAllMocks()
     document.documentElement.classList.remove('dark')
+    // Clear localStorage mock between tests
+    localStorageMock = {}
   })
 
   it('initializes with default theme when no stored preference', () => {
@@ -49,7 +51,12 @@ describe('ThemeProvider', () => {
   })
 
   it('initializes with stored theme from localStorage', () => {
-    localStorageMock['jobhunt-theme'] = 'dark'
+    // Mock localStorage to return 'dark' for the storage key
+    const mockGetItem = vi.fn((key: string) => {
+      if (key === 'jobhunt-theme') return 'dark'
+      return null
+    })
+    global.localStorage.getItem = mockGetItem
 
     const { result } = renderHook(() => useTheme(), {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
@@ -85,7 +92,11 @@ describe('ThemeProvider', () => {
   })
 
   it('resolves system theme to light when system preference is light', () => {
-    global.matchMedia = vi.fn((query: string) => ({
+    // Re-mock localStorage and matchMedia for this specific test
+    const mockGetItem = vi.fn(() => null) // Always return null for fresh start
+    global.localStorage.getItem = mockGetItem
+
+    const mockMatchMedia = vi.fn((query: string) => ({
       matches: query === '(prefers-color-scheme: dark)' ? false : true,
       media: query,
       onchange: null,
@@ -94,7 +105,8 @@ describe('ThemeProvider', () => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
-    })) as unknown as typeof matchMedia
+    }))
+    global.matchMedia = mockMatchMedia as unknown as typeof matchMedia
 
     const { result } = renderHook(() => useTheme(), {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
@@ -105,7 +117,11 @@ describe('ThemeProvider', () => {
   })
 
   it('resolves system theme to dark when system preference is dark', () => {
-    global.matchMedia = vi.fn((query: string) => ({
+    // Re-mock localStorage and matchMedia for this specific test
+    const mockGetItem = vi.fn(() => null) // Always return null for fresh start
+    global.localStorage.getItem = mockGetItem
+
+    const mockMatchMedia = vi.fn((query: string) => ({
       matches: query === '(prefers-color-scheme: dark)' ? true : false,
       media: query,
       onchange: null,
@@ -114,7 +130,8 @@ describe('ThemeProvider', () => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
-    })) as unknown as typeof matchMedia
+    }))
+    global.matchMedia = mockMatchMedia as unknown as typeof matchMedia
 
     const { result } = renderHook(() => useTheme(), {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
@@ -152,7 +169,7 @@ describe('ThemeProvider', () => {
 
   it('throws error when useTheme is called outside ThemeProvider', () => {
     // Suppress console.error for this test
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => { })
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     expect(() => {
       renderHook(() => useTheme())
@@ -162,15 +179,37 @@ describe('ThemeProvider', () => {
   })
 
   it('updates resolved theme when system preference changes', async () => {
+    // Reset and re-mock localStorage and matchMedia to ensure consistent initial state
+    mediaQueryListeners = []
+    const mockGetItem = vi.fn(() => null) // Always return null for fresh start
+    global.localStorage.getItem = mockGetItem
+
+    const mockMatchMedia = vi.fn((query: string) => ({
+      matches: query === '(prefers-color-scheme: dark)' ? false : true, // Initially prefers light
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn((event: string, listener: (e: MediaQueryListEvent) => void) => {
+        if (event === 'change') {
+          mediaQueryListeners.push(listener)
+        }
+      }),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    global.matchMedia = mockMatchMedia as unknown as typeof matchMedia
+
     const { result } = renderHook(() => useTheme(), {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
     })
 
+    expect(result.current.theme).toBe('system')
     expect(result.current.resolvedTheme).toBe('light')
 
     // Simulate system preference change to dark
     act(() => {
-      mediaQueryListeners.forEach((listener) => {
+      mediaQueryListeners.forEach(listener => {
         listener({ matches: true } as MediaQueryListEvent)
       })
     })

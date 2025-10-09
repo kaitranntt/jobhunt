@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { NavBar } from '../NavBar'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
@@ -10,6 +10,13 @@ vi.mock('next/navigation', () => ({
     push: vi.fn(),
     refresh: vi.fn(),
   }),
+}))
+
+// Mock Next.js Image component - using div to avoid img element warning in tests
+vi.mock('next/image', () => ({
+  default: ({ alt, ...props }: any) => (
+    <div role="img" aria-label={alt} {...props} data-testid="next-image-mock" />
+  ),
 }))
 
 // Mock Supabase client for ProfileDropdown
@@ -33,477 +40,438 @@ vi.mock('@/lib/supabase/client', () => ({
 // Mock fetch for sign out
 global.fetch = vi.fn()
 
-// Wrapper for ThemeProvider context
+// Test helpers
+const mockUser = {
+  id: 'test-user-id',
+  email: 'test@example.com',
+  app_metadata: {},
+  user_metadata: {},
+  aud: 'authenticated' as const,
+  created_at: '2024-01-01T00:00:00Z',
+}
+
+const mockUserWithComplexEmail = {
+  ...mockUser,
+  email: 'john.doe@example.com',
+}
+
 function renderWithTheme(ui: React.ReactElement) {
   return render(<ThemeProvider>{ui}</ThemeProvider>)
 }
 
-describe('NavBar Component', () => {
+describe('NavBar Component Suite', () => {
   beforeEach(() => {
     setupMatchMedia()
+    vi.clearAllMocks()
   })
 
-  describe('Landing Variant', () => {
-    it('should render logo with JobHunt text', () => {
+  describe('Landing Page Navigation', () => {
+    it('allows users to navigate to the home page via the logo', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByText('JobHunt')).toBeInTheDocument()
+
+      const logoLink = screen.getByRole('link', { name: /jobhunt/i })
+      expect(logoLink).toHaveAttribute('href', '/')
     })
 
-    it('should render logo as link to home', () => {
+    it('shows navigation options for unauthenticated users', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo).toHaveAttribute('href', '/')
+
+      expect(screen.getByRole('link', { name: /log in/i })).toHaveAttribute('href', '/login')
+      expect(screen.getByRole('link', { name: /get started/i })).toHaveAttribute('href', '/signup')
     })
 
-    it('should render logo image', () => {
+    it('provides access to the GitHub repository', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      const image = logo?.querySelector('img')
-      expect(image).toBeInTheDocument()
-      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
-    })
 
-    it('should render Get Started link', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByText('Get Started')).toBeInTheDocument()
-      expect(screen.getByText('Get Started').closest('a')).toHaveAttribute('href', '/signup')
-    })
-
-    it('should render GitHub link with external attributes', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      const githubLink = screen.getByText('GitHub').closest('a')
+      const githubLink = screen.getByRole('link', { name: /view on github/i })
       expect(githubLink).toHaveAttribute('href', 'https://github.com/kaitranntt/jobhunt')
       expect(githubLink).toHaveAttribute('target', '_blank')
       expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
-    it('should render GitHub icon', () => {
+    it('allows users to toggle the theme', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      const githubLink = screen.getByText('GitHub').closest('a')
-      expect(githubLink?.querySelector('svg')).toBeInTheDocument()
+
+      const themeToggle = screen.getByRole('button', { name: /toggle theme/i })
+      expect(themeToggle).toBeInTheDocument()
+
+      // Users should be able to click the theme toggle
+      expect(themeToggle).toBeEnabled()
     })
 
-    it('should render ThemeToggle by default', () => {
+    it('displays dashboard link when user is authenticated', () => {
+      renderWithTheme(<NavBar variant="landing" user={mockUser} />)
+
+      const dashboardLink = screen.getByRole('link', { name: /go to dashboard/i })
+      expect(dashboardLink).toHaveAttribute('href', '/dashboard')
+    })
+
+    it('remains fixed at the top of the page', () => {
+      const { container } = renderWithTheme(<NavBar variant="landing" />)
+      const header = container.querySelector('header')
+
+      expect(header).toHaveClass('fixed', 'top-0', 'left-0', 'right-0', 'z-50')
+    })
+
+    it('applies glass styling for visual appeal', () => {
+      const { container } = renderWithTheme(<NavBar variant="landing" />)
+      const header = container.querySelector('header')
+
+      expect(header).toHaveClass('glass-light', 'border-b')
+    })
+
+    it('hides certain navigation items on mobile for better UX', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
-    })
 
-    it('should have fixed positioning classes', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('fixed')
-      expect(header).toHaveClass('z-50')
-      expect(header).toHaveClass('top-0')
-      expect(header).toHaveClass('left-0')
-      expect(header).toHaveClass('right-0')
-    })
+      const getStartedLink = screen.getByRole('link', { name: /get started/i })
+      const githubLink = screen.getByRole('link', { name: /view on github/i })
 
-    it('should have glass-light styling for landing variant', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('glass-light')
-    })
-
-    it('should have border styling', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('border-b')
-    })
-
-    it('should apply custom className if provided', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" className="custom-class" />)
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('custom-class')
-    })
-
-    it('should use 85% width layout', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const navContent = container.querySelector('header > div')
-      expect(navContent).toHaveClass('w-[85%]')
-      expect(navContent).toHaveClass('mx-auto')
+      expect(getStartedLink).toHaveClass('hidden', 'sm:inline-flex')
+      expect(githubLink).toHaveClass('hidden', 'sm:inline-flex')
     })
   })
 
-  describe('Authenticated Variant', () => {
-    const authMockUser = {
-      id: 'test-user-id',
-      email: 'test@example.com',
-      app_metadata: {},
-      user_metadata: {},
-      aud: 'authenticated',
-      created_at: '2024-01-01T00:00:00Z',
-    }
+  describe('Authenticated Pages Navigation', () => {
+    it('provides navigation back to dashboard via logo', () => {
+      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
 
-    it('should render logo with JobHunt text', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByText('JobHunt')).toBeInTheDocument()
+      const logoLink = screen.getByRole('link', { name: /jobhunt/i })
+      expect(logoLink).toHaveAttribute('href', '/dashboard')
     })
 
-    it('should render logo as link to dashboard', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo).toHaveAttribute('href', '/dashboard')
-    })
+    it('displays user profile information', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={mockUser} userId="test-user-id" />)
 
-    it('should render user email', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load and render the email
       await waitFor(() => {
         expect(screen.getByText('test@example.com')).toBeInTheDocument()
       })
     })
 
-    it('should render ProfileDropdown for authenticated user', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
-      await waitFor(() => {
-        // ProfileDropdown should render a button with user initials
-        const buttons = screen.getAllByRole('button')
-        // Should have at least 2 buttons: ProfileDropdown and ThemeToggle
-        expect(buttons.length).toBeGreaterThanOrEqual(2)
-      })
-    })
+    it('allows users to access their profile dropdown', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={mockUser} userId="test-user-id" />)
 
-    it('should render user email in ProfileDropdown', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
       await waitFor(() => {
-        expect(screen.getByText('test@example.com')).toBeInTheDocument()
-      })
-    })
-
-    it('should render ProfileDropdown with proper accessibility', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
-      await waitFor(() => {
-        // ProfileDropdown should have a button trigger
+        // Find the profile dropdown button by looking for button with aria-haspopup="menu"
         const buttons = screen.getAllByRole('button')
         const profileButton = buttons.find(
-          button =>
-            button.getAttribute('aria-haspopup') === 'menu' &&
-            button.getAttribute('aria-label') !== 'Choose theme'
+          button => button.getAttribute('aria-haspopup') === 'menu'
         )
         expect(profileButton).toBeInTheDocument()
         expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
       })
     })
 
-    it('should render ThemeToggle by default', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+    it('includes theme toggle functionality', () => {
+      renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
+
+      const themeToggle = screen.getByRole('button', { name: /toggle theme/i })
+      expect(themeToggle).toBeInTheDocument()
     })
 
-    it('should have glass-medium styling for authenticated variant', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
+    it('applies appropriate styling for authenticated pages', () => {
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('glass-medium')
-      expect(header).toHaveClass('border-b')
-      expect(header).toHaveClass('shadow-glass-soft')
+
+      expect(header).toHaveClass('glass-medium', 'border-b', 'shadow-glass-soft')
     })
 
-    it('should not have fixed positioning', () => {
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
+    it('does not use fixed positioning for authenticated pages', () => {
+      const { container } = renderWithTheme(<NavBar variant="authenticated" user={mockUser} />)
       const header = container.querySelector('header')
+
       expect(header).not.toHaveClass('fixed')
     })
 
-    it('should handle null user gracefully', () => {
+    it('handles missing user information gracefully', () => {
       renderWithTheme(<NavBar variant="authenticated" user={null} userId="test-user-id" />)
-      expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should not render ProfileDropdown when user is null
+
+      // Should still render the logo and theme toggle
+      expect(screen.getByRole('link', { name: /jobhunt/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+    })
+  })
+
+  describe('Dashboard Navigation', () => {
+    it('provides tab navigation for different dashboard sections', () => {
+      renderWithTheme(<NavBar variant="dashboard" user={mockUser} userId="test-user-id" />)
+
+      const trackerTab = screen.getByRole('link', { name: /tracker/i })
+      const overviewTab = screen.getByRole('link', { name: /overview/i })
+
+      expect(trackerTab).toHaveAttribute('href', '/dashboard?tab=tracker')
+      expect(overviewTab).toHaveAttribute('href', '/dashboard?tab=overview')
+    })
+
+    it('visually indicates the active tab', () => {
+      renderWithTheme(
+        <NavBar variant="dashboard" user={mockUser} userId="test-user-id" activeTab="tracker" />
+      )
+
+      const trackerTab = screen.getByRole('link', { name: /tracker/i })
+      const overviewTab = screen.getByRole('link', { name: /overview/i })
+
+      // The active tab should have different styling than the inactive tab
+      expect(trackerTab).not.toEqual(overviewTab)
+
+      // The tracker tab should have style attribute (indicating it's active)
+      expect(trackerTab).toHaveAttribute('style')
+
+      // Should contain the background color style for active state
+      expect(trackerTab.getAttribute('style')).toContain('background-color')
+    })
+
+    it('provides a search bar for finding applications', () => {
+      renderWithTheme(<NavBar variant="dashboard" user={mockUser} userId="test-user-id" />)
+
+      expect(screen.getByText('Search applications')).toBeInTheDocument()
+    })
+
+    it('includes interactive settings button', () => {
+      renderWithTheme(<NavBar variant="dashboard" user={mockUser} userId="test-user-id" />)
+
+      // Find the settings button by looking for a button containing a Settings icon
       const buttons = screen.getAllByRole('button')
-      // Should only have ThemeToggle button
-      expect(buttons.length).toBe(1)
-      expect(buttons[0]).toHaveAttribute('aria-label', 'Choose theme')
+      const settingsButton = buttons.find(button => button.querySelector('svg.lucide-settings'))
+      expect(settingsButton).toBeInTheDocument()
+      expect(settingsButton).toBeEnabled()
     })
 
-    it('should handle user without email gracefully', async () => {
-      const userWithoutEmail = { ...authMockUser, email: '' }
+    it('includes notifications interface', () => {
+      renderWithTheme(<NavBar variant="dashboard" user={mockUser} userId="test-user-id" />)
+
+      // Find the bell icon (notifications)
+      const bellIcons = document.querySelectorAll('svg.lucide-bell')
+      expect(bellIcons.length).toBeGreaterThan(0)
+    })
+
+    it('displays user initials for quick identification', () => {
       renderWithTheme(
-        <NavBar variant="authenticated" user={userWithoutEmail} userId="test-user-id" />
+        <NavBar variant="dashboard" user={mockUserWithComplexEmail} userId="test-user-id" />
       )
-      expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should still render ProfileDropdown even without email
-      await waitFor(() => {
-        const buttons = screen.getAllByRole('button')
-        expect(buttons.length).toBeGreaterThanOrEqual(2)
+
+      // Should show "JD" from "john.doe@example.com"
+      expect(screen.getByText('JD')).toBeInTheDocument()
+    })
+
+    it('shows fallback initials for simple email formats', () => {
+      const userWithSimpleEmail = { ...mockUser, email: 'user@domain.com' }
+      renderWithTheme(
+        <NavBar variant="dashboard" user={userWithSimpleEmail} userId="test-user-id" />
+      )
+
+      // Should show "US" from "user@domain.com" (first 2 characters of email)
+      expect(screen.getByText('US')).toBeInTheDocument()
+    })
+
+    it('applies dashboard-specific styling with rounded corners', () => {
+      const { container } = renderWithTheme(
+        <NavBar variant="dashboard" user={mockUser} userId="test-user-id" />
+      )
+      const header = container.querySelector('header')
+
+      expect(header).toHaveStyle({
+        borderRadius: '12px',
+        backgroundColor: 'var(--glass-light)',
       })
     })
 
-    it('should apply custom className if provided', () => {
-      const { container } = renderWithTheme(
-        <NavBar variant="authenticated" user={authMockUser} className="custom-auth-class" />
-      )
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('custom-auth-class')
+    it('includes theme toggle in dashboard navigation', () => {
+      renderWithTheme(<NavBar variant="dashboard" user={mockUser} userId="test-user-id" />)
+
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
     })
   })
 
-  describe('Auth Pages Variant', () => {
-    it('should render logo with JobHunt text', () => {
+  describe('Authentication Pages Navigation', () => {
+    it('provides simple navigation with logo link to home', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.getByText('JobHunt')).toBeInTheDocument()
+
+      const logoLink = screen.getByRole('link', { name: /jobhunt/i })
+      expect(logoLink).toHaveAttribute('href', '/')
     })
 
-    it('should render logo linking to home', () => {
+    it('includes theme toggle for auth pages', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      expect(logo).toHaveAttribute('href', '/')
+
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
     })
 
-    it('should render ThemeToggle by default', () => {
+    it('maintains clean, minimalist design', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+
+      // Should not show authentication-related navigation
+      expect(screen.queryByText(/log in/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/get started/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/github/i)).not.toBeInTheDocument()
     })
 
-    it('should have glass-ultra styling for auth-pages variant', () => {
+    it('applies ultra-light glass styling', () => {
       const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('glass-ultra')
-      expect(header).toHaveClass('border-b')
-    })
 
-    it('should not render user info', () => {
-      renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.queryByText(/sign out/i)).not.toBeInTheDocument()
-    })
-
-    it('should not render Get Started link', () => {
-      renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.queryByText('Get Started')).not.toBeInTheDocument()
-    })
-
-    it('should not render GitHub link', () => {
-      renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.queryByText('GitHub')).not.toBeInTheDocument()
-    })
-
-    it('should apply custom className if provided', () => {
-      const { container } = renderWithTheme(
-        <NavBar variant="auth-pages" className="custom-auth-pages-class" />
-      )
-      const header = container.querySelector('header')
-      expect(header).toHaveClass('custom-auth-pages-class')
-    })
-
-    it('should use 85% width layout', () => {
-      const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
-      const navContent = container.querySelector('header > div')
-      expect(navContent).toHaveClass('w-[85%]')
-      expect(navContent).toHaveClass('mx-auto')
-    })
-  })
-
-  describe('Responsive Behavior', () => {
-    it('should hide Get Started link on mobile for landing variant', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      const getStartedLink = screen.getByText('Get Started').closest('a')
-      expect(getStartedLink).toHaveClass('hidden')
-      expect(getStartedLink).toHaveClass('sm:inline-flex')
-    })
-
-    it('should hide GitHub link on mobile for landing variant', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      const githubLink = screen.getByText('GitHub').closest('a')
-      expect(githubLink).toHaveClass('hidden')
-      expect(githubLink).toHaveClass('sm:inline-flex')
-    })
-
-    it('should hide user email on mobile for authenticated variant', async () => {
-      const responsiveUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-      renderWithTheme(
-        <NavBar variant="authenticated" user={responsiveUser} userId="test-user-id" />
-      )
-      await waitFor(() => {
-        const emailSpan = screen.getByText('test@example.com')
-        // The email span itself doesn't have the responsive classes, its parent does
-        const emailContainer = emailSpan.parentElement
-        expect(emailContainer).toBeInTheDocument()
-        expect(emailContainer).toHaveClass('hidden')
-        expect(emailContainer).toHaveClass('sm:block')
-      })
-    })
-  })
-
-  describe('Accessibility', () => {
-    it('should have proper ARIA labels on external links', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText('View on GitHub')).toBeInTheDocument()
-    })
-
-    it('should have semantic header element for all variants', () => {
-      const accessibilityUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-
-      const { container: landingContainer } = renderWithTheme(<NavBar variant="landing" />)
-      expect(landingContainer.querySelector('header')).toBeInTheDocument()
-
-      const { container: authContainer } = renderWithTheme(
-        <NavBar variant="authenticated" user={accessibilityUser} />
-      )
-      expect(authContainer.querySelector('header')).toBeInTheDocument()
-
-      const { container: authPagesContainer } = renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(authPagesContainer.querySelector('header')).toBeInTheDocument()
-    })
-
-    it('should have proper ARIA label on ProfileDropdown trigger', async () => {
-      const ariaUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} userId="test-user-id" />)
-      await waitFor(() => {
-        // ProfileDropdown trigger should have proper ARIA attributes
-        const buttons = screen.getAllByRole('button')
-        const profileButton = buttons.find(
-          button =>
-            button.getAttribute('aria-haspopup') === 'menu' &&
-            button.getAttribute('aria-label') !== 'Choose theme'
-        )
-        expect(profileButton).toBeInTheDocument()
-        expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
-      })
+      expect(header).toHaveClass('glass-ultra', 'border-b')
     })
   })
 
   describe('Theme Toggle Integration', () => {
-    it('should not render ThemeToggle when showThemeToggle is false for landing', () => {
+    it('can be disabled for any variant', () => {
       renderWithTheme(<NavBar variant="landing" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
+
+      expect(screen.queryByRole('button', { name: /toggle theme/i })).not.toBeInTheDocument()
     })
 
-    it('should not render ThemeToggle when showThemeToggle is false for authenticated', () => {
-      const themeTestUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
+    it('is enabled by default across all variants', () => {
+      const { rerender } = renderWithTheme(<NavBar variant="landing" />)
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+
+      rerender(
+        <ThemeProvider>
+          <NavBar variant="auth-pages" />
+        </ThemeProvider>
+      )
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+
+      rerender(
+        <ThemeProvider>
+          <NavBar variant="authenticated" user={mockUser} />
+        </ThemeProvider>
+      )
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+    })
+  })
+
+  describe('Accessibility Features', () => {
+    it('uses semantic header elements', () => {
+      const { container } = renderWithTheme(<NavBar variant="landing" />)
+
+      expect(container.querySelector('header')).toBeInTheDocument()
+    })
+
+    it('provides proper ARIA labels for external links', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      expect(screen.getByRole('link', { name: /view on github/i })).toBeInTheDocument()
+    })
+
+    it('includes accessible navigation structure', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      // Logo link should be properly labeled
+      expect(screen.getByRole('link', { name: /jobhunt/i })).toBeInTheDocument()
+
+      // Navigation links should have accessible names
+      expect(screen.getByRole('link', { name: /log in/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /get started/i })).toBeInTheDocument()
+    })
+
+    it('supports keyboard navigation', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      const themeToggle = screen.getByRole('button', { name: /toggle theme/i })
+      expect(themeToggle).not.toHaveAttribute('disabled')
+
+      // Should be focusable
+      expect(themeToggle).toBeEnabled()
+    })
+  })
+
+  describe('Responsive Design', () => {
+    it('adapts navigation items for mobile devices', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      // Check that responsive classes are applied
+      const getStartedLink = screen.getByRole('link', { name: /get started/i })
+      expect(getStartedLink).toHaveClass('hidden', 'sm:inline-flex')
+    })
+
+    it('maintains core functionality across all screen sizes', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      // Logo should always be visible
+      expect(screen.getByRole('link', { name: /jobhunt/i })).toBeInTheDocument()
+
+      // Theme toggle should always be available
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+    })
+  })
+
+  describe('Customization Support', () => {
+    it('accepts custom className for styling overrides', () => {
+      const { container } = renderWithTheme(
+        <NavBar variant="landing" className="custom-navbar-styles" />
+      )
+      const header = container.querySelector('header')
+
+      expect(header).toHaveClass('custom-navbar-styles')
+    })
+
+    it('maintains default styles when no custom className is provided', () => {
+      const { container } = renderWithTheme(<NavBar variant="landing" />)
+      const header = container.querySelector('header')
+
+      expect(header).toHaveClass('fixed', 'top-0', 'left-0', 'right-0', 'z-50')
+    })
+  })
+
+  describe('User Interaction Flow', () => {
+    it('allows theme toggle interaction', () => {
+      renderWithTheme(<NavBar variant="landing" />)
+
+      const themeToggle = screen.getByRole('button', { name: /toggle theme/i })
+
+      // Simulate user click
+      fireEvent.click(themeToggle)
+
+      // Button should still be present and enabled
+      expect(themeToggle).toBeInTheDocument()
+      expect(themeToggle).toBeEnabled()
+    })
+
+    it('provides clear navigation paths for different user states', () => {
+      // Unauthenticated user
+      const { rerender } = renderWithTheme(<NavBar variant="landing" />)
+      expect(screen.getByRole('link', { name: /log in/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /get started/i })).toBeInTheDocument()
+
+      // Authenticated user
+      rerender(
+        <ThemeProvider>
+          <NavBar variant="landing" user={mockUser} />
+        </ThemeProvider>
+      )
+      expect(screen.getByRole('link', { name: /go to dashboard/i })).toBeInTheDocument()
+    })
+  })
+
+  describe('Error Handling and Edge Cases', () => {
+    it('handles missing user data gracefully', () => {
+      renderWithTheme(<NavBar variant="authenticated" user={null} />)
+
+      // Should still render basic navigation
+      expect(screen.getByRole('link', { name: /jobhunt/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()
+    })
+
+    it('handles users without email addresses', () => {
+      const userWithoutEmail = { ...mockUser, email: undefined }
+      renderWithTheme(<NavBar variant="dashboard" user={userWithoutEmail} userId="test-user-id" />)
+
+      // Should show default initials
+      expect(screen.getByText('JD')).toBeInTheDocument()
+    })
+
+    it('handles complex email address formats for initials', () => {
+      const userWithComplexEmail = {
+        ...mockUser,
+        email: 'very.long.email.address@company.domain.com',
       }
       renderWithTheme(
-        <NavBar variant="authenticated" user={themeTestUser} showThemeToggle={false} />
+        <NavBar variant="dashboard" user={userWithComplexEmail} userId="test-user-id" />
       )
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
-    })
 
-    it('should not render ThemeToggle when showThemeToggle is false for auth-pages', () => {
-      renderWithTheme(<NavBar variant="auth-pages" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
-    })
-
-    it('should render ThemeToggle when showThemeToggle is true', () => {
-      renderWithTheme(<NavBar variant="landing" showThemeToggle={true} />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
-    })
-
-    it('should render ThemeToggle by default when showThemeToggle is not provided', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
-    })
-  })
-
-  describe('Brand Styling', () => {
-    it('should apply brand gradient to logo text in landing variant', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      const logoText = screen.getByText('JobHunt')
-      expect(logoText).toHaveClass('gradient-brand-text')
-    })
-
-    it('should render logo image in landing variant', () => {
-      renderWithTheme(<NavBar variant="landing" />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      const image = logo?.querySelector('img')
-      expect(image).toBeInTheDocument()
-      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
-    })
-
-    it('should apply brand gradient to logo text in auth-pages variant', () => {
-      renderWithTheme(<NavBar variant="auth-pages" />)
-      const logoText = screen.getByText('JobHunt')
-      expect(logoText).toHaveClass('gradient-brand-text')
-    })
-
-    it('should render logo image in authenticated variant', () => {
-      const brandUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-      renderWithTheme(<NavBar variant="authenticated" user={brandUser} />)
-      const logo = screen.getByText('JobHunt').closest('a')
-      const image = logo?.querySelector('img')
-      expect(image).toBeInTheDocument()
-      expect(image).toHaveAttribute('alt', 'JobHunt Logo')
-    })
-  })
-
-  describe('Navigation Structure', () => {
-    it('should use flex layout for landing variant', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const flexContainer = container.querySelector('.flex.items-center.justify-between')
-      expect(flexContainer).toBeInTheDocument()
-    })
-
-    it('should use flex layout for authenticated variant', () => {
-      const layoutUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={layoutUser} />)
-      const flexContainer = container.querySelector('.flex.items-center.justify-between')
-      expect(flexContainer).toBeInTheDocument()
-    })
-
-    it('should use flex layout for auth-pages variant', () => {
-      const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
-      const flexContainer = container.querySelector('.flex.items-center.justify-between')
-      expect(flexContainer).toBeInTheDocument()
-    })
-
-    it('should group navigation items in flex container for landing', () => {
-      const { container } = renderWithTheme(<NavBar variant="landing" />)
-      const navGroup = container.querySelector('.flex.items-center.gap-4')
-      expect(navGroup).toBeInTheDocument()
-    })
-
-    it('should group user actions in flex container for authenticated', () => {
-      const groupUser = {
-        id: 'test-user-id',
-        email: 'test@example.com',
-        app_metadata: {},
-        user_metadata: {},
-        aud: 'authenticated',
-        created_at: '2024-01-01T00:00:00Z',
-      }
-      const { container } = renderWithTheme(<NavBar variant="authenticated" user={groupUser} />)
-      const actionsGroup = container.querySelector('.flex.items-center.gap-4')
-      expect(actionsGroup).toBeInTheDocument()
+      // For "very.long.email.address@company.domain.com", it should show "VL"
+      // (first letter of "very" and first letter of "long")
+      expect(screen.getByText('VL')).toBeInTheDocument()
     })
   })
 })

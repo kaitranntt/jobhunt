@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, startTransition, useCallback } from 'react'
 import { Plus } from 'lucide-react'
 import type { Contact } from '@/lib/types/database.types'
 import { getContactsByApplication, deleteContact } from '@/lib/api/contacts'
@@ -29,7 +29,8 @@ interface ContactListProps {
   applicationId: string
 }
 
-export default function ContactList({ applicationId }: ContactListProps) {
+// Inner component that handles the actual rendering with data
+function ContactListContent({ applicationId }: ContactListProps) {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -37,46 +38,74 @@ export default function ContactList({ applicationId }: ContactListProps) {
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
   const [deletingContactId, setDeletingContactId] = useState<string | null>(null)
 
-  const fetchContacts = async () => {
-    setIsLoading(true)
-    setError(null)
+  // Memoized fetchContacts function with proper cleanup
+  const fetchContacts = useCallback(
+    async (signal?: AbortSignal) => {
+      setIsLoading(true)
+      setError(null)
 
-    try {
-      const data = await getContactsByApplication(applicationId)
-      setContacts(data)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load contacts')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+      try {
+        const data = await getContactsByApplication(applicationId)
+
+        // Check if request was aborted
+        if (signal?.aborted) return
+
+        // Use startTransition for non-urgent state updates
+        startTransition(() => {
+          setContacts(data)
+          setIsLoading(false)
+        })
+      } catch (err) {
+        if (!signal?.aborted) {
+          startTransition(() => {
+            setError(err instanceof Error ? err.message : 'Failed to load contacts')
+            setIsLoading(false)
+          })
+        }
+      }
+    },
+    [applicationId]
+  )
 
   useEffect(() => {
-    fetchContacts()
-  }, [applicationId])
+    const abortController = new AbortController()
+    fetchContacts(abortController.signal)
 
-  const handleAddSuccess = () => {
-    setIsAddDialogOpen(false)
-    fetchContacts()
-  }
+    return () => {
+      abortController.abort()
+    }
+  }, [fetchContacts])
 
-  const handleEditSuccess = () => {
-    setEditingContact(null)
+  const handleAddSuccess = useCallback(() => {
+    startTransition(() => {
+      setIsAddDialogOpen(false)
+    })
     fetchContacts()
-  }
+  }, [fetchContacts])
 
-  const handleDeleteConfirm = async () => {
+  const handleEditSuccess = useCallback(() => {
+    startTransition(() => {
+      setEditingContact(null)
+    })
+    fetchContacts()
+  }, [fetchContacts])
+
+  const handleDeleteConfirm = useCallback(async () => {
     if (!deletingContactId) return
 
     try {
       await deleteContact(deletingContactId)
-      setDeletingContactId(null)
+      startTransition(() => {
+        setDeletingContactId(null)
+      })
       fetchContacts()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete contact')
-      setDeletingContactId(null)
+      startTransition(() => {
+        setError(err instanceof Error ? err.message : 'Failed to delete contact')
+        setDeletingContactId(null)
+      })
     }
-  }
+  }, [deletingContactId, fetchContacts])
 
   if (isLoading) {
     return (
@@ -88,7 +117,10 @@ export default function ContactList({ applicationId }: ContactListProps) {
 
   if (error) {
     return (
-      <div className="glass-light rounded-glass p-4 text-sm shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
+      <div
+        className="glass-light rounded-glass p-4 text-sm shadow-glass-soft"
+        style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}
+      >
         Failed to load contacts: {error}
       </div>
     )
@@ -105,27 +137,32 @@ export default function ContactList({ applicationId }: ContactListProps) {
               Add Contact
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
+          <DialogContent
+            className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium"
+            style={{ border: '1px solid var(--glass-border-strong)' }}
+          >
             <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-label-primary">Add Contact</DialogTitle>
+              <DialogTitle className="text-xl font-semibold text-label-primary">
+                Add Contact
+              </DialogTitle>
             </DialogHeader>
-            <ContactForm
-              applicationId={applicationId}
-              onSuccess={handleAddSuccess}
-            />
+            <ContactForm applicationId={applicationId} onSuccess={handleAddSuccess} />
           </DialogContent>
         </Dialog>
       </div>
 
       {contacts.length === 0 ? (
-        <div className="glass-ultra rounded-glass p-8 text-center" style={{ border: '1px dashed var(--glass-border-medium)' }}>
+        <div
+          className="glass-ultra rounded-glass p-8 text-center"
+          style={{ border: '1px dashed var(--glass-border-medium)' }}
+        >
           <p className="text-sm text-label-secondary">
             No contacts yet. Add your first contact to get started.
           </p>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {contacts.map((contact) => (
+          {contacts.map(contact => (
             <ContactCard
               key={contact.id}
               contact={contact}
@@ -139,11 +176,16 @@ export default function ContactList({ applicationId }: ContactListProps) {
       {/* Edit Dialog */}
       <Dialog
         open={editingContact !== null}
-        onOpenChange={(open) => !open && setEditingContact(null)}
+        onOpenChange={open => !open && setEditingContact(null)}
       >
-        <DialogContent className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
+        <DialogContent
+          className="max-w-2xl glass-heavy rounded-glass shadow-glass-medium"
+          style={{ border: '1px solid var(--glass-border-strong)' }}
+        >
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-label-primary">Edit Contact</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-label-primary">
+              Edit Contact
+            </DialogTitle>
           </DialogHeader>
           {editingContact && (
             <ContactForm
@@ -158,18 +200,27 @@ export default function ContactList({ applicationId }: ContactListProps) {
       {/* Delete Confirmation Dialog */}
       <AlertDialog
         open={deletingContactId !== null}
-        onOpenChange={(open) => !open && setDeletingContactId(null)}
+        onOpenChange={open => !open && setDeletingContactId(null)}
       >
-        <AlertDialogContent className="glass-heavy rounded-glass shadow-glass-strong" style={{ border: '1px solid var(--glass-border-strong)' }}>
+        <AlertDialogContent
+          className="glass-heavy rounded-glass shadow-glass-strong"
+          style={{ border: '1px solid var(--glass-border-strong)' }}
+        >
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-semibold text-label-primary">Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-semibold text-label-primary">
+              Are you sure?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-label-secondary">
               This action cannot be undone. This will permanently delete this contact.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="btn-glass">Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm} className="btn-glass" style={{ background: 'var(--color-error)', color: 'white' }}>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="btn-glass"
+              style={{ background: 'var(--color-error)', color: 'white' }}
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -177,10 +228,18 @@ export default function ContactList({ applicationId }: ContactListProps) {
       </AlertDialog>
 
       {error && (
-        <div className="glass-light rounded-glass p-3 text-sm shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
+        <div
+          className="glass-light rounded-glass p-3 text-sm shadow-glass-soft"
+          style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}
+        >
           {error}
         </div>
       )}
     </div>
   )
+}
+
+// Main exported component that handles async state management
+export default function ContactList({ applicationId }: ContactListProps) {
+  return <ContactListContent applicationId={applicationId} />
 }

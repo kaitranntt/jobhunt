@@ -2,18 +2,20 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Github } from 'lucide-react'
+import { Github, Search, Bell, ListTodo, BarChart3, Settings } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { ProfileDropdown } from '@/components/profile/ProfileDropdown'
 import { cn } from '@/lib/utils'
+import { useThemeColors } from '@/lib/theme/hooks'
 import type { User } from '@supabase/supabase-js'
 
 interface NavBarProps {
-  variant?: 'landing' | 'authenticated' | 'auth-pages'
+  variant?: 'landing' | 'authenticated' | 'auth-pages' | 'dashboard'
   user?: User | null
   userId?: string
   showThemeToggle?: boolean
   className?: string
+  activeTab?: string
 }
 
 export function NavBar({
@@ -22,7 +24,17 @@ export function NavBar({
   userId,
   showThemeToggle = true,
   className,
+  activeTab = 'tracker',
 }: NavBarProps) {
+  // Use theme colors for consistency
+  const colors = useThemeColors([
+    'primary',
+    'textPrimary',
+    'textSecondary',
+    'background',
+    'card',
+    'borderCustom',
+  ])
   // Variant 1: Landing Page NavBar
   if (variant === 'landing') {
     return (
@@ -38,16 +50,18 @@ export function NavBar({
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-[28px] font-bold transition-opacity hover:opacity-80"
+              style={{ fontFamily: 'var(--font-libre-baskerville)' }}
             >
               <Image
                 src="/logo.png"
                 alt="JobHunt Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+                style={{ color: colors.primary }}
               />
-              <span className="gradient-brand-text">JobHunt</span>
+              JobHunt
             </Link>
 
             {/* Navigation Links & Actions */}
@@ -119,14 +133,16 @@ export function NavBar({
             {/* Logo */}
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-[28px] font-bold transition-opacity hover:opacity-80"
+              style={{ fontFamily: 'var(--font-libre-baskerville)' }}
             >
               <Image
                 src="/logo.png"
                 alt="JobHunt Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+                style={{ color: colors.primary }}
               />
               JobHunt
             </Link>
@@ -143,7 +159,137 @@ export function NavBar({
     )
   }
 
-  // Variant 3: Auth Pages NavBar (Login/Signup)
+  // Variant 3: Enhanced Dashboard NavBar
+  if (variant === 'dashboard') {
+    const getUserInitials = (user: User | null | undefined) => {
+      if (!user?.email) return 'JD'
+      const email = user.email
+      const nameParts = email.split('@')[0].split('.')
+      return nameParts.length > 1
+        ? `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase()
+        : email.slice(0, 2).toUpperCase()
+    }
+
+    return (
+      <header
+        className={cn('w-full px-6 py-3 mb-4', className)}
+        style={{
+          backgroundColor: 'var(--glass-light)',
+          borderRadius: '12px',
+          boxShadow: '0 2px 10px var(--shadow-soft)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+        }}
+      >
+        <div className="flex items-center justify-between">
+          {/* Logo with Icon */}
+          <div className="flex items-center gap-3">
+            <ListTodo className="h-6 w-6" style={{ color: 'var(--tint-blue)' }} />
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 text-2xl font-bold transition-opacity hover:opacity-80"
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: 'var(--tint-blue)',
+              }}
+            >
+              JobHunt
+            </Link>
+          </div>
+
+          {/* Main Navigation Tabs */}
+          <div className="flex gap-1">
+            <Link
+              href="/dashboard?tab=tracker"
+              className={cn(
+                'px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2',
+                activeTab === 'tracker' ? '' : ''
+              )}
+              style={{
+                backgroundColor: activeTab === 'tracker' ? 'var(--tint-blue)' : 'transparent',
+                color: activeTab === 'tracker' ? 'white' : 'var(--macos-label-secondary)',
+              }}
+            >
+              <ListTodo className="h-4 w-4" />
+              Tracker
+            </Link>
+            <Link
+              href="/dashboard?tab=overview"
+              className={cn(
+                'px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2',
+                activeTab === 'overview' ? '' : ''
+              )}
+              style={{
+                backgroundColor: activeTab === 'overview' ? 'var(--tint-blue)' : 'transparent',
+                color: activeTab === 'overview' ? 'white' : 'var(--macos-label-secondary)',
+              }}
+            >
+              <BarChart3 className="h-4 w-4" />
+              Overview
+            </Link>
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="flex items-center gap-3">
+            {/* Search Bar */}
+            <div
+              className="flex items-center rounded-lg px-3 py-2 w-64"
+              style={{
+                backgroundColor: 'var(--macos-fill-secondary)',
+              }}
+            >
+              <Search className="h-4 w-4 mr-2" style={{ color: 'var(--macos-label-tertiary)' }} />
+              <span className="text-sm" style={{ color: 'var(--macos-label-tertiary)' }}>
+                Search applications
+              </span>
+            </div>
+
+            {/* Settings */}
+            <button
+              className="p-2 rounded-lg transition-all duration-200"
+              style={{
+                backgroundColor: 'transparent',
+                color: 'var(--macos-label-secondary)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = 'var(--macos-fill-secondary)'
+                e.currentTarget.style.color = 'var(--macos-label-primary)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = 'transparent'
+                e.currentTarget.style.color = 'var(--macos-label-secondary)'
+              }}
+            >
+              <Settings className="h-5 w-5" />
+            </button>
+
+            {/* Notifications */}
+            <Bell
+              className="h-5 w-5 cursor-pointer transition-colors"
+              style={{ color: 'var(--macos-label-secondary)' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = 'var(--macos-label-primary)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'var(--macos-label-secondary)'
+              }}
+            />
+
+            {/* User Profile */}
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white font-medium cursor-pointer transition-opacity hover:opacity-80"
+              style={{ backgroundColor: 'var(--tint-blue)' }}
+            >
+              {getUserInitials(user)}
+            </div>
+
+            {showThemeToggle && <ThemeToggle />}
+          </div>
+        </div>
+      </header>
+    )
+  }
+
+  // Variant 4: Auth Pages NavBar (Login/Signup)
   if (variant === 'auth-pages') {
     return (
       <header
@@ -158,16 +304,18 @@ export function NavBar({
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 text-[28px] font-bold transition-opacity hover:opacity-80"
+              style={{ fontFamily: 'var(--font-libre-baskerville)' }}
             >
               <Image
                 src="/logo.png"
                 alt="JobHunt Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+                style={{ color: colors.primary }}
               />
-              <span className="gradient-brand-text">JobHunt</span>
+              JobHunt
             </Link>
 
             {/* Theme Toggle */}
