@@ -1,76 +1,49 @@
 'use client'
 
-import { useTheme } from '@/components/providers/ThemeProvider'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Sun, Moon, Monitor, Check } from 'lucide-react'
-import type { Theme } from '@/lib/types/theme.types'
-
-const themes = [
-  { value: 'light' as Theme, label: 'Light', icon: Sun },
-  { value: 'dark' as Theme, label: 'Dark', icon: Moon },
-  { value: 'system' as Theme, label: 'System', icon: Monitor },
-] as const
+import { useThemeMode } from '@/lib/theme/hooks'
+import { Sun, Moon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import * as React from 'react'
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { setTheme, isDark } = useThemeMode()
+  const [mounted, setMounted] = React.useState(false)
 
-  const currentThemeIcon = {
-    light: Sun,
-    dark: Moon,
-    system: Monitor,
-  }[theme]
+  // Avoid hydration mismatch by only rendering after component is mounted
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
-  const CurrentIcon = currentThemeIcon
+  const toggleTheme = () => {
+    setTheme(isDark ? 'light' : 'dark')
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="Choose theme"
-          className="relative overflow-hidden transition-all hover:scale-105"
-        >
-          <CurrentIcon className="h-5 w-5 transition-transform duration-300" />
-          <span className="sr-only">Toggle theme menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        sideOffset={12}
-        className="min-w-[200px] mt-1 glass-medium border-opacity-80"
+    <button
+      onClick={toggleTheme}
+      className={cn(
+        'relative w-[60px] h-[30px] rounded-full transition-colors duration-300',
+        'bg-[var(--bg-secondary)] hover:bg-[var(--hover-bg)]'
+      )}
+      aria-label="Toggle theme"
+    >
+      <div
+        className={cn(
+          'absolute top-[3px] w-[24px] h-[24px] rounded-full transition-all duration-300 flex items-center justify-center',
+          'bg-[var(--text-primary)]',
+          isDark ? 'translate-x-[30px]' : 'translate-x-[3px]'
+        )}
       >
-        {themes.map(themeOption => {
-          const Icon = themeOption.icon
-          const isActive = theme === themeOption.value
-
-          return (
-            <DropdownMenuItem
-              key={themeOption.value}
-              onClick={() => setTheme(themeOption.value)}
-              className="flex items-center justify-between gap-2 cursor-pointer hover:bg-accent/80 transition-colors"
-              aria-label={`Switch to ${themeOption.label.toLowerCase()} theme`}
-            >
-              <span className="flex items-center gap-2">
-                <Icon className="h-5 w-5 text-foreground/90" aria-hidden="true" />
-                <span className="font-medium text-foreground">{themeOption.label}</span>
-              </span>
-              {isActive && (
-                <Check
-                  className="h-4 w-4 text-purple-600 dark:text-purple-400"
-                  aria-hidden="true"
-                />
-              )}
-            </DropdownMenuItem>
+        {mounted ? (
+          isDark ? (
+            <Moon className="h-4 w-4 text-[var(--bg-card)]" />
+          ) : (
+            <Sun className="h-4 w-4 text-[var(--bg-card)]" />
           )
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        ) : (
+          <Sun className="h-4 w-4 text-[var(--bg-card)]" />
+        )}
+      </div>
+    </button>
   )
 }
