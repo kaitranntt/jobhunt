@@ -20,22 +20,46 @@ interface StatCardProps {
 
 const StatCard = ({ icon, label, value, trend, colorClass }: StatCardProps) => {
   return (
-    <Card className="glass-medium rounded-glass shadow-glass-soft border-0">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className={cn('p-3 rounded-glass-sm glass-ultra transition-all', colorClass || 'bg-blue-500/10')}>
+    <Card
+      className="glass-medium rounded-glass shadow-glass-soft border-0 transition-all duration-200 hover:transform hover:-translate-y-1 hover:shadow-glass-medium"
+      style={{ backgroundColor: 'var(--bg-card)' }}
+    >
+      <CardContent className="p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <div className={cn('p-2 rounded-full transition-all', colorClass || 'bg-blue-500/10')}>
             {icon}
           </div>
-          {trend && (
-            <span className="text-xs font-semibold glass-ultra px-3 py-1 rounded-glass-sm text-green-700 dark:text-green-300 bg-green-500/10 border border-green-300/40 dark:border-green-600/40">
-              {trend}
-            </span>
-          )}
+          <p
+            className="text-sm font-medium"
+            style={{
+              fontFamily: 'var(--font-lora)',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            {label}
+          </p>
         </div>
-        <div className="mt-4">
-          <div className="text-4xl font-semibold tracking-tight text-label-primary mb-1">{value}</div>
-          <p className="text-sm text-label-secondary font-medium">{label}</p>
+        <div
+          className="text-4xl font-bold mb-2"
+          style={{
+            fontFamily: 'var(--font-libre-baskerville)',
+            color: 'var(--text-primary)',
+          }}
+        >
+          {value}
         </div>
+        {trend && (
+          <div
+            className="flex items-center gap-1 text-xs"
+            style={{
+              fontFamily: 'var(--font-ibm-plex-mono)',
+              color: '#43a047',
+            }}
+          >
+            <TrendingUp className="h-3 w-3" />
+            {trend} from last month
+          </div>
+        )}
       </CardContent>
     </Card>
   )
@@ -45,22 +69,18 @@ const calculateStats = (applications: Application[]) => {
   const total = applications.length
 
   // Response rate - applications beyond 'wishlist' and 'applied'
-  const responded = applications.filter(
-    (app) => !['wishlist', 'applied'].includes(app.status)
-  ).length
+  const responded = applications.filter(app => !['wishlist', 'applied'].includes(app.status)).length
   const responseRate = total > 0 ? Math.round((responded / total) * 100) : 0
 
   // Active interviews - specific interview stage statuses
-  const activeInterviews = applications.filter((app) =>
-    ['phone_screen', 'assessment', 'take_home', 'interviewing', 'final_round'].includes(
-      app.status
-    )
+  const activeInterviews = applications.filter(app =>
+    ['phone_screen', 'assessment', 'take_home', 'interviewing', 'final_round'].includes(app.status)
   ).length
 
   // Average response time - calculate from date_applied to updated_at
   // For applications that moved beyond 'applied' status
   const respondedApps = applications.filter(
-    (app) => !['wishlist', 'applied'].includes(app.status) && app.date_applied && app.updated_at
+    app => !['wishlist', 'applied'].includes(app.status) && app.date_applied && app.updated_at
   )
 
   let avgResponseTime = 0
@@ -91,28 +111,28 @@ export function SmartStatsPanel({ applications }: SmartStatsPanelProps) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <StatCard
-          icon={<FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />}
+          icon={<FileText className="h-4 w-4" style={{ color: 'var(--accent-primary)' }} />}
           label="Total Applications"
           value="0"
-          colorClass="bg-blue-500/10 border border-blue-300/40 dark:border-blue-600/40"
+          colorClass="glass-ultra"
         />
         <StatCard
-          icon={<MessageSquare className="h-5 w-5 text-green-600 dark:text-green-400" />}
+          icon={<MessageSquare className="h-4 w-4" style={{ color: 'var(--accent-primary)' }} />}
           label="Response Rate"
           value="—"
-          colorClass="bg-green-500/10 border border-green-300/40 dark:border-green-600/40"
+          colorClass="glass-ultra"
         />
         <StatCard
-          icon={<TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />}
+          icon={<TrendingUp className="h-4 w-4" style={{ color: 'var(--accent-primary)' }} />}
           label="Active Interviews"
           value="0"
-          colorClass="bg-purple-500/10 border border-purple-300/40 dark:border-purple-600/40"
+          colorClass="glass-ultra"
         />
         <StatCard
-          icon={<Clock className="h-5 w-5 text-orange-600 dark:text-orange-400" />}
+          icon={<Clock className="h-4 w-4" style={{ color: 'var(--accent-primary)' }} />}
           label="Avg Response Time"
           value="—"
-          colorClass="bg-orange-500/10 border border-orange-300/40 dark:border-orange-600/40"
+          colorClass="glass-ultra"
         />
       </div>
     )

@@ -2,73 +2,10 @@
 
 :root {
   /* ========================================================================== */
-  /* macOS 26 "Liquid Glass" Design System - Light Mode                        */
+  /* Unified JobHunt Theme System - Light Mode                               */
   /* ========================================================================== */
 
-  /* macOS Label Colors (RGBA) */
-  --macos-label-primary: rgba(0, 0, 0, 0.847);
-  --macos-label-secondary: rgba(0, 0, 0, 0.498);
-  --macos-label-tertiary: rgba(0, 0, 0, 0.259);
-  --macos-label-quaternary: rgba(0, 0, 0, 0.098);
-
-  /* macOS Fill Colors (RGBA) */
-  --macos-fill-primary: rgba(120, 120, 128, 0.2);
-  --macos-fill-secondary: rgba(120, 120, 128, 0.16);
-  --macos-fill-tertiary: rgba(118, 118, 128, 0.12);
-  --macos-fill-quaternary: rgba(116, 116, 128, 0.08);
-
-  /* macOS System Grays */
-  --macos-gray-1: rgba(142, 142, 147, 1);
-  --macos-gray-2: rgba(174, 174, 178, 1);
-  --macos-gray-3: rgba(199, 199, 204, 1);
-  --macos-gray-4: rgba(209, 209, 214, 1);
-  --macos-gray-5: rgba(229, 229, 234, 1);
-  --macos-gray-6: rgba(242, 242, 247, 1);
-
-  /* macOS System Backgrounds */
-  --macos-bg-primary: rgba(255, 255, 255, 1);
-  --macos-bg-secondary: rgba(242, 242, 247, 1);
-  --macos-bg-tertiary: rgba(255, 255, 255, 1);
-  --macos-bg-grouped: rgba(242, 242, 247, 1);
-  --macos-bg-grouped-secondary: rgba(255, 255, 255, 1);
-  --macos-bg-grouped-tertiary: rgba(242, 242, 247, 1);
-
-  /* Liquid Glass Materials */
-  --glass-ultra: rgba(255, 255, 255, 0.15);
-  --glass-light: rgba(255, 255, 255, 0.25);
-  --glass-medium: rgba(255, 255, 255, 0.35);
-  --glass-heavy: rgba(255, 255, 255, 0.45);
-
-  /* Glass Borders */
-  --glass-border-subtle: rgba(255, 255, 255, 0.4);
-  --glass-border-medium: rgba(255, 255, 255, 0.6);
-  --glass-border-strong: rgba(255, 255, 255, 0.8);
-
-  /* System Tint Colors */
-  --tint-blue: rgba(0, 122, 255, 1);
-  --tint-purple: rgba(175, 82, 222, 1);
-  --tint-pink: rgba(255, 45, 85, 1);
-  --tint-red: rgba(255, 59, 48, 1);
-  --tint-orange: rgba(255, 149, 0, 1);
-  --tint-yellow: rgba(255, 204, 0, 1);
-  --tint-green: rgba(52, 199, 89, 1);
-  --tint-teal: rgba(90, 200, 250, 1);
-  --tint-indigo: rgba(88, 86, 214, 1);
-
-  /* Semantic Colors */
-  --color-success: rgba(52, 199, 89, 1);
-  --color-warning: rgba(255, 204, 0, 1);
-  --color-error: rgba(255, 59, 48, 1);
-  --color-info: rgba(0, 122, 255, 1);
-
-  /* Shadow Colors */
-  --shadow-subtle: rgba(0, 0, 0, 0.05);
-  --shadow-soft: rgba(0, 0, 0, 0.1);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
-  --shadow-strong: rgba(0, 0, 0, 0.2);
-  --shadow-specular: rgba(255, 255, 255, 0.3);
-
-  /* Legacy Compatibility (Shadcn UI) */
+  /* Shadcn UI Core Variables */
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
   --muted: 240 4.8% 95.9%;
@@ -80,6 +17,8 @@
   --border: 240 5.9% 90%;
   --input: 240 5.9% 90%;
   --ring: 240 5% 64.9%;
+
+  /* Semantic Colors */
   --primary: 240 5.9% 10%;
   --primary-foreground: 0 0% 98%;
   --secondary: 240 4.8% 95.9%;
@@ -95,28 +34,56 @@
   --info: 217 91% 60%;
   --info-foreground: 0 0% 98%;
 
-  /* Brand Gradients (Purple/Blue) - Legacy */
-  --brand-primary: 266 85% 58%;
-  --brand-primary-dark: 266 85% 48%;
-  --brand-primary-light: 266 85% 68%;
-  --brand-secondary: 221 83% 53%;
-  --brand-secondary-dark: 221 83% 43%;
-  --brand-secondary-light: 221 83% 63%;
+  /* Custom Application Colors */
+  --bg-primary: #fffcf5;
+  --bg-secondary: #e2d8c3;
+  --bg-card: #ffffff;
+  --text-primary: #5c4d3f;
+  --text-secondary: #757575;
+  --text-light: #f0f0f0;
+  --accent-primary: #5c6bc0;
+  --accent-secondary: #26a69a;
+  --border-color: #e2d8c3;
+  --shadow-color: rgba(0,0,0,0.05);
+  --hover-bg: #d4c9b2;
 
-  /* Animated Background Gradients */
-  --gradient-light-start: 220 70% 98%;
-  --gradient-light-mid: 240 60% 97%;
-  --gradient-light-end: 260 65% 96%;
-  --gradient-accent-start: 266 85% 58%;
-  --gradient-accent-end: 221 83% 53%;
+  /* Status Pipeline Colors */
+  --saved-color: #9e9e9e;
+  --applied-color: #5c6bc0;
+  --interviewing-color: #ffb300;
+  --offer-color: #66bb6a;
+  --rejected-color: #ef5350;
 
-  /* Floating Orb Colors */
-  --accent-pink-start: 340 82% 65%;
-  --accent-pink-end: 320 85% 58%;
-  --accent-gradient-start: 180 85% 65%;
-  --accent-gradient-end: 200 85% 60%;
+  /* macOS 26 Design System (Essential Only) */
+  --macos-label-primary: rgba(0, 0, 0, 0.847);
+  --macos-label-secondary: rgba(0, 0, 0, 0.498);
+  --macos-label-tertiary: rgba(0, 0, 0, 0.259);
+  --macos-fill-primary: rgba(120, 120, 128, 0.2);
+  --macos-fill-secondary: rgba(120, 120, 128, 0.16);
+  --tint-blue: rgba(0, 122, 255, 1);
+  --tint-purple: rgba(175, 82, 222, 1);
 
+  /* Glass Effects */
+  --glass-light: rgba(255, 255, 255, 0.25);
+  --glass-medium: rgba(255, 255, 255, 0.35);
+  --glass-heavy: rgba(255, 255, 255, 0.45);
+  --glass-border-subtle: rgba(255, 255, 255, 0.4);
+  --glass-border-medium: rgba(255, 255, 255, 0.6);
+  --glass-border-strong: rgba(255, 255, 255, 0.8);
+
+  /* Shadows */
+  --shadow-subtle: rgba(0, 0, 0, 0.05);
+  --shadow-soft: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --shadow-strong: rgba(0, 0, 0, 0.2);
+  --shadow-specular: rgba(255, 255, 255, 0.3);
+
+  /* Base Theme Properties */
   --radius: 0.5rem;
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-libre-baskerville);
+  --font-display: var(--font-lora);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
 @theme inline {
@@ -145,79 +112,18 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-libre-baskerville);
+  --font-display: var(--font-lora);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
 .dark {
   /* ========================================================================== */
-  /* macOS 26 "Liquid Glass" Design System - Dark Mode                         */
+  /* Unified JobHunt Theme System - Dark Mode                                */
   /* ========================================================================== */
 
-  /* macOS Label Colors (RGBA) */
-  --macos-label-primary: rgba(255, 255, 255, 0.847);
-  --macos-label-secondary: rgba(255, 255, 255, 0.549);
-  --macos-label-tertiary: rgba(255, 255, 255, 0.251);
-  --macos-label-quaternary: rgba(255, 255, 255, 0.098);
-
-  /* macOS Fill Colors (RGBA) */
-  --macos-fill-primary: rgba(120, 120, 128, 0.36);
-  --macos-fill-secondary: rgba(120, 120, 128, 0.32);
-  --macos-fill-tertiary: rgba(118, 118, 128, 0.24);
-  --macos-fill-quaternary: rgba(116, 116, 128, 0.18);
-
-  /* macOS System Grays */
-  --macos-gray-1: rgba(142, 142, 147, 1);
-  --macos-gray-2: rgba(99, 99, 102, 1);
-  --macos-gray-3: rgba(72, 72, 74, 1);
-  --macos-gray-4: rgba(58, 58, 60, 1);
-  --macos-gray-5: rgba(44, 44, 46, 1);
-  --macos-gray-6: rgba(28, 28, 30, 1);
-
-  /* macOS System Backgrounds */
-  --macos-bg-primary: rgba(0, 0, 0, 1);
-  --macos-bg-secondary: rgba(28, 28, 30, 1);
-  --macos-bg-tertiary: rgba(44, 44, 46, 1);
-  --macos-bg-grouped: rgba(0, 0, 0, 1);
-  --macos-bg-grouped-secondary: rgba(28, 28, 30, 1);
-  --macos-bg-grouped-tertiary: rgba(44, 44, 46, 1);
-
-  /* Liquid Glass Materials */
-  --glass-ultra: rgba(18, 18, 18, 0.4);
-  --glass-light: rgba(18, 18, 18, 0.5);
-  --glass-medium: rgba(18, 18, 18, 0.65);
-  --glass-heavy: rgba(18, 18, 18, 0.8);
-
-  /* Glass Borders */
-  --glass-border-subtle: rgba(255, 255, 255, 0.1);
-  --glass-border-medium: rgba(255, 255, 255, 0.15);
-  --glass-border-strong: rgba(255, 255, 255, 0.25);
-
-  /* System Tint Colors */
-  --tint-blue: rgba(10, 132, 255, 1);
-  --tint-purple: rgba(191, 90, 242, 1);
-  --tint-pink: rgba(255, 55, 95, 1);
-  --tint-red: rgba(255, 69, 58, 1);
-  --tint-orange: rgba(255, 159, 10, 1);
-  --tint-yellow: rgba(255, 214, 10, 1);
-  --tint-green: rgba(48, 209, 88, 1);
-  --tint-teal: rgba(100, 210, 255, 1);
-  --tint-indigo: rgba(94, 92, 230, 1);
-
-  /* Semantic Colors */
-  --color-success: rgba(48, 209, 88, 1);
-  --color-warning: rgba(255, 214, 10, 1);
-  --color-error: rgba(255, 69, 58, 1);
-  --color-info: rgba(10, 132, 255, 1);
-
-  /* Shadow Colors */
-  --shadow-subtle: rgba(0, 0, 0, 0.2);
-  --shadow-soft: rgba(0, 0, 0, 0.3);
-  --shadow-medium: rgba(0, 0, 0, 0.4);
-  --shadow-strong: rgba(0, 0, 0, 0.6);
-  --shadow-specular: rgba(255, 255, 255, 0.1);
-
-  /* Legacy Compatibility (Shadcn UI) */
+  /* Shadcn UI Core Variables */
   --background: 222 47% 11%;
   --foreground: 210 40% 98%;
   --muted: 217 33% 17%;
@@ -229,6 +135,8 @@
   --border: 217 33% 21%;
   --input: 217 33% 21%;
   --ring: 224 76% 48%;
+
+  /* Semantic Colors */
   --primary: 210 40% 96%;
   --primary-foreground: 222 47% 11%;
   --secondary: 217 33% 22%;
@@ -244,35 +152,61 @@
   --info: 217 91% 60%;
   --info-foreground: 210 40% 98%;
 
-  /* Brand Gradients - Legacy */
-  --brand-primary: 266 85% 68%;
-  --brand-primary-dark: 266 85% 58%;
-  --brand-primary-light: 266 85% 78%;
-  --brand-secondary: 221 83% 63%;
-  --brand-secondary-dark: 221 83% 53%;
-  --brand-secondary-light: 221 83% 73%;
+  /* Custom Application Colors */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-card: #252525;
+  --text-primary: #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --text-light: #f0f0f0;
+  --accent-primary: #7986cb;
+  --accent-secondary: #4db6ac;
+  --border-color: #404040;
+  --shadow-color: rgba(0,0,0,0.2);
+  --hover-bg: #333333;
 
-  /* Animated Background Gradients (Dark Mode) */
-  --gradient-light-start: 222 47% 13%;
-  --gradient-light-mid: 217 33% 17%;
-  --gradient-light-end: 222 47% 15%;
-  --gradient-accent-start: 266 85% 68%;
-  --gradient-accent-end: 221 83% 63%;
+  /* Status Pipeline Colors */
+  --saved-color: #757575;
+  --applied-color: #7986cb;
+  --interviewing-color: #ffa000;
+  --offer-color: #66bb6a;
+  --rejected-color: #e53935;
 
-  /* Floating Orb Colors (Dark Mode) */
-  --accent-pink-start: 340 82% 55%;
-  --accent-pink-end: 320 85% 48%;
-  --accent-gradient-start: 180 85% 55%;
-  --accent-gradient-end: 200 85% 50%;
+  /* macOS 26 Design System (Dark Mode) */
+  --macos-label-primary: rgba(255, 255, 255, 0.847);
+  --macos-label-secondary: rgba(255, 255, 255, 0.549);
+  --macos-label-tertiary: rgba(255, 255, 255, 0.251);
+  --macos-fill-primary: rgba(120, 120, 128, 0.36);
+  --macos-fill-secondary: rgba(120, 120, 128, 0.32);
+  --tint-blue: rgba(10, 132, 255, 1);
+  --tint-purple: rgba(191, 90, 242, 1);
+
+  /* Glass Effects (Dark Mode) */
+  --glass-light: rgba(18, 18, 18, 0.5);
+  --glass-medium: rgba(18, 18, 18, 0.65);
+  --glass-heavy: rgba(18, 18, 18, 0.8);
+  --glass-border-subtle: rgba(255, 255, 255, 0.1);
+  --glass-border-medium: rgba(255, 255, 255, 0.15);
+  --glass-border-strong: rgba(255, 255, 255, 0.25);
+
+  /* Shadows (Dark Mode) */
+  --shadow-subtle: rgba(0, 0, 0, 0.2);
+  --shadow-soft: rgba(0, 0, 0, 0.3);
+  --shadow-medium: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.6);
+  --shadow-specular: rgba(255, 255, 255, 0.1);
 }
 
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
-/* Advanced Animations for Landing Page */
+/* ========================================================================== */
+/* Essential Animations                                                  */
+/* ========================================================================== */
+
 @keyframes gradient-shift {
   0%, 100% {
     background-position: 0% 50%;
@@ -291,26 +225,6 @@ body {
   }
 }
 
-@keyframes float-reverse {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(20px) rotate(-5deg);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.05);
-  }
-}
-
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -322,28 +236,6 @@ body {
   }
 }
 
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -352,30 +244,6 @@ body {
     opacity: 1;
   }
 }
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-/* ============================================================================ */
-/* Spring Physics Animations (macOS 26)                                        */
-/* ============================================================================ */
 
 @keyframes spring-bounce {
   0% {
@@ -394,174 +262,9 @@ body {
   }
 }
 
-@keyframes spring-bounce-in {
-  0% {
-    transform: scale(0.8) translateY(10px);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.05) translateY(-2px);
-    opacity: 1;
-  }
-  80% {
-    transform: scale(0.95) translateY(1px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes glass-shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-@keyframes depth-float {
-  0%, 100% {
-    transform: translateY(0) translateZ(0);
-    box-shadow:
-      0 8px 32px var(--shadow-medium),
-      inset 0 4px 20px var(--shadow-specular);
-  }
-  50% {
-    transform: translateY(-4px) translateZ(10px);
-    box-shadow:
-      0 12px 48px var(--shadow-strong),
-      inset 0 6px 30px var(--shadow-specular);
-  }
-}
-
-@keyframes refraction-shift {
-  0%, 100% {
-    backdrop-filter: blur(20px) saturate(180%) hue-rotate(0deg);
-  }
-  33% {
-    backdrop-filter: blur(22px) saturate(190%) hue-rotate(2deg);
-  }
-  66% {
-    backdrop-filter: blur(18px) saturate(170%) hue-rotate(-2deg);
-  }
-}
-
-@keyframes specular-glint {
-  0%, 100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-/* Utility Classes for Animations */
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 8s ease infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: float-reverse 7s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.6s ease-out forwards;
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 0.6s ease-out forwards;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.6s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.5s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    transparent 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 3s infinite;
-}
-
-/* Spring Animation Utilities */
-.animate-spring-bounce {
-  animation: spring-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.animate-spring-bounce-in {
-  animation: spring-bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.animate-glass-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--shadow-specular) 50%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: glass-shimmer 3s ease-in-out infinite;
-}
-
-.animate-depth-float {
-  animation: depth-float 4s ease-in-out infinite;
-}
-
-.animate-refraction {
-  animation: refraction-shift 8s ease-in-out infinite;
-}
-
-.animate-specular-glint {
-  animation: specular-glint 2s ease-in-out infinite;
-}
-
-/* ============================================================================ */
-/* Liquid Glass Material System (macOS 26)                                     */
-/* ============================================================================ */
-
-/* Core Liquid Glass Effect */
-.liquid-glass {
-  background: var(--glass-light);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular);
-}
-
-/* Glass Variants by Blur Intensity */
-.glass-ultra {
-  background: var(--glass-ultra);
-  backdrop-filter: blur(15px) saturate(150%);
-  -webkit-backdrop-filter: blur(15px) saturate(150%);
-  border: 1px solid var(--glass-border-subtle);
-  box-shadow:
-    0 4px 16px var(--shadow-subtle),
-    inset 0 2px 10px var(--shadow-specular);
-}
+/* ========================================================================== */
+/* Glass Material System                                                  */
+/* ========================================================================== */
 
 .glass-light {
   background: var(--glass-light);
@@ -593,136 +296,9 @@ body {
     inset 0 6px 30px var(--shadow-specular);
 }
 
-.glass-frosted {
-  background: var(--glass-heavy);
-  backdrop-filter: blur(40px) saturate(220%) brightness(1.05);
-  -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.05);
-  border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 16px 64px var(--shadow-strong),
-    inset 0 8px 40px var(--shadow-specular);
-}
-
-/* Legacy Glass (Backward Compatibility) */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Perspective for 3D effects */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* Stagger Animation Delays */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
-
-/* Brand Gradient Utilities */
-.gradient-brand {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
-}
-
-.gradient-brand-text {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.gradient-page-bg {
-  background: linear-gradient(
-    to bottom right,
-    hsl(var(--gradient-light-start)),
-    hsl(var(--gradient-light-mid)),
-    hsl(var(--gradient-light-end))
-  );
-}
-
-.gradient-accent-overlay {
-  background: linear-gradient(
-    to top left,
-    hsl(var(--gradient-accent-start) / 0.3),
-    transparent,
-    hsl(var(--gradient-accent-end) / 0.3)
-  );
-}
-
-/* Floating orb gradients */
-.gradient-orb-blue {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-secondary) / 0.3),
-    hsl(var(--brand-primary) / 0.3)
-  );
-}
-
-.gradient-orb-pink {
-  background: linear-gradient(
-    to right,
-    hsl(var(--accent-pink-start) / 0.3),
-    hsl(var(--accent-pink-end) / 0.3)
-  );
-}
-
-.gradient-orb-cyan {
-  background: linear-gradient(
-    to right,
-    hsl(var(--accent-gradient-start) / 0.3),
-    hsl(var(--accent-gradient-end) / 0.3)
-  );
-}
-
-/* Button gradients */
-.btn-brand-gradient {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
-}
-
-.btn-brand-gradient-hover {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary-dark)),
-    hsl(var(--brand-secondary-dark))
-  );
-}
-
-/* Text colors */
-.text-brand-primary {
-  color: hsl(var(--brand-primary));
-}
-
-.text-brand-secondary {
-  color: hsl(var(--brand-secondary));
-}
-
-/* ============================================================================ */
-/* macOS 26 Shadow System (Depth Layers with Specular Highlights)             */
-/* ============================================================================ */
+/* ========================================================================== */
+/* Shadow System                                                         */
+/* ========================================================================== */
 
 .shadow-glass-subtle {
   box-shadow:
@@ -748,45 +324,9 @@ body {
     inset 0 6px 30px var(--shadow-specular);
 }
 
-.shadow-glass-dramatic {
-  box-shadow:
-    0 16px 64px var(--shadow-strong),
-    inset 0 8px 40px var(--shadow-specular),
-    0 0 80px rgba(0, 0, 0, 0.05);
-}
-
-/* Depth Layer Shadows (without specular) */
-.shadow-depth-1 {
-  box-shadow: 0 2px 8px var(--shadow-subtle);
-}
-
-.shadow-depth-2 {
-  box-shadow: 0 4px 16px var(--shadow-soft);
-}
-
-.shadow-depth-3 {
-  box-shadow: 0 8px 32px var(--shadow-medium);
-}
-
-.shadow-depth-4 {
-  box-shadow: 0 12px 48px var(--shadow-strong);
-}
-
-.shadow-depth-5 {
-  box-shadow: 0 16px 64px var(--shadow-strong);
-}
-
-/* Refraction Effect Shadow */
-.shadow-refraction {
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular),
-    0 0 40px rgba(255, 255, 255, 0.05);
-}
-
-/* ============================================================================ */
-/* Border Radius Utilities (Liquid Glass)                                      */
-/* ============================================================================ */
+/* ========================================================================== */
+/* Border Radius Utilities                                               */
+/* ========================================================================== */
 
 .rounded-glass-sm {
   border-radius: 12px;
@@ -800,13 +340,9 @@ body {
   border-radius: 32px;
 }
 
-.rounded-glass-xl {
-  border-radius: 40px;
-}
-
-/* ============================================================================ */
-/* Interactive States (with Spring Physics)                                    */
-/* ============================================================================ */
+/* ========================================================================== */
+/* Interactive States                                                     */
+/* ========================================================================== */
 
 .glass-interactive {
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -826,64 +362,50 @@ body {
     inset 0 3px 15px var(--shadow-specular);
 }
 
-/* Button with Glass Effect */
-.btn-glass {
-  background: var(--glass-medium);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-  border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 4px 16px var(--shadow-soft),
-    inset 0 2px 10px var(--shadow-specular);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* ========================================================================== */
+/* Animation Utilities                                                    */
+/* ========================================================================== */
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }
 
-.btn-glass:hover {
-  background: var(--glass-heavy);
-  transform: translateY(-1px);
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular);
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
-.btn-glass:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow:
-    0 2px 8px var(--shadow-subtle),
-    inset 0 1px 5px var(--shadow-specular);
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
 }
 
-/* ============================================================================ */
-/* macOS 26 Surface Treatments                                                 */
-/* ============================================================================ */
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-spring-bounce {
+  animation: spring-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ========================================================================== */
+/* Surface Utilities                                                      */
+/* ========================================================================== */
 
 .surface-primary {
-  background: var(--macos-bg-primary);
+  background: var(--bg-primary);
 }
 
 .surface-secondary {
-  background: var(--macos-bg-secondary);
+  background: var(--bg-secondary);
 }
 
-.surface-tertiary {
-  background: var(--macos-bg-tertiary);
+.surface-card {
+  background: var(--bg-card);
 }
 
-.surface-fill-primary {
-  background: var(--macos-fill-primary);
-}
-
-.surface-fill-secondary {
-  background: var(--macos-fill-secondary);
-}
-
-.surface-fill-tertiary {
-  background: var(--macos-fill-tertiary);
-}
-
-/* ============================================================================ */
-/* Typography Color Utilities (macOS 26)                                       */
-/* ============================================================================ */
+/* ========================================================================== */
+/* Typography Utilities                                                   */
+/* ========================================================================== */
 
 .text-label-primary {
   color: var(--macos-label-primary);
@@ -895,8 +417,4 @@ body {
 
 .text-label-tertiary {
   color: var(--macos-label-tertiary);
-}
-
-.text-label-quaternary {
-  color: var(--macos-label-quaternary);
 }

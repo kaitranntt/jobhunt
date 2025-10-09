@@ -4,6 +4,52 @@ import userEvent from '@testing-library/user-event'
 import { ApplicationDetail } from '../ApplicationDetail'
 import type { Application } from '@/lib/types/database.types'
 import type { ApplicationFormData } from '@/lib/schemas/application.schema'
+import React from 'react'
+
+// Mock the contacts API that ContactList uses
+vi.mock('@/lib/api/contacts', () => ({
+  getContactsByApplication: vi.fn().mockResolvedValue([]),
+  deleteContact: vi.fn().mockResolvedValue(undefined),
+}))
+
+// Mock ContactForm to prevent async operations
+vi.mock('@/components/contacts/ContactForm', () => ({
+  default: () => React.createElement('div', { 'data-testid': 'contact-form' }, 'Contact Form'),
+}))
+
+// Mock ContactCard to prevent async operations
+vi.mock('@/components/contacts/ContactCard', () => ({
+  default: () => React.createElement('div', { 'data-testid': 'contact-card' }, 'Contact Card'),
+}))
+
+// Mock all other API modules to prevent async operations
+vi.mock('@/lib/api/reminders', () => ({
+  getRemindersByApplication: vi.fn().mockResolvedValue([]),
+  deleteReminder: vi.fn().mockResolvedValue(undefined),
+}))
+
+vi.mock('@/lib/api/documents', () => ({
+  getDocumentsByApplication: vi.fn().mockResolvedValue([]),
+  deleteDocument: vi.fn().mockResolvedValue(undefined),
+}))
+
+// Mock ContactList with inline mock component
+vi.mock('@/components/contacts/ContactList', () => ({
+  default: () =>
+    React.createElement('div', { 'data-testid': 'contact-list' }, 'Contact List Component'),
+}))
+
+// Mock DocumentList with inline mock component
+vi.mock('@/components/documents/DocumentList', () => ({
+  DocumentList: () =>
+    React.createElement('div', { 'data-testid': 'document-list' }, 'Document List Component'),
+}))
+
+// Mock ReminderList with inline mock component
+vi.mock('@/components/reminders/ReminderList', () => ({
+  default: () =>
+    React.createElement('div', { 'data-testid': 'reminder-list' }, 'Reminder List Component'),
+}))
 
 const createMockApplication = (overrides?: Partial<Application>): Application => ({
   id: '123e4567-e89b-12d3-a456-426614174000',
@@ -33,8 +79,9 @@ describe('ApplicationDetail', () => {
   })
 
   describe('View Mode - Default State', () => {
-    it('renders in view mode by default', () => {
+    it('renders in view mode by default', async () => {
       const application = createMockApplication()
+
       render(
         <ApplicationDetail
           application={application}
@@ -54,7 +101,7 @@ describe('ApplicationDetail', () => {
       expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument()
     })
 
-    it('displays all application fields with proper labels', () => {
+    it('displays all application fields with proper labels', async () => {
       const application = createMockApplication()
       render(
         <ApplicationDetail
