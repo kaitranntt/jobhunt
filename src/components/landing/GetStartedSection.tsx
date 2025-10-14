@@ -12,8 +12,7 @@ export function GetStartedSection() {
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-12">
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Two Ways to{' '}
-            <span className="gradient-brand-text">Get Started</span>
+            Two Ways to <span className="gradient-brand-text">Get Started</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-foreground/90">
             Choose cloud hosting for instant setup or self-host for complete control
@@ -57,9 +56,7 @@ export function GetStartedSection() {
           {activeTab === 'cloud' ? (
             <div className="space-y-8">
               <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold text-foreground mb-2">
-                  Start Free in 3 Steps
-                </h3>
+                <h3 className="text-3xl font-bold text-foreground mb-2">Start Free in 3 Steps</h3>
                 <p className="text-foreground/90">
                   No installation required. Fully managed and secure.
                 </p>
@@ -155,20 +152,16 @@ yarn dev`}</code>
 
               {/* Deployment options */}
               <div>
-                <h4 className="font-bold text-foreground mb-4 text-center">
-                  Deployment Options
-                </h4>
+                <h4 className="font-bold text-foreground mb-4 text-center">Deployment Options</h4>
                 <div className="flex flex-wrap items-center justify-center gap-4">
-                  {['Vercel', 'Docker', 'Railway', 'Render', 'AWS', 'Local Dev'].map(
-                    (platform) => (
-                      <div
-                        key={platform}
-                        className="glass rounded-lg px-4 py-2 font-semibold text-foreground text-sm"
-                      >
-                        {platform}
-                      </div>
-                    )
-                  )}
+                  {['Vercel', 'Docker', 'Railway', 'Render', 'AWS', 'Local Dev'].map(platform => (
+                    <div
+                      key={platform}
+                      className="glass rounded-lg px-4 py-2 font-semibold text-foreground text-sm"
+                    >
+                      {platform}
+                    </div>
+                  ))}
                 </div>
               </div>
 

@@ -1,9 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type {
-  UserProfile,
-  UserProfileInsert,
-  UserProfileUpdate,
-} from '@/lib/types/database.types'
+import type { UserProfile, UserProfileInsert, UserProfileUpdate } from '@/lib/types/database.types'
 import { createClient } from '@/lib/supabase/client'
 
 /**
@@ -45,11 +41,7 @@ export async function createProfile(
   supabase: SupabaseClient,
   profile: UserProfileInsert
 ): Promise<UserProfile> {
-  const { data, error } = await supabase
-    .from('user_profiles')
-    .insert(profile)
-    .select()
-    .single()
+  const { data, error } = await supabase.from('user_profiles').insert(profile).select().single()
 
   if (error) throw new Error(`Failed to create profile: ${error.message}`)
 

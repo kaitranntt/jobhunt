@@ -39,7 +39,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
   const [isLoading, setIsLoading] = React.useState(true)
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false)
   const [isUpdating, setIsUpdating] = React.useState(false)
-  
+
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -113,7 +113,10 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
 
   const removeDesiredRole = (roleToRemove: string) => {
     const current = form.getValues('desired_roles') || []
-    form.setValue('desired_roles', current.filter(role => role !== roleToRemove))
+    form.setValue(
+      'desired_roles',
+      current.filter(role => role !== roleToRemove)
+    )
   }
 
   const addDesiredIndustry = (industry: string) => {
@@ -125,7 +128,10 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
 
   const removeDesiredIndustry = (industryToRemove: string) => {
     const current = form.getValues('desired_industries') || []
-    form.setValue('desired_industries', current.filter(industry => industry !== industryToRemove))
+    form.setValue(
+      'desired_industries',
+      current.filter(industry => industry !== industryToRemove)
+    )
   }
 
   if (isLoading) {
@@ -161,7 +167,9 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
           <div className="text-center py-8">
             <User className="h-12 w-12 mx-auto mb-4 text-label-tertiary" />
             <h3 className="text-lg font-medium text-label-primary mb-2">No Profile Yet</h3>
-            <p className="text-label-secondary mb-4">Create your profile to personalize your job hunt experience.</p>
+            <p className="text-label-secondary mb-4">
+              Create your profile to personalize your job hunt experience.
+            </p>
             <Button onClick={() => setIsEditModalOpen(true)} className="btn-glass">
               <Edit className="mr-2 h-4 w-4" />
               Create Profile
@@ -193,9 +201,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
           {/* Basic Info */}
           <div className="space-y-2">
             <h3 className="font-semibold text-lg text-label-primary">{profile.full_name}</h3>
-            {user?.email && (
-              <p className="text-sm text-label-secondary">{user.email}</p>
-            )}
+            {user?.email && <p className="text-sm text-label-secondary">{user.email}</p>}
           </div>
 
           {/* Location */}
@@ -218,7 +224,9 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
           {profile.experience_years !== null && (
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="h-4 w-4 text-label-tertiary" />
-              <span className="text-label-secondary">{profile.experience_years} years of experience</span>
+              <span className="text-label-secondary">
+                {profile.experience_years} years of experience
+              </span>
             </div>
           )}
 
@@ -233,12 +241,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
           {/* Links */}
           <div className="flex flex-wrap gap-3 pt-2">
             {profile.linkedin_url && (
-              <Button
-                variant="outline"
-                size="sm"
-                asChild
-                className="text-xs"
-              >
+              <Button variant="outline" size="sm" asChild className="text-xs">
                 <a
                   href={profile.linkedin_url}
                   target="_blank"
@@ -251,12 +254,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
               </Button>
             )}
             {profile.portfolio_url && (
-              <Button
-                variant="outline"
-                size="sm"
-                asChild
-                className="text-xs"
-              >
+              <Button variant="outline" size="sm" asChild className="text-xs">
                 <a
                   href={profile.portfolio_url}
                   target="_blank"
@@ -321,7 +319,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>Full Name *</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your full name" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="Enter your full name"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -336,7 +338,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
-                        <Input placeholder="+1 (555) 123-4567" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="+1 (555) 123-4567"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -351,7 +357,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>Location</FormLabel>
                       <FormControl>
-                        <Input placeholder="San Francisco, CA" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="San Francisco, CA"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -366,7 +376,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>Current Role</FormLabel>
                       <FormControl>
-                        <Input placeholder="Software Engineer" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="Software Engineer"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -387,7 +401,9 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                           min="0"
                           max="100"
                           {...field}
-                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : null)}
+                          onChange={e =>
+                            field.onChange(e.target.value ? parseInt(e.target.value) : null)
+                          }
                           value={field.value || ''}
                         />
                       </FormControl>
@@ -404,7 +420,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>LinkedIn URL</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://linkedin.com/in/yourprofile" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="https://linkedin.com/in/yourprofile"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -419,7 +439,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                     <FormItem>
                       <FormLabel>Portfolio URL</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://yourportfolio.com" value={field.value || ''} onChange={field.onChange} />
+                        <Input
+                          placeholder="https://yourportfolio.com"
+                          value={field.value || ''}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -440,7 +464,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                         <div className="flex gap-2">
                           <Input
                             placeholder="e.g., Frontend Developer"
-                            onKeyDown={(e) => {
+                            onKeyDown={e => {
                               if (e.key === 'Enter') {
                                 e.preventDefault()
                                 addDesiredRole((e.target as HTMLInputElement).value)
@@ -452,7 +476,9 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                             type="button"
                             variant="outline"
                             onClick={() => {
-                              const input = document.querySelector('input[placeholder="e.g., Frontend Developer"]') as HTMLInputElement
+                              const input = document.querySelector(
+                                'input[placeholder="e.g., Frontend Developer"]'
+                              ) as HTMLInputElement
                               if (input?.value) {
                                 addDesiredRole(input.value)
                                 input.value = ''
@@ -464,7 +490,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {field.value?.map((role, index) => (
-                            <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="flex items-center gap-1"
+                            >
                               {role}
                               <X
                                 className="h-3 w-3 cursor-pointer"
@@ -493,7 +523,7 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                         <div className="flex gap-2">
                           <Input
                             placeholder="e.g., Technology"
-                            onKeyDown={(e) => {
+                            onKeyDown={e => {
                               if (e.key === 'Enter') {
                                 e.preventDefault()
                                 addDesiredIndustry((e.target as HTMLInputElement).value)
@@ -505,7 +535,9 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                             type="button"
                             variant="outline"
                             onClick={() => {
-                              const input = document.querySelector('input[placeholder="e.g., Technology"]') as HTMLInputElement
+                              const input = document.querySelector(
+                                'input[placeholder="e.g., Technology"]'
+                              ) as HTMLInputElement
                               if (input?.value) {
                                 addDesiredIndustry(input.value)
                                 input.value = ''
@@ -517,7 +549,11 @@ export function ProfileCard({ userId, user }: ProfileCardProps) {
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {field.value?.map((industry, index) => (
-                            <Badge key={index} variant="outline" className="flex items-center gap-1">
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="flex items-center gap-1"
+                            >
                               {industry}
                               <X
                                 className="h-3 w-3 cursor-pointer"

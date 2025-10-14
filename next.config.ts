@@ -1,10 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   // Enable webpack cache for faster rebuilds
-  webpack: (config) => {
-    config.cache = true;
-    return config;
+  webpack: config => {
+    config.cache = true
+    return config
   },
 
   // External packages for server components (moved from experimental in 15.5)
@@ -15,6 +15,6 @@ const nextConfig: NextConfig = {
 
   // Enable standalone output for Docker
   output: 'standalone',
-};
+}
 
-export default nextConfig;
+export default nextConfig

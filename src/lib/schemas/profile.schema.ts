@@ -3,12 +3,7 @@ import { z } from 'zod'
 /**
  * URL validation helper
  */
-const urlSchema = z
-  .string()
-  .url('Must be a valid URL')
-  .optional()
-  .nullable()
-  .or(z.literal(''))
+const urlSchema = z.string().url('Must be a valid URL').optional().nullable().or(z.literal(''))
 
 /**
  * Base user profile schema for form validation

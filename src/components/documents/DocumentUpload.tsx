@@ -128,7 +128,9 @@ export function DocumentUpload({ applicationId, userId, onUploadComplete }: Docu
           !isDragging && 'glass-medium hover:glass-light'
         )}
         style={{
-          border: isDragging ? '2px dashed var(--tint-blue)' : '2px dashed var(--glass-border-medium)',
+          border: isDragging
+            ? '2px dashed var(--tint-blue)'
+            : '2px dashed var(--glass-border-medium)',
         }}
       >
         <input
@@ -141,7 +143,10 @@ export function DocumentUpload({ applicationId, userId, onUploadComplete }: Docu
         />
 
         <div className="flex flex-col items-center gap-2">
-          <Upload className="h-10 w-10" style={{ color: isDragging ? 'var(--tint-blue)' : 'var(--macos-label-tertiary)' }} />
+          <Upload
+            className="h-10 w-10"
+            style={{ color: isDragging ? 'var(--tint-blue)' : 'var(--macos-label-tertiary)' }}
+          />
           <div className="space-y-1">
             <p className="text-sm font-medium text-label-primary">
               Drag and drop your file here, or{' '}
@@ -162,23 +167,32 @@ export function DocumentUpload({ applicationId, userId, onUploadComplete }: Docu
 
       {/* Error Message */}
       {error && (
-        <div className="glass-light rounded-glass p-3 text-sm shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
+        <div
+          className="glass-light rounded-glass p-3 text-sm shadow-glass-soft"
+          style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}
+        >
           {error}
         </div>
       )}
 
       {/* Selected File */}
       {selectedFile && !error && (
-        <div className="glass-light rounded-glass p-4 shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
+        <div
+          className="glass-light rounded-glass p-4 shadow-glass-soft"
+          style={{ border: '1px solid var(--glass-border-medium)' }}
+        >
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-glass-sm glass-medium shadow-glass-subtle"
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-glass-sm glass-medium shadow-glass-subtle"
                 style={{ border: '1px solid var(--glass-border-medium)' }}
               >
                 <FileText className="h-5 w-5" style={{ color: 'var(--tint-purple)' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-label-primary truncate">{selectedFile.name}</p>
+                <p className="text-sm font-semibold text-label-primary truncate">
+                  {selectedFile.name}
+                </p>
                 <p className="text-xs text-label-tertiary font-medium">
                   {formatFileSize(selectedFile.size)}
                 </p>

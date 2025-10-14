@@ -16,9 +16,7 @@ export function ValuePropositionsSection() {
               <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl gradient-brand text-white">
                 <Briefcase className="h-7 w-7" />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-foreground">
-                For Job Seekers
-              </h3>
+              <h3 className="mb-4 text-2xl font-bold text-foreground">For Job Seekers</h3>
               <ul className="space-y-3 text-foreground/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
@@ -44,9 +42,7 @@ export function ValuePropositionsSection() {
               <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl gradient-brand text-white">
                 <Code className="h-7 w-7" />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-foreground">
-                For Developers
-              </h3>
+              <h3 className="mb-4 text-2xl font-bold text-foreground">For Developers</h3>
               <ul className="space-y-3 text-foreground/80">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />

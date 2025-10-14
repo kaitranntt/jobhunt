@@ -120,8 +120,13 @@ export function DocumentList({ applicationId }: DocumentListProps) {
   // Error State
   if (error && documents.length === 0) {
     return (
-      <div className="glass-light rounded-glass p-6 text-center shadow-glass-soft" style={{ border: '1px solid var(--color-error)' }}>
-        <p className="text-sm mb-3" style={{ color: 'var(--color-error)' }}>{error}</p>
+      <div
+        className="glass-light rounded-glass p-6 text-center shadow-glass-soft"
+        style={{ border: '1px solid var(--color-error)' }}
+      >
+        <p className="text-sm mb-3" style={{ color: 'var(--color-error)' }}>
+          {error}
+        </p>
         <Button variant="outline" size="sm" onClick={fetchDocuments} className="btn-glass">
           Retry
         </Button>
@@ -132,12 +137,13 @@ export function DocumentList({ applicationId }: DocumentListProps) {
   // Empty State
   if (documents.length === 0) {
     return (
-      <div className="glass-ultra rounded-glass p-8 text-center" style={{ border: '1px dashed var(--glass-border-medium)' }}>
+      <div
+        className="glass-ultra rounded-glass p-8 text-center"
+        style={{ border: '1px dashed var(--glass-border-medium)' }}
+      >
         <FileText className="h-10 w-10 mx-auto mb-3" style={{ color: 'var(--tint-purple)' }} />
         <h3 className="text-sm font-semibold text-label-primary mb-1">No documents uploaded</h3>
-        <p className="text-xs text-label-secondary">
-          Upload a document to get started
-        </p>
+        <p className="text-xs text-label-secondary">Upload a document to get started</p>
       </div>
     )
   }
@@ -146,14 +152,17 @@ export function DocumentList({ applicationId }: DocumentListProps) {
     <>
       {/* Error Message (when documents exist but action failed) */}
       {error && documents.length > 0 && (
-        <div className="glass-light rounded-glass p-3 text-sm mb-4 shadow-glass-soft" style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}>
+        <div
+          className="glass-light rounded-glass p-3 text-sm mb-4 shadow-glass-soft"
+          style={{ border: '1px solid var(--color-error)', color: 'var(--color-error)' }}
+        >
           {error}
         </div>
       )}
 
       {/* Documents List */}
       <div role="list" className="space-y-4">
-        {documents.map((document) => (
+        {documents.map(document => (
           <div
             key={document.id}
             role="listitem"
@@ -162,7 +171,8 @@ export function DocumentList({ applicationId }: DocumentListProps) {
           >
             <div className="flex items-start gap-3">
               {/* File Icon */}
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-glass-sm glass-medium shadow-glass-subtle mt-1"
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-glass-sm glass-medium shadow-glass-subtle mt-1"
                 style={{ border: '1px solid var(--glass-border-medium)' }}
               >
                 <FileText className="h-5 w-5" style={{ color: 'var(--tint-purple)' }} />
@@ -170,7 +180,9 @@ export function DocumentList({ applicationId }: DocumentListProps) {
 
               {/* File Info */}
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-semibold text-label-primary truncate mb-1">{document.file_name}</h4>
+                <h4 className="text-sm font-semibold text-label-primary truncate mb-1">
+                  {document.file_name}
+                </h4>
                 <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-label-tertiary font-medium">
                   <span>{getFileTypeLabel(document.file_type)}</span>
                   <span>•</span>
@@ -208,16 +220,25 @@ export function DocumentList({ applicationId }: DocumentListProps) {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent className="glass-heavy rounded-glass shadow-glass-strong" style={{ border: '1px solid var(--glass-border-strong)' }}>
+        <AlertDialogContent
+          className="glass-heavy rounded-glass shadow-glass-strong"
+          style={{ border: '1px solid var(--glass-border-strong)' }}
+        >
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-semibold text-label-primary">Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-semibold text-label-primary">
+              Are you sure?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-label-secondary">
               This will permanently delete "{documentToDelete?.file_name}". This action cannot be
               undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteCancel} disabled={isDeleting} className="btn-glass">
+            <AlertDialogCancel
+              onClick={handleDeleteCancel}
+              disabled={isDeleting}
+              className="btn-glass"
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction

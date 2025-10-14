@@ -61,9 +61,7 @@ describe('ReminderList', () => {
 
   describe('Reminders Rendering', () => {
     it('should render all reminders for the application', async () => {
-      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(mockReminders)
 
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
@@ -80,25 +78,19 @@ describe('ReminderList', () => {
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
       await waitFor(() => {
-        expect(remindersApi.getRemindersByApplication).toHaveBeenCalledWith(
-          mockApplicationId
-        )
+        expect(remindersApi.getRemindersByApplication).toHaveBeenCalledWith(mockApplicationId)
       })
     })
   })
 
   describe('Sorting (Upcoming First)', () => {
     it('should display upcoming reminders before past reminders', async () => {
-      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(mockReminders)
 
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
       await waitFor(() => {
-        const titles = screen
-          .getAllByRole('heading', { level: 3 })
-          .map(el => el.textContent)
+        const titles = screen.getAllByRole('heading', { level: 3 }).map(el => el.textContent)
 
         const followUpIndex = titles.indexOf('Follow up email')
         const pastReminderIndex = titles.indexOf('Past reminder')
@@ -108,16 +100,12 @@ describe('ReminderList', () => {
     })
 
     it('should sort upcoming reminders by date (earliest first)', async () => {
-      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(mockReminders)
 
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
       await waitFor(() => {
-        const titles = screen
-          .getAllByRole('heading', { level: 3 })
-          .map(el => el.textContent)
+        const titles = screen.getAllByRole('heading', { level: 3 }).map(el => el.textContent)
 
         const followUpIndex = titles.indexOf('Follow up email')
         const interviewIndex = titles.indexOf('Interview preparation')
@@ -134,9 +122,7 @@ describe('ReminderList', () => {
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
       await waitFor(() => {
-        expect(
-          screen.getByRole('button', { name: /add reminder/i })
-        ).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /add reminder/i })).toBeInTheDocument()
       })
     })
 
@@ -171,9 +157,7 @@ describe('ReminderList', () => {
     })
 
     it('should not display empty state when reminders exist', async () => {
-      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(mockReminders)
 
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 
@@ -233,9 +217,7 @@ describe('ReminderList', () => {
 
   describe('Accessibility', () => {
     it('should have proper heading hierarchy', async () => {
-      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getRemindersByApplication).mockResolvedValue(mockReminders)
 
       renderWithTheme(<ReminderList applicationId={mockApplicationId} />)
 

@@ -23,7 +23,7 @@ export {
   type TintColorKey,
   type GlassMaterialKey,
   type SemanticColorKey,
-} from './colors';
+} from './colors'
 
 // Spacing System
 export {
@@ -41,7 +41,7 @@ export {
   type SpacingKey,
   type ComponentSpacingKey,
   type BorderRadiusKey,
-} from './spacing';
+} from './spacing'
 
 // Typography System
 export {
@@ -58,12 +58,12 @@ export {
   type LineHeightKey,
   type LetterSpacingKey,
   type TypographyPresetKey,
-} from './typography';
+} from './typography'
 
 // Re-import the generator functions for the utility
-import { generateCSSVariables } from './colors';
-import { generateSpacingCSSVariables } from './spacing';
-import { generateTypographyCSSVariables } from './typography';
+import { generateCSSVariables } from './colors'
+import { generateSpacingCSSVariables } from './spacing'
+import { generateTypographyCSSVariables } from './typography'
 
 // Utility: Generate all CSS variables for both modes
 export function generateAllCSSVariables(mode: 'light' | 'dark'): Record<string, string> {
@@ -71,5 +71,5 @@ export function generateAllCSSVariables(mode: 'light' | 'dark'): Record<string, 
     ...generateCSSVariables(mode),
     ...generateSpacingCSSVariables(),
     ...generateTypographyCSSVariables(),
-  };
+  }
 }

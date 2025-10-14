@@ -52,40 +52,30 @@ describe('ReminderForm', () => {
 
   describe('Form Rendering', () => {
     it('should render form with all required fields', () => {
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       expect(screen.getByLabelText(/title/i)).toBeInTheDocument()
       expect(screen.getByLabelText(/description/i)).toBeInTheDocument()
       expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
-      expect(
-        screen.getByRole('button', { name: /create reminder/i })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /create reminder/i })).toBeInTheDocument()
     })
 
     it('should mark title as required', () => {
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       expect(titleInput).toBeRequired()
     })
 
     it('should mark description as optional', () => {
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const descriptionInput = screen.getByLabelText(/description/i)
       expect(descriptionInput).not.toBeRequired()
     })
 
     it('should mark reminder_date as required', () => {
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const dateInput = screen.getByLabelText(/reminder date/i)
       expect(dateInput).toBeRequired()
@@ -95,9 +85,7 @@ describe('ReminderForm', () => {
   describe('Validation - Required Fields', () => {
     it('should show error when title is empty', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /create reminder/i })
       await user.click(submitButton)
@@ -109,9 +97,7 @@ describe('ReminderForm', () => {
 
     it('should show error when reminder_date is empty', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       await user.type(titleInput, 'Follow up email')
@@ -126,9 +112,7 @@ describe('ReminderForm', () => {
 
     it('should show error when reminder_date is in the past', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const dateInput = screen.getByLabelText(/reminder date/i)
@@ -145,9 +129,7 @@ describe('ReminderForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/reminder date must be in the future/i)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/reminder date must be in the future/i)).toBeInTheDocument()
       })
     })
   })
@@ -155,9 +137,7 @@ describe('ReminderForm', () => {
   describe('Validation - Max Length', () => {
     it('should show error when title exceeds 255 characters', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const longTitle = 'A'.repeat(256)
@@ -168,17 +148,13 @@ describe('ReminderForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/title must be less than 255 characters/i)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/title must be less than 255 characters/i)).toBeInTheDocument()
       })
     })
 
     it('should show error when description exceeds 1000 characters', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const descriptionInput = screen.getByLabelText(/description/i)
@@ -204,9 +180,7 @@ describe('ReminderForm', () => {
   describe('Form Submission', () => {
     it('should submit form with valid required fields only', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const dateInput = screen.getByLabelText(/reminder date/i)
@@ -224,9 +198,7 @@ describe('ReminderForm', () => {
 
     it('should submit form with all fields filled', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const descriptionInput = screen.getByLabelText(/description/i)
@@ -246,9 +218,7 @@ describe('ReminderForm', () => {
 
     it('should not submit form with invalid data', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /create reminder/i })
       await user.click(submitButton)
@@ -276,11 +246,7 @@ describe('ReminderForm', () => {
       }
 
       renderWithTheme(
-        <ReminderForm
-          applicationId={null}
-          onSuccess={mockOnSuccess}
-          initialData={initialData}
-        />
+        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} initialData={initialData} />
       )
 
       expect(screen.getByDisplayValue('Existing Reminder')).toBeInTheDocument()
@@ -302,11 +268,7 @@ describe('ReminderForm', () => {
       }
 
       renderWithTheme(
-        <ReminderForm
-          applicationId={null}
-          onSuccess={mockOnSuccess}
-          initialData={initialData}
-        />
+        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} initialData={initialData} />
       )
 
       const titleInput = screen.getByLabelText(/title/i)
@@ -335,24 +297,16 @@ describe('ReminderForm', () => {
       }
 
       renderWithTheme(
-        <ReminderForm
-          applicationId={null}
-          onSuccess={mockOnSuccess}
-          initialData={initialData}
-        />
+        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} initialData={initialData} />
       )
 
-      expect(
-        screen.getByRole('button', { name: /update reminder/i })
-      ).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /update reminder/i })).toBeInTheDocument()
     })
   })
 
   describe('Accessibility', () => {
     it('should have proper labels for all inputs', () => {
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       expect(screen.getByText(/title/i)).toBeInTheDocument()
       expect(screen.getByText(/description/i)).toBeInTheDocument()
@@ -361,9 +315,7 @@ describe('ReminderForm', () => {
 
     it('should have ARIA attributes on invalid fields', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /create reminder/i })
       await user.click(submitButton)
@@ -376,9 +328,7 @@ describe('ReminderForm', () => {
 
     it('should support keyboard navigation', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const descriptionInput = screen.getByLabelText(/description/i)
@@ -394,9 +344,7 @@ describe('ReminderForm', () => {
   describe('Edge Cases', () => {
     it('should handle empty optional description field', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const titleInput = screen.getByLabelText(/title/i)
       const dateInput = screen.getByLabelText(/reminder date/i)
@@ -414,9 +362,7 @@ describe('ReminderForm', () => {
 
     it('should clear validation errors when correcting input', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ReminderForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ReminderForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /create reminder/i })
       await user.click(submitButton)

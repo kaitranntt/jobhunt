@@ -40,9 +40,7 @@ export async function getApplicationsAction(): Promise<Application[]> {
 /**
  * Create a new application
  */
-export async function createApplicationAction(
-  formData: ApplicationFormData
-): Promise<Application> {
+export async function createApplicationAction(formData: ApplicationFormData): Promise<Application> {
   const supabase = await createClient()
 
   const {

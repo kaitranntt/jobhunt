@@ -1,9 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type {
-  Application,
-  ApplicationInsert,
-  ApplicationUpdate,
-} from '@/lib/types/database.types'
+import type { Application, ApplicationInsert, ApplicationUpdate } from '@/lib/types/database.types'
 
 export async function getApplications(supabase: SupabaseClient): Promise<Application[]> {
   const { data, error } = await supabase
@@ -24,7 +20,10 @@ export async function getApplication(supabase: SupabaseClient, id: string): Prom
   return data
 }
 
-export async function createApplication(supabase: SupabaseClient, application: ApplicationInsert): Promise<Application> {
+export async function createApplication(
+  supabase: SupabaseClient,
+  application: ApplicationInsert
+): Promise<Application> {
   const { data, error } = await supabase.from('applications').insert(application).select().single()
 
   if (error) throw new Error(`Failed to create application: ${error.message}`)
@@ -50,7 +49,6 @@ export async function updateApplication(
 }
 
 export async function deleteApplication(supabase: SupabaseClient, id: string): Promise<void> {
-
   const { error } = await supabase.from('applications').delete().eq('id', id)
 
   if (error) throw new Error(`Failed to delete application: ${error.message}`)

@@ -25,8 +25,14 @@ import { Button } from '@/components/ui/button'
 
 // Define a form-friendly version of the schema that works better with React Hook Form
 const formSchema = z.object({
-  company_name: z.string().min(1, 'Company name is required').max(255, 'Company name must be less than 255 characters'),
-  job_title: z.string().min(1, 'Job title is required').max(255, 'Job title must be less than 255 characters'),
+  company_name: z
+    .string()
+    .min(1, 'Company name is required')
+    .max(255, 'Company name must be less than 255 characters'),
+  job_title: z
+    .string()
+    .min(1, 'Job title is required')
+    .max(255, 'Job title must be less than 255 characters'),
   job_url: z.string().url('Must be a valid URL').or(z.literal('')),
   location: z.string().max(255, 'Location must be less than 255 characters'),
   salary_range: z.string().max(100, 'Salary range must be less than 100 characters'),
@@ -97,11 +103,7 @@ export default function ApplicationForm({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-6"
-        noValidate
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* Company Name */}
           <FormField
@@ -109,7 +111,9 @@ export default function ApplicationForm({
             name="company_name"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel className="text-label-primary font-semibold">Company Name <span className="text-red-500">*</span></FormLabel>
+                <FormLabel className="text-label-primary font-semibold">
+                  Company Name <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -131,7 +135,9 @@ export default function ApplicationForm({
             name="job_title"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel className="text-label-primary font-semibold">Job Title <span className="text-red-500">*</span></FormLabel>
+                <FormLabel className="text-label-primary font-semibold">
+                  Job Title <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -217,7 +223,9 @@ export default function ApplicationForm({
             name="status"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-label-primary font-semibold">Status <span className="text-red-500">*</span></FormLabel>
+                <FormLabel className="text-label-primary font-semibold">
+                  Status <span className="text-red-500">*</span>
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -229,7 +237,7 @@ export default function ApplicationForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent variant="glass">
-                    {STATUS_OPTIONS.map((option) => (
+                    {STATUS_OPTIONS.map(option => (
                       <SelectItem key={option.value} value={option.value} variant="glass">
                         {option.label}
                       </SelectItem>
@@ -247,7 +255,9 @@ export default function ApplicationForm({
             name="date_applied"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-label-primary font-semibold">Date Applied <span className="text-red-500">*</span></FormLabel>
+                <FormLabel className="text-label-primary font-semibold">
+                  Date Applied <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -268,7 +278,9 @@ export default function ApplicationForm({
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel className="text-label-primary font-semibold">Notes</FormLabel>
-                <p className="text-xs text-label-tertiary mb-2">Additional notes, interview details, etc.</p>
+                <p className="text-xs text-label-tertiary mb-2">
+                  Additional notes, interview details, etc.
+                </p>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -285,7 +297,11 @@ export default function ApplicationForm({
         </div>
 
         <div className="flex justify-end gap-4 pt-4 border-t border-label-quaternary">
-          <Button type="submit" disabled={isLoading} className="glass-medium rounded-glass-sm hover:glass-heavy">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="glass-medium rounded-glass-sm hover:glass-heavy"
+          >
             {isLoading ? 'Submitting...' : 'Submit Application'}
           </Button>
         </div>

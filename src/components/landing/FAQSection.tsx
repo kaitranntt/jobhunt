@@ -25,7 +25,7 @@ export function FAQSection() {
     {
       question: 'How is this sustainable?',
       answer:
-        'JobHunt is a passion project built to solve a real problem. It\'s community-driven and transparent. We believe great software should be accessible to everyone. Future sustainability through optional premium features for advanced users.',
+        "JobHunt is a passion project built to solve a real problem. It's community-driven and transparent. We believe great software should be accessible to everyone. Future sustainability through optional premium features for advanced users.",
     },
     {
       question: 'Can I contribute?',
@@ -45,10 +45,7 @@ export function FAQSection() {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="mb-4 text-4xl font-bold text-foreground sm:text-5xl">
-              Frequently Asked{' '}
-              <span className="gradient-brand-text">
-                Questions
-              </span>
+              Frequently Asked <span className="gradient-brand-text">Questions</span>
             </h2>
           </div>
 
@@ -62,9 +59,7 @@ export function FAQSection() {
                   {faq.question}
                   <ChevronRight className="h-5 w-5 transition-transform group-open:rotate-90" />
                 </summary>
-                <div className="px-6 pb-6 text-foreground/80 leading-relaxed">
-                  {faq.answer}
-                </div>
+                <div className="px-6 pb-6 text-foreground/80 leading-relaxed">{faq.answer}</div>
               </details>
             ))}
           </div>

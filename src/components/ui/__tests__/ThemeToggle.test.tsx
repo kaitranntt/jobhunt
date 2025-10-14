@@ -742,7 +742,7 @@ describe('ThemeToggle Dropdown', () => {
       await waitFor(() => {
         expect(
           document.documentElement.classList.contains('dark') ||
-          document.documentElement.className.length >= 0
+            document.documentElement.className.length >= 0
         ).toBe(true)
       })
     })

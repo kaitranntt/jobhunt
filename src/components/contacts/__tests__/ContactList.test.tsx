@@ -264,9 +264,7 @@ describe('ContactList', () => {
   describe('Error Handling', () => {
     it('should display error message on fetch failure', async () => {
       const { getContactsByApplication } = await import('@/lib/api/contacts')
-      vi.mocked(getContactsByApplication).mockRejectedValue(
-        new Error('Failed to fetch contacts')
-      )
+      vi.mocked(getContactsByApplication).mockRejectedValue(new Error('Failed to fetch contacts'))
 
       renderWithTheme(<ContactList applicationId="app-123" />)
 

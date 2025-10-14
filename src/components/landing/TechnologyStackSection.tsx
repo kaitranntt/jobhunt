@@ -64,10 +64,7 @@ export function TechnologyStackSection() {
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Built with Modern,{' '}
-              <span className="gradient-brand-text">
-                Production-Ready Tools
-              </span>
+              Built with Modern, <span className="gradient-brand-text">Production-Ready Tools</span>
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-foreground/90">
               Fast, secure, and scalable technology choices you can trust
@@ -90,12 +87,8 @@ export function TechnologyStackSection() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">
-                      {tech.name}
-                    </h3>
-                    <p className="text-sm text-foreground/80">
-                      {tech.description}
-                    </p>
+                    <h3 className="font-semibold text-foreground mb-1">{tech.name}</h3>
+                    <p className="text-sm text-foreground/80">{tech.description}</p>
                   </div>
                 </div>
               </div>
@@ -108,16 +101,12 @@ export function TechnologyStackSection() {
               Why Developers Love This Stack
             </h3>
             <div className="grid gap-6 md:grid-cols-2">
-              {developerBenefits.map((benefit) => (
+              {developerBenefits.map(benefit => (
                 <div key={benefit.title} className="flex items-start gap-3">
                   <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-foreground mb-1">
-                      {benefit.title}
-                    </h4>
-                    <p className="text-sm text-foreground/80">
-                      {benefit.description}
-                    </p>
+                    <h4 className="font-semibold text-foreground mb-1">{benefit.title}</h4>
+                    <p className="text-sm text-foreground/80">{benefit.description}</p>
                   </div>
                 </div>
               ))}

@@ -35,7 +35,7 @@ export async function getTimelineActivities(
     if (appError) throw new Error(`Failed to fetch applications: ${appError.message}`)
 
     if (applications) {
-      applications.forEach((app) => {
+      applications.forEach(app => {
         const applicationName = `${app.company_name} - ${app.job_title}`
 
         // Add created activity
@@ -225,10 +225,10 @@ export async function getTimelineActivities(
   // Apply date filters
   let filteredActivities = activities
   if (dateFrom) {
-    filteredActivities = filteredActivities.filter((a) => a.created_at >= dateFrom)
+    filteredActivities = filteredActivities.filter(a => a.created_at >= dateFrom)
   }
   if (dateTo) {
-    filteredActivities = filteredActivities.filter((a) => a.created_at <= dateTo)
+    filteredActivities = filteredActivities.filter(a => a.created_at <= dateTo)
   }
 
   // Sort activities
@@ -247,6 +247,6 @@ export async function getTimelineActivities(
 function formatStatus(status: Application['status']): string {
   return status
     .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }

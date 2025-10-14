@@ -13,8 +13,8 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
-    persistSession: false
-  }
+    persistSession: false,
+  },
 })
 
 async function setupStorage() {
@@ -28,8 +28,8 @@ async function setupStorage() {
       allowedMimeTypes: [
         'application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'text/plain'
-      ]
+        'text/plain',
+      ],
     })
 
     if (error) {
@@ -45,9 +45,10 @@ async function setupStorage() {
 
     // Note: RLS policies for storage.objects must be set up via SQL
     // The policies from migration 003_document_storage.sql handle this
-    console.log('\n⚠️  Remember to run the storage RLS policies from migration 003_document_storage.sql')
+    console.log(
+      '\n⚠️  Remember to run the storage RLS policies from migration 003_document_storage.sql'
+    )
     console.log('    These policies ensure users can only access their own files')
-
   } catch (err) {
     console.error('Unexpected error:', err)
     process.exit(1)

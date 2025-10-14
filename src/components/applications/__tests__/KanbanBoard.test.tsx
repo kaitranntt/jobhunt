@@ -60,7 +60,7 @@ describe('KanbanBoard', () => {
 
       // Wait for all columns to render
       await waitFor(() => {
-        expectedOrder.forEach((columnTitle) => {
+        expectedOrder.forEach(columnTitle => {
           expect(screen.getByText(columnTitle)).toBeInTheDocument()
         })
       })
@@ -69,7 +69,7 @@ describe('KanbanBoard', () => {
       const headings = container.querySelectorAll('h3')
       expect(headings.length).toBeGreaterThanOrEqual(12) // Allow for async rendering issues
 
-      expectedOrder.forEach((title) => {
+      expectedOrder.forEach(title => {
         const heading = Array.from(headings).find(h => h.textContent === title)
         expect(heading).toBeTruthy()
       })
@@ -100,7 +100,9 @@ describe('KanbanBoard', () => {
         createMockApplication({ id: '4', status: 'interviewing' }),
       ]
 
-      const { container } = render(<KanbanBoard applications={applications} onUpdateStatus={vi.fn()} />)
+      const { container } = render(
+        <KanbanBoard applications={applications} onUpdateStatus={vi.fn()} />
+      )
 
       // Wait for render and check that badges are present
       await waitFor(() => {
@@ -137,7 +139,9 @@ describe('KanbanBoard', () => {
     it('shows empty state only for columns without applications', async () => {
       const applications = [createMockApplication({ status: 'applied' })]
 
-      const { container } = render(<KanbanBoard applications={applications} onUpdateStatus={vi.fn()} />)
+      const { container } = render(
+        <KanbanBoard applications={applications} onUpdateStatus={vi.fn()} />
+      )
 
       // Wait for render
       await waitFor(() => {
@@ -324,10 +328,10 @@ describe('KanbanBoard', () => {
     it('column headers are properly labeled', () => {
       render(<KanbanBoard applications={[]} onUpdateStatus={vi.fn()} />)
 
-      ALL_STATUSES.forEach((status) => {
+      ALL_STATUSES.forEach(status => {
         const formattedTitle = status
           .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ')
 
         const heading = screen.getByRole('heading', { name: new RegExp(formattedTitle, 'i') })
@@ -407,7 +411,7 @@ describe('KanbanBoard', () => {
       render(<KanbanBoard applications={applications} onUpdateStatus={vi.fn()} />)
 
       // All 13 companies should be rendered
-      applications.forEach((app) => {
+      applications.forEach(app => {
         expect(screen.getByText(app.company_name)).toBeInTheDocument()
       })
     })
@@ -456,7 +460,9 @@ describe('KanbanBoard', () => {
       const error = new Error('Network error')
       const onUpdateStatus = vi.fn().mockRejectedValue(error)
 
-      render(<KanbanBoard applications={[createMockApplication()]} onUpdateStatus={onUpdateStatus} />)
+      render(
+        <KanbanBoard applications={[createMockApplication()]} onUpdateStatus={onUpdateStatus} />
+      )
 
       // Error handling is present
       expect(screen.getByText('TechCorp Inc')).toBeInTheDocument()

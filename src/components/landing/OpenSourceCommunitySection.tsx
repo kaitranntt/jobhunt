@@ -1,5 +1,15 @@
 import Link from 'next/link'
-import { Github, ArrowRight, Rocket, Target, Sparkles, TrendingUp, Code, Users, TestTube } from 'lucide-react'
+import {
+  Github,
+  ArrowRight,
+  Rocket,
+  Target,
+  Sparkles,
+  TrendingUp,
+  Code,
+  Users,
+  TestTube,
+} from 'lucide-react'
 import { AnimatedSection } from './AnimatedSection'
 
 /**
@@ -23,13 +33,11 @@ export function OpenSourceCommunitySection() {
           <div className="glass-strong rounded-3xl p-8 sm:p-16 shadow-2xl">
             <div className="text-center mb-12">
               <h2 className="mb-4 text-4xl font-bold text-foreground sm:text-5xl">
-                <span className="gradient-brand-text">
-                  Open Source
-                </span>
-                {' '}& Early Stage
+                <span className="gradient-brand-text">Open Source</span> & Early Stage
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-foreground/90">
-                This project is just getting started. Your feedback and contributions can shape its future.
+                This project is just getting started. Your feedback and contributions can shape its
+                future.
               </p>
             </div>
 
@@ -47,7 +55,7 @@ export function OpenSourceCommunitySection() {
                 How You Can Contribute
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                {contributionOpportunities.map((item) => (
+                {contributionOpportunities.map(item => (
                   <div
                     key={item.text}
                     className="flex flex-col items-center text-center gap-3 p-4 rounded-xl glass hover:glass-strong transition-all duration-300"

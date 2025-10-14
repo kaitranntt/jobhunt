@@ -125,7 +125,7 @@ describe('Timeline API', () => {
                 return {
                   eq: vi.fn().mockReturnValue({
                     order: vi.fn().mockResolvedValue({
-                      data: mockApplicationActivities.map((a) => ({
+                      data: mockApplicationActivities.map(a => ({
                         id: a.id,
                         company_name: a.metadata?.company_name,
                         job_title: a.metadata?.job_title,
@@ -158,7 +158,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: mockContactActivities.map((a) => ({
+                  data: mockContactActivities.map(a => ({
                     id: a.id,
                     name: a.metadata?.contact_name,
                     role: a.metadata?.role,
@@ -176,7 +176,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: mockDocumentActivities.map((a) => ({
+                  data: mockDocumentActivities.map(a => ({
                     id: a.id,
                     file_name: a.metadata?.file_name,
                     file_size: a.metadata?.file_size,
@@ -194,7 +194,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: mockReminderActivities.map((a) => ({
+                  data: mockReminderActivities.map(a => ({
                     id: a.id,
                     title: a.title.replace('Reminder created for ', '').replace('Completed: ', ''),
                     is_completed: a.metadata?.is_completed,
@@ -225,7 +225,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: mockApplicationActivities.map((a) => ({
+                  data: mockApplicationActivities.map(a => ({
                     id: a.id,
                     company_name: a.metadata?.company_name,
                     job_title: a.metadata?.job_title,
@@ -255,12 +255,12 @@ describe('Timeline API', () => {
       const result = await getTimelineActivities('user-1', filters)
 
       expect(result).toHaveLength(mockApplicationActivities.length)
-      expect(result.every((a) => a.type === 'application')).toBe(true)
+      expect(result.every(a => a.type === 'application')).toBe(true)
     })
 
     it('should filter activities by date range', async () => {
       const filteredActivities = mockApplicationActivities.filter(
-        (a) => a.created_at >= '2025-10-03T00:00:00Z' && a.created_at <= '2025-10-04T23:59:59Z'
+        a => a.created_at >= '2025-10-03T00:00:00Z' && a.created_at <= '2025-10-04T23:59:59Z'
       )
 
       mockFrom.mockImplementation((table: string) => {
@@ -269,7 +269,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: filteredActivities.map((a) => ({
+                  data: filteredActivities.map(a => ({
                     id: a.id,
                     company_name: a.metadata?.company_name,
                     job_title: a.metadata?.job_title,
@@ -300,7 +300,7 @@ describe('Timeline API', () => {
       const result = await getTimelineActivities('user-1', filters)
 
       expect(result.length).toBeLessThanOrEqual(2)
-      result.forEach((activity) => {
+      result.forEach(activity => {
         expect(activity.created_at >= filters.dateFrom!).toBe(true)
         expect(activity.created_at <= filters.dateTo!).toBe(true)
       })
@@ -325,7 +325,7 @@ describe('Timeline API', () => {
                 return {
                   eq: vi.fn().mockReturnValue({
                     order: vi.fn().mockResolvedValue({
-                      data: data.map((a) => ({
+                      data: data.map(a => ({
                         id: a.id,
                         created_at: a.created_at,
                         company_name: a.metadata?.company_name,
@@ -358,7 +358,7 @@ describe('Timeline API', () => {
           select: vi.fn().mockReturnValue({
             eq: vi.fn().mockReturnValue({
               order: vi.fn().mockResolvedValue({
-                data: data.map((a) => ({
+                data: data.map(a => ({
                   id: a.id,
                   created_at: a.created_at,
                   ...(table === 'contacts' && {
@@ -414,7 +414,7 @@ describe('Timeline API', () => {
                 return {
                   eq: vi.fn().mockReturnValue({
                     order: vi.fn().mockResolvedValue({
-                      data: data.map((a) => ({
+                      data: data.map(a => ({
                         id: a.id,
                         created_at: a.created_at,
                         company_name: a.metadata?.company_name,
@@ -447,7 +447,7 @@ describe('Timeline API', () => {
           select: vi.fn().mockReturnValue({
             eq: vi.fn().mockReturnValue({
               order: vi.fn().mockResolvedValue({
-                data: data.map((a) => ({
+                data: data.map(a => ({
                   id: a.id,
                   created_at: a.created_at,
                   ...(table === 'contacts' && {
@@ -520,7 +520,7 @@ describe('Timeline API', () => {
 
     it('should combine multiple filter types and date range', async () => {
       const filteredData = mockApplicationActivities.filter(
-        (a) => a.created_at >= '2025-10-03T00:00:00Z'
+        a => a.created_at >= '2025-10-03T00:00:00Z'
       )
 
       mockFrom.mockImplementation((table: string) => {
@@ -529,7 +529,7 @@ describe('Timeline API', () => {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 order: vi.fn().mockResolvedValue({
-                  data: filteredData.map((a) => ({
+                  data: filteredData.map(a => ({
                     id: a.id,
                     company_name: a.metadata?.company_name,
                     job_title: a.metadata?.job_title,
@@ -559,8 +559,8 @@ describe('Timeline API', () => {
 
       const result = await getTimelineActivities('user-1', filters)
 
-      expect(result.every((a) => a.type === 'application')).toBe(true)
-      expect(result.every((a) => a.created_at >= filters.dateFrom!)).toBe(true)
+      expect(result.every(a => a.type === 'application')).toBe(true)
+      expect(result.every(a => a.created_at >= filters.dateFrom!)).toBe(true)
     })
   })
 })

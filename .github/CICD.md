@@ -11,6 +11,7 @@ JobHunt uses GitHub Actions for automated testing, validation, and deployment. O
 ### 1. CI Workflow (`ci.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop` branches
 
@@ -61,6 +62,7 @@ Tests Docker image build:
 #### All Checks Passed
 
 Final gate that:
+
 - Waits for all jobs to complete
 - Fails if any job failed
 - Required for PR merge
@@ -68,6 +70,7 @@ Final gate that:
 ### 2. Deploy Workflow (`deploy.yml`)
 
 **Triggers:**
+
 - Push to `main` branch
 - Manual workflow dispatch
 
@@ -80,6 +83,7 @@ Final gate that:
 **Requirements:**
 
 Vercel secrets must be configured:
+
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID`
@@ -222,16 +226,16 @@ Required secrets in repository settings:
 
 ```yaml
 # Vercel Deployment
-VERCEL_TOKEN: "your-vercel-token"
-VERCEL_ORG_ID: "your-org-id"
-VERCEL_PROJECT_ID: "your-project-id"
+VERCEL_TOKEN: 'your-vercel-token'
+VERCEL_ORG_ID: 'your-org-id'
+VERCEL_PROJECT_ID: 'your-project-id'
 
 # Supabase (for build-time checks)
-NEXT_PUBLIC_SUPABASE_URL: "https://xxx.supabase.co"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: "your-key"
+NEXT_PUBLIC_SUPABASE_URL: 'https://xxx.supabase.co'
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: 'your-key'
 
 # Optional
-CODECOV_TOKEN: "your-codecov-token"
+CODECOV_TOKEN: 'your-codecov-token'
 ```
 
 ### Setting Secrets

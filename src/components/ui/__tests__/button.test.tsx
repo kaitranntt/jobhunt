@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import { Button } from '../button'
-import React from 'react'
 
 describe('Button', () => {
   describe('Basic Rendering', () => {
@@ -128,11 +127,7 @@ describe('Button', () => {
 
   describe('Custom ClassName', () => {
     it('merges custom className with variant classes', () => {
-      render(
-        <Button className="custom-class another-class">
-          Custom
-        </Button>
-      )
+      render(<Button className="custom-class another-class">Custom</Button>)
       const button = screen.getByRole('button')
 
       expect(button).toHaveClass('custom-class')
@@ -141,11 +136,7 @@ describe('Button', () => {
     })
 
     it('allows className to override variant styles when using cn utility', () => {
-      render(
-        <Button className="bg-blue-500">
-          Override
-        </Button>
-      )
+      render(<Button className="bg-blue-500">Override</Button>)
       const button = screen.getByRole('button')
 
       expect(button.className).toContain('bg-blue-500')
@@ -260,7 +251,11 @@ describe('Button', () => {
     })
 
     it('handles data attributes', () => {
-      render(<Button data-testid="custom-button" data-value="test">Data</Button>)
+      render(
+        <Button data-testid="custom-button" data-value="test">
+          Data
+        </Button>
+      )
       const button = screen.getByTestId('custom-button')
 
       expect(button).toHaveAttribute('data-value', 'test')
@@ -330,14 +325,9 @@ describe('Button', () => {
 
   describe('TypeScript Type Safety', () => {
     it('accepts valid variant prop values', () => {
-      const validVariants: Array<'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'> = [
-        'default',
-        'destructive',
-        'outline',
-        'secondary',
-        'ghost',
-        'link',
-      ]
+      const validVariants: Array<
+        'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+      > = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link']
 
       validVariants.forEach(variant => {
         const { unmount } = render(<Button variant={variant}>Test</Button>)
@@ -420,11 +410,7 @@ describe('Button', () => {
 
     it('supports ARIA attributes', () => {
       render(
-        <Button
-          aria-label="Custom label"
-          aria-pressed="true"
-          aria-describedby="description"
-        >
+        <Button aria-label="Custom label" aria-pressed="true" aria-describedby="description">
           ARIA Button
         </Button>
       )

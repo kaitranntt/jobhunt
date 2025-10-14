@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import {
-  contactFormSchema,
-  createContactSchema,
-  updateContactSchema,
-} from '../contact.schema'
+import { contactFormSchema, createContactSchema, updateContactSchema } from '../contact.schema'
 
 describe('contactFormSchema', () => {
   const validContactData = {

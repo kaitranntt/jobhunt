@@ -53,9 +53,14 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
 
   if (isLoading) {
     return (
-      <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
+      <Card
+        className="glass-medium rounded-glass shadow-glass-soft"
+        style={{ border: '1px solid var(--glass-border-strong)' }}
+      >
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">
+            Upcoming Reminders
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-label-secondary">Loading...</p>
@@ -66,21 +71,33 @@ export default function UpcomingReminders({ userId }: UpcomingRemindersProps) {
 
   if (error) {
     return (
-      <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
+      <Card
+        className="glass-medium rounded-glass shadow-glass-soft"
+        style={{ border: '1px solid var(--glass-border-strong)' }}
+      >
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
+          <CardTitle className="text-lg font-semibold text-label-primary">
+            Upcoming Reminders
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-label-primary" style={{ color: 'var(--color-error)' }}>{error}</p>
+          <p className="text-sm text-label-primary" style={{ color: 'var(--color-error)' }}>
+            {error}
+          </p>
         </CardContent>
       </Card>
     )
   }
 
   return (
-    <Card className="glass-medium rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-strong)' }}>
+    <Card
+      className="glass-medium rounded-glass shadow-glass-soft"
+      style={{ border: '1px solid var(--glass-border-strong)' }}
+    >
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-label-primary">Upcoming Reminders</CardTitle>
+        <CardTitle className="text-lg font-semibold text-label-primary">
+          Upcoming Reminders
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {reminders.length === 0 ? (

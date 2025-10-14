@@ -114,9 +114,15 @@ describe('DashboardPage', () => {
       })
 
       // Verify all empty state elements
-      expect(screen.getByText(/track applications, ace interviews, land your dream job/i)).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /add your first application/i })).toBeInTheDocument()
-      expect(screen.getByText(/tip: start by adding jobs you're interested in/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/track applications, ace interviews, land your dream job/i)
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /add your first application/i })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(/tip: start by adding jobs you're interested in/i)
+      ).toBeInTheDocument()
 
       // Verify empty state icon
       const emptyStateContainer = screen.getByText(/start your job hunt journey/i).closest('div')
@@ -140,7 +146,9 @@ describe('DashboardPage', () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
-        expect(screen.getByRole('region', { name: /job applications kanban board/i })).toBeInTheDocument()
+        expect(
+          screen.getByRole('region', { name: /job applications kanban board/i })
+        ).toBeInTheDocument()
       })
 
       // Verify applications are rendered
@@ -195,7 +203,9 @@ describe('DashboardPage', () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /add your first application/i })).toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /add your first application/i })
+        ).toBeInTheDocument()
       })
 
       const addButton = screen.getByRole('button', { name: /add your first application/i })

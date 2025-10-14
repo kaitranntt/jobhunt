@@ -10,7 +10,7 @@
 export const fontFamilies = {
   system: `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif`,
   mono: `"SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace`,
-} as const;
+} as const
 
 // ============================================================================
 // Font Sizes (Responsive Scale)
@@ -19,66 +19,66 @@ export const fontFamilies = {
 export const fontSizes = {
   // Display Titles (Hero sections)
   displayLg: {
-    mobile: '40px',   // Mobile: 40px
-    tablet: '56px',   // Tablet: 56px
-    desktop: '72px',  // Desktop: 72px
+    mobile: '40px', // Mobile: 40px
+    tablet: '56px', // Tablet: 56px
+    desktop: '72px', // Desktop: 72px
   },
   displayMd: {
-    mobile: '32px',   // Mobile: 32px
-    tablet: '40px',   // Tablet: 40px
-    desktop: '56px',  // Desktop: 56px
+    mobile: '32px', // Mobile: 32px
+    tablet: '40px', // Tablet: 40px
+    desktop: '56px', // Desktop: 56px
   },
   displaySm: {
-    mobile: '28px',   // Mobile: 28px
-    tablet: '32px',   // Tablet: 32px
-    desktop: '40px',  // Desktop: 40px
+    mobile: '28px', // Mobile: 28px
+    tablet: '32px', // Tablet: 32px
+    desktop: '40px', // Desktop: 40px
   },
 
   // Page Titles
   titleLg: {
-    mobile: '32px',   // Mobile: 32px
-    tablet: '40px',   // Tablet: 40px
-    desktop: '48px',  // Desktop: 48px
+    mobile: '32px', // Mobile: 32px
+    tablet: '40px', // Tablet: 40px
+    desktop: '48px', // Desktop: 48px
   },
   titleMd: {
-    mobile: '28px',   // Mobile: 28px
-    tablet: '32px',   // Tablet: 32px
-    desktop: '40px',  // Desktop: 40px
+    mobile: '28px', // Mobile: 28px
+    tablet: '32px', // Tablet: 32px
+    desktop: '40px', // Desktop: 40px
   },
   titleSm: {
-    mobile: '24px',   // Mobile: 24px
-    tablet: '28px',   // Tablet: 28px
-    desktop: '32px',  // Desktop: 32px
+    mobile: '24px', // Mobile: 24px
+    tablet: '28px', // Tablet: 28px
+    desktop: '32px', // Desktop: 32px
   },
 
   // Section Headings
-  headingLg: '24px',  // 24px
-  headingMd: '20px',  // 20px
-  headingSm: '18px',  // 18px
+  headingLg: '24px', // 24px
+  headingMd: '20px', // 20px
+  headingSm: '18px', // 18px
 
   // Body Text
-  bodyLg: '18px',     // 18px - Large body text
-  body: '16px',       // 16px - Default body text
-  bodySm: '14px',     // 14px - Secondary body text
-  bodyXs: '12px',     // 12px - Tertiary body text
+  bodyLg: '18px', // 18px - Large body text
+  body: '16px', // 16px - Default body text
+  bodySm: '14px', // 14px - Secondary body text
+  bodyXs: '12px', // 12px - Tertiary body text
 
   // UI Elements
-  uiLg: '16px',       // 16px - Large UI text (buttons, inputs)
-  ui: '14px',         // 14px - Default UI text
-  uiSm: '12px',       // 12px - Small UI text (labels, captions)
-  uiXs: '11px',       // 11px - Tiny UI text (badges, tags)
-} as const;
+  uiLg: '16px', // 16px - Large UI text (buttons, inputs)
+  ui: '14px', // 14px - Default UI text
+  uiSm: '12px', // 12px - Small UI text (labels, captions)
+  uiXs: '11px', // 11px - Tiny UI text (badges, tags)
+} as const
 
 // ============================================================================
 // Font Weights
 // ============================================================================
 
 export const fontWeights = {
-  regular: 400,       // Regular body text
-  medium: 500,        // Medium UI elements, subheadings
-  semibold: 600,      // Semibold titles, important UI
-  bold: 700,          // Bold emphasis (rarely used in macOS)
-} as const;
+  regular: 400, // Regular body text
+  medium: 500, // Medium UI elements, subheadings
+  semibold: 600, // Semibold titles, important UI
+  bold: 700, // Bold emphasis (rarely used in macOS)
+} as const
 
 // ============================================================================
 // Line Heights (4pt Baseline Grid)
@@ -86,21 +86,21 @@ export const fontWeights = {
 
 export const lineHeights = {
   // Display & Titles (Tighter)
-  display: 1.1,       // 110% - Display text
-  title: 1.2,         // 120% - Page titles
-  heading: 1.3,       // 130% - Section headings
+  display: 1.1, // 110% - Display text
+  title: 1.2, // 120% - Page titles
+  heading: 1.3, // 130% - Section headings
 
   // Body Text (Standard)
-  body: 1.5,          // 150% - Body text (24px at 16px font)
-  bodyRelaxed: 1.6,   // 160% - Relaxed body text
+  body: 1.5, // 150% - Body text (24px at 16px font)
+  bodyRelaxed: 1.6, // 160% - Relaxed body text
 
   // UI Elements (Compact)
-  ui: 1.4,            // 140% - UI elements
-  uiTight: 1.2,       // 120% - Tight UI (buttons, inputs)
+  ui: 1.4, // 140% - UI elements
+  uiTight: 1.2, // 120% - Tight UI (buttons, inputs)
 
   // Special
-  none: 1,            // 100% - No extra line height
-} as const;
+  none: 1, // 100% - No extra line height
+} as const
 
 // ============================================================================
 // Letter Spacing (Tracking)
@@ -108,12 +108,12 @@ export const lineHeights = {
 
 export const letterSpacing = {
   tighter: '-0.02em', // -2% - Display titles
-  tight: '-0.01em',   // -1% - Titles
-  normal: '0em',      // 0% - Default
-  wide: '0.01em',     // 1% - UI elements
-  wider: '0.02em',    // 2% - All caps, small text
-  widest: '0.05em',   // 5% - Extra wide (labels, badges)
-} as const;
+  tight: '-0.01em', // -1% - Titles
+  normal: '0em', // 0% - Default
+  wide: '0.01em', // 1% - UI elements
+  wider: '0.02em', // 2% - All caps, small text
+  widest: '0.05em', // 5% - Extra wide (labels, badges)
+} as const
 
 // ============================================================================
 // Typography Presets (Complete Styles)
@@ -231,7 +231,7 @@ export const typographyPresets = {
     lineHeight: lineHeights.uiTight,
     letterSpacing: letterSpacing.wider,
   },
-} as const;
+} as const
 
 // ============================================================================
 // Tailwind-Compatible Typography Configuration
@@ -244,14 +244,32 @@ export const tailwindTypography = {
   },
   fontSize: {
     // Display
-    'display-lg': [fontSizes.displayLg.desktop, { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tighter }],
-    'display-md': [fontSizes.displayMd.desktop, { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tighter }],
-    'display-sm': [fontSizes.displaySm.desktop, { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tight }],
+    'display-lg': [
+      fontSizes.displayLg.desktop,
+      { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tighter },
+    ],
+    'display-md': [
+      fontSizes.displayMd.desktop,
+      { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tighter },
+    ],
+    'display-sm': [
+      fontSizes.displaySm.desktop,
+      { lineHeight: lineHeights.display, letterSpacing: letterSpacing.tight },
+    ],
 
     // Titles
-    'title-lg': [fontSizes.titleLg.desktop, { lineHeight: lineHeights.title, letterSpacing: letterSpacing.tight }],
-    'title-md': [fontSizes.titleMd.desktop, { lineHeight: lineHeights.title, letterSpacing: letterSpacing.tight }],
-    'title-sm': [fontSizes.titleSm.desktop, { lineHeight: lineHeights.title, letterSpacing: letterSpacing.normal }],
+    'title-lg': [
+      fontSizes.titleLg.desktop,
+      { lineHeight: lineHeights.title, letterSpacing: letterSpacing.tight },
+    ],
+    'title-md': [
+      fontSizes.titleMd.desktop,
+      { lineHeight: lineHeights.title, letterSpacing: letterSpacing.tight },
+    ],
+    'title-sm': [
+      fontSizes.titleSm.desktop,
+      { lineHeight: lineHeights.title, letterSpacing: letterSpacing.normal },
+    ],
 
     // Headings
     'heading-lg': [fontSizes.headingLg, { lineHeight: lineHeights.heading }],
@@ -260,13 +278,13 @@ export const tailwindTypography = {
 
     // Body
     'body-lg': [fontSizes.bodyLg, { lineHeight: lineHeights.body }],
-    'body': [fontSizes.body, { lineHeight: lineHeights.body }],
+    body: [fontSizes.body, { lineHeight: lineHeights.body }],
     'body-sm': [fontSizes.bodySm, { lineHeight: lineHeights.body }],
     'body-xs': [fontSizes.bodyXs, { lineHeight: lineHeights.body }],
 
     // UI
     'ui-lg': [fontSizes.uiLg, { lineHeight: lineHeights.ui }],
-    'ui': [fontSizes.ui, { lineHeight: lineHeights.ui }],
+    ui: [fontSizes.ui, { lineHeight: lineHeights.ui }],
     'ui-sm': [fontSizes.uiSm, { lineHeight: lineHeights.ui }],
     'ui-xs': [fontSizes.uiXs, { lineHeight: lineHeights.uiTight }],
   },
@@ -294,7 +312,7 @@ export const tailwindTypography = {
     wider: letterSpacing.wider,
     widest: letterSpacing.widest,
   },
-};
+}
 
 // ============================================================================
 // CSS Custom Properties Generator
@@ -339,15 +357,15 @@ export function generateTypographyCSSVariables(): Record<string, string> {
     '--font-size-ui': fontSizes.ui,
     '--font-size-ui-sm': fontSizes.uiSm,
     '--font-size-ui-xs': fontSizes.uiXs,
-  };
+  }
 }
 
 // ============================================================================
 // Type Exports
 // ============================================================================
 
-export type FontSizeKey = keyof typeof fontSizes;
-export type FontWeightKey = keyof typeof fontWeights;
-export type LineHeightKey = keyof typeof lineHeights;
-export type LetterSpacingKey = keyof typeof letterSpacing;
-export type TypographyPresetKey = keyof typeof typographyPresets;
+export type FontSizeKey = keyof typeof fontSizes
+export type FontWeightKey = keyof typeof fontWeights
+export type LineHeightKey = keyof typeof lineHeights
+export type LetterSpacingKey = keyof typeof letterSpacing
+export type TypographyPresetKey = keyof typeof typographyPresets

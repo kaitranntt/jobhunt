@@ -4,10 +4,7 @@ import { z } from 'zod'
  * Base reminder schema for form validation
  */
 export const reminderFormSchema = z.object({
-  title: z
-    .string()
-    .min(1, 'Title is required')
-    .max(255, 'Title must be less than 255 characters'),
+  title: z.string().min(1, 'Title is required').max(255, 'Title must be less than 255 characters'),
 
   description: z
     .string()
@@ -19,10 +16,7 @@ export const reminderFormSchema = z.object({
   reminder_date: z
     .string()
     .datetime('Invalid date format')
-    .refine(
-      date => new Date(date) > new Date(),
-      'Reminder date must be in the future'
-    ),
+    .refine(date => new Date(date) > new Date(), 'Reminder date must be in the future'),
 
   is_completed: z.boolean().default(false),
 })
@@ -32,12 +26,7 @@ export const reminderFormSchema = z.object({
  */
 export const createReminderSchema = reminderFormSchema.extend({
   user_id: z.string().uuid('Invalid user ID'),
-  application_id: z
-    .string()
-    .uuid('Invalid application ID')
-    .optional()
-    .nullable()
-    .or(z.literal('')),
+  application_id: z.string().uuid('Invalid application ID').optional().nullable().or(z.literal('')),
 })
 
 /**

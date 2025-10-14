@@ -4,11 +4,7 @@ import type { Reminder, ReminderInsert, ReminderUpdate } from '@/lib/types/datab
 export async function createReminder(data: ReminderInsert): Promise<Reminder> {
   const supabase = createClient()
 
-  const { data: reminder, error } = await supabase
-    .from('reminders')
-    .insert(data)
-    .select()
-    .single()
+  const { data: reminder, error } = await supabase.from('reminders').insert(data).select().single()
 
   if (error) throw new Error(`Failed to create reminder: ${error.message}`)
 
@@ -29,10 +25,7 @@ export async function getRemindersByApplication(applicationId: string): Promise<
   return data
 }
 
-export async function getUpcomingReminders(
-  userId: string,
-  days: number = 7
-): Promise<Reminder[]> {
+export async function getUpcomingReminders(userId: string, days: number = 7): Promise<Reminder[]> {
   const supabase = createClient()
 
   const now = new Date()

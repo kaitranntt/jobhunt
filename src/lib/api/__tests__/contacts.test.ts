@@ -165,7 +165,12 @@ describe('Contacts API', () => {
         single: mockSingle,
       })
       mockSingle.mockResolvedValue({
-        data: { ...newContact, id: '3', created_at: '2025-10-04T12:00:00Z', updated_at: '2025-10-04T12:00:00Z' },
+        data: {
+          ...newContact,
+          id: '3',
+          created_at: '2025-10-04T12:00:00Z',
+          updated_at: '2025-10-04T12:00:00Z',
+        },
         error: null,
       })
 
@@ -202,7 +207,9 @@ describe('Contacts API', () => {
         error: { message: errorMessage },
       })
 
-      await expect(createContact(newContact)).rejects.toThrow(`Failed to create contact: ${errorMessage}`)
+      await expect(createContact(newContact)).rejects.toThrow(
+        `Failed to create contact: ${errorMessage}`
+      )
     })
   })
 
@@ -256,7 +263,9 @@ describe('Contacts API', () => {
         error: { message: errorMessage },
       })
 
-      await expect(updateContact('1', updates)).rejects.toThrow(`Failed to update contact: ${errorMessage}`)
+      await expect(updateContact('1', updates)).rejects.toThrow(
+        `Failed to update contact: ${errorMessage}`
+      )
     })
   })
 

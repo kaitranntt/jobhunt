@@ -57,10 +57,7 @@ export function PlatformFeaturesSection() {
         <div className="container mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Powerful Features,{' '}
-              <span className="gradient-brand-text">
-                Your Control
-              </span>
+              Powerful Features, <span className="gradient-brand-text">Your Control</span>
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-foreground/90">
               Everything you need to manage your job search, with the freedom to customize
@@ -82,13 +79,9 @@ export function PlatformFeaturesSection() {
                     <feature.icon className="h-full w-full text-white" aria-hidden="true" />
                   </div>
 
-                  <h3 className="mb-4 text-2xl font-bold text-foreground">
-                    {feature.title}
-                  </h3>
+                  <h3 className="mb-4 text-2xl font-bold text-foreground">{feature.title}</h3>
 
-                  <p className="text-foreground/80 leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <p className="text-foreground/80 leading-relaxed">{feature.description}</p>
 
                   {/* Hover effect overlay */}
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/0 to-blue-500/0 opacity-0 transition-opacity duration-500 group-hover:from-purple-500/5 group-hover:to-blue-500/5 group-hover:opacity-100" />

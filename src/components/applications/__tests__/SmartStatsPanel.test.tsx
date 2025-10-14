@@ -175,7 +175,7 @@ describe('SmartStatsPanel', () => {
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()
       // Check that there's at least one "0" in the component (could be active interviews or other metrics)
       const zeros = container.querySelectorAll('.text-4xl')
-      const hasZero = Array.from(zeros).some((el) => el.textContent === '0')
+      const hasZero = Array.from(zeros).some(el => el.textContent === '0')
       expect(hasZero).toBe(true)
     })
 
@@ -192,9 +192,7 @@ describe('SmartStatsPanel', () => {
     })
 
     it('counts assessment as active interview', () => {
-      const applications = [
-        createMockApplication({ id: '1', status: 'assessment' }),
-      ]
+      const applications = [createMockApplication({ id: '1', status: 'assessment' })]
       render(<SmartStatsPanel applications={applications} />)
 
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()
@@ -203,9 +201,7 @@ describe('SmartStatsPanel', () => {
     })
 
     it('counts take_home as active interview', () => {
-      const applications = [
-        createMockApplication({ id: '1', status: 'take_home' }),
-      ]
+      const applications = [createMockApplication({ id: '1', status: 'take_home' })]
       render(<SmartStatsPanel applications={applications} />)
 
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()
@@ -214,9 +210,7 @@ describe('SmartStatsPanel', () => {
     })
 
     it('counts interviewing as active interview', () => {
-      const applications = [
-        createMockApplication({ id: '1', status: 'interviewing' }),
-      ]
+      const applications = [createMockApplication({ id: '1', status: 'interviewing' })]
       render(<SmartStatsPanel applications={applications} />)
 
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()
@@ -225,9 +219,7 @@ describe('SmartStatsPanel', () => {
     })
 
     it('counts final_round as active interview', () => {
-      const applications = [
-        createMockApplication({ id: '1', status: 'final_round' }),
-      ]
+      const applications = [createMockApplication({ id: '1', status: 'final_round' })]
       render(<SmartStatsPanel applications={applications} />)
 
       expect(screen.getByText('Active Interviews')).toBeInTheDocument()

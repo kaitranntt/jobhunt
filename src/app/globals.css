@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   /* ========================================================================== */
@@ -274,7 +274,8 @@ body {
 
 /* Advanced Animations for Landing Page */
 @keyframes gradient-shift {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -283,7 +284,8 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
@@ -292,7 +294,8 @@ body {
 }
 
 @keyframes float-reverse {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
@@ -301,7 +304,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
@@ -421,7 +425,8 @@ body {
 }
 
 @keyframes depth-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateZ(0);
     box-shadow:
       0 8px 32px var(--shadow-medium),
@@ -436,7 +441,8 @@ body {
 }
 
 @keyframes refraction-shift {
-  0%, 100% {
+  0%,
+  100% {
     backdrop-filter: blur(20px) saturate(180%) hue-rotate(0deg);
   }
   33% {
@@ -448,7 +454,8 @@ body {
 }
 
 @keyframes specular-glint {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
   }
   50% {
@@ -515,12 +522,7 @@ body {
 }
 
 .animate-glass-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--shadow-specular) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, var(--shadow-specular) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: glass-shimmer 3s ease-in-out infinite;
 }
@@ -624,28 +626,32 @@ body {
 }
 
 /* Stagger Animation Delays */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+.stagger-6 {
+  animation-delay: 0.6s;
+}
 
 /* Brand Gradient Utilities */
 .gradient-brand {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
 }
 
 .gradient-brand-text {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -696,11 +702,7 @@ body {
 
 /* Button gradients */
 .btn-brand-gradient {
-  background: linear-gradient(
-    to right,
-    hsl(var(--brand-primary)),
-    hsl(var(--brand-secondary))
-  );
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
 }
 
 .btn-brand-gradient-hover {

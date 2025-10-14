@@ -11,7 +11,11 @@ import {
 } from '@/components/ui/dialog'
 import ReminderForm from './ReminderForm'
 import ReminderCard from './ReminderCard'
-import { getRemindersByApplication, deleteReminder, markReminderComplete } from '@/lib/api/reminders'
+import {
+  getRemindersByApplication,
+  deleteReminder,
+  markReminderComplete,
+} from '@/lib/api/reminders'
 import type { Reminder } from '@/lib/types/database.types'
 
 interface ReminderListProps {
@@ -98,7 +102,11 @@ export default function ReminderList({ applicationId }: ReminderListProps) {
   }
 
   if (error) {
-    return <div className="text-center py-8 text-label-primary" style={{ color: 'var(--color-error)' }}>{error}</div>
+    return (
+      <div className="text-center py-8 text-label-primary" style={{ color: 'var(--color-error)' }}>
+        {error}
+      </div>
+    )
   }
 
   return (
@@ -107,9 +115,14 @@ export default function ReminderList({ applicationId }: ReminderListProps) {
         <h2 className="text-2xl font-semibold text-label-primary">Reminders</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={handleAddClick} className="btn-glass font-semibold">Add Reminder</Button>
+            <Button onClick={handleAddClick} className="btn-glass font-semibold">
+              Add Reminder
+            </Button>
           </DialogTrigger>
-          <DialogContent className="glass-heavy rounded-glass shadow-glass-medium" style={{ border: '1px solid var(--glass-border-strong)' }}>
+          <DialogContent
+            className="glass-heavy rounded-glass shadow-glass-medium"
+            style={{ border: '1px solid var(--glass-border-strong)' }}
+          >
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold text-label-primary">
                 {editingReminder ? 'Edit Reminder' : 'Add Reminder'}

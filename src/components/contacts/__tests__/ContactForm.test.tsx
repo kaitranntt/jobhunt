@@ -37,9 +37,7 @@ describe('ContactForm', () => {
 
   describe('Form Rendering', () => {
     it('should render form with all fields', () => {
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       expect(screen.getByLabelText(/contact name/i)).toBeInTheDocument()
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
@@ -50,18 +48,14 @@ describe('ContactForm', () => {
     })
 
     it('should mark name field as required', () => {
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       expect(nameInput).toBeRequired()
     })
 
     it('should render optional fields without required attribute', () => {
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const emailInput = screen.getByLabelText(/email/i)
       const phoneInput = screen.getByLabelText(/phone/i)
@@ -78,9 +72,7 @@ describe('ContactForm', () => {
   describe('Validation', () => {
     it('should show error when name is empty', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /submit/i })
       await user.click(submitButton)
@@ -92,9 +84,7 @@ describe('ContactForm', () => {
 
     it('should show error for invalid email format', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       const emailInput = screen.getByLabelText(/email/i)
@@ -113,9 +103,7 @@ describe('ContactForm', () => {
     it('should accept valid email format', async () => {
       const user = userEvent.setup()
 
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       const emailInput = screen.getByLabelText(/email/i)
@@ -133,9 +121,7 @@ describe('ContactForm', () => {
 
     it('should allow empty optional fields', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       await user.type(nameInput, 'John Doe')
@@ -153,7 +139,10 @@ describe('ContactForm', () => {
     it('should call onSuccess after successful submission', async () => {
       const user = userEvent.setup()
       renderWithTheme(
-        <ContactForm applicationId="123e4567-e89b-12d3-a456-426614174000" onSuccess={mockOnSuccess} />
+        <ContactForm
+          applicationId="123e4567-e89b-12d3-a456-426614174000"
+          onSuccess={mockOnSuccess}
+        />
       )
 
       const nameInput = screen.getByLabelText(/contact name/i)
@@ -170,7 +159,10 @@ describe('ContactForm', () => {
     it('should submit with all fields filled', async () => {
       const user = userEvent.setup()
       renderWithTheme(
-        <ContactForm applicationId="123e4567-e89b-12d3-a456-426614174000" onSuccess={mockOnSuccess} />
+        <ContactForm
+          applicationId="123e4567-e89b-12d3-a456-426614174000"
+          onSuccess={mockOnSuccess}
+        />
       )
 
       const nameInput = screen.getByLabelText(/contact name/i)
@@ -195,9 +187,7 @@ describe('ContactForm', () => {
 
     it('should show loading state during submission', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       await user.type(nameInput, 'John Doe')
@@ -279,9 +269,7 @@ describe('ContactForm', () => {
   describe('Error Handling', () => {
     it('should display error message on submission failure', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       await user.type(nameInput, 'John Doe')
@@ -299,9 +287,7 @@ describe('ContactForm', () => {
 
   describe('Accessibility', () => {
     it('should have proper labels for all inputs', () => {
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       expect(screen.getByText(/contact name/i)).toBeInTheDocument()
       expect(screen.getByText(/email/i)).toBeInTheDocument()
@@ -312,9 +298,7 @@ describe('ContactForm', () => {
 
     it('should have ARIA attributes on invalid fields', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const submitButton = screen.getByRole('button', { name: /submit/i })
       await user.click(submitButton)
@@ -327,9 +311,7 @@ describe('ContactForm', () => {
 
     it('should support keyboard navigation', async () => {
       const user = userEvent.setup()
-      renderWithTheme(
-        <ContactForm applicationId={null} onSuccess={mockOnSuccess} />
-      )
+      renderWithTheme(<ContactForm applicationId={null} onSuccess={mockOnSuccess} />)
 
       const nameInput = screen.getByLabelText(/contact name/i)
       const emailInput = screen.getByLabelText(/email/i)

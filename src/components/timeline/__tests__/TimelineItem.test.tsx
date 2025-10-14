@@ -69,7 +69,9 @@ describe('TimelineItem', () => {
 
     it('renders activity description', () => {
       render(<TimelineItem activity={mockApplicationActivity} />)
-      expect(screen.getByText('New application created for Senior Software Engineer position')).toBeInTheDocument()
+      expect(
+        screen.getByText('New application created for Senior Software Engineer position')
+      ).toBeInTheDocument()
     })
 
     it('renders application name when present', () => {
@@ -113,7 +115,9 @@ describe('TimelineItem', () => {
   describe('Activity Type Styling', () => {
     it('applies glass-medium styling with blue icon for application activities', () => {
       const { container } = render(<TimelineItem activity={mockApplicationActivity} />)
-      const iconWrapper = container.querySelector('[data-testid="activity-icon-application"]')?.parentElement
+      const iconWrapper = container.querySelector(
+        '[data-testid="activity-icon-application"]'
+      )?.parentElement
       expect(iconWrapper?.className).toMatch(/glass-medium/)
       const icon = container.querySelector('[data-testid="activity-icon-application"]')
       expect(icon).toHaveStyle({ color: 'var(--tint-blue)' })
@@ -121,7 +125,9 @@ describe('TimelineItem', () => {
 
     it('applies glass-medium styling with green icon for contact activities', () => {
       const { container } = render(<TimelineItem activity={mockContactActivity} />)
-      const iconWrapper = container.querySelector('[data-testid="activity-icon-contact"]')?.parentElement
+      const iconWrapper = container.querySelector(
+        '[data-testid="activity-icon-contact"]'
+      )?.parentElement
       expect(iconWrapper?.className).toMatch(/glass-medium/)
       const icon = container.querySelector('[data-testid="activity-icon-contact"]')
       expect(icon).toHaveStyle({ color: 'var(--tint-green)' })
@@ -129,7 +135,9 @@ describe('TimelineItem', () => {
 
     it('applies glass-medium styling with purple icon for document activities', () => {
       const { container } = render(<TimelineItem activity={mockDocumentActivity} />)
-      const iconWrapper = container.querySelector('[data-testid="activity-icon-document"]')?.parentElement
+      const iconWrapper = container.querySelector(
+        '[data-testid="activity-icon-document"]'
+      )?.parentElement
       expect(iconWrapper?.className).toMatch(/glass-medium/)
       const icon = container.querySelector('[data-testid="activity-icon-document"]')
       expect(icon).toHaveStyle({ color: 'var(--tint-purple)' })
@@ -137,7 +145,9 @@ describe('TimelineItem', () => {
 
     it('applies glass-medium styling with orange icon for reminder activities', () => {
       const { container } = render(<TimelineItem activity={mockReminderActivity} />)
-      const iconWrapper = container.querySelector('[data-testid="activity-icon-reminder"]')?.parentElement
+      const iconWrapper = container.querySelector(
+        '[data-testid="activity-icon-reminder"]'
+      )?.parentElement
       expect(iconWrapper?.className).toMatch(/glass-medium/)
       const icon = container.querySelector('[data-testid="activity-icon-reminder"]')
       expect(icon).toHaveStyle({ color: 'var(--tint-orange)' })
@@ -161,13 +171,18 @@ describe('TimelineItem', () => {
         title: 'This is a very long title that should wrap properly and not break the layout',
       }
       render(<TimelineItem activity={longTitleActivity} />)
-      expect(screen.getByText('This is a very long title that should wrap properly and not break the layout')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'This is a very long title that should wrap properly and not break the layout'
+        )
+      ).toBeInTheDocument()
     })
 
     it('handles long descriptions', () => {
       const longDescActivity: TimelineActivity = {
         ...mockApplicationActivity,
-        description: 'This is a very long description that contains lots of details about the activity that should be displayed properly without breaking the component layout',
+        description:
+          'This is a very long description that contains lots of details about the activity that should be displayed properly without breaking the component layout',
       }
       render(<TimelineItem activity={longDescActivity} />)
       expect(screen.getByText(/This is a very long description/)).toBeInTheDocument()
@@ -184,7 +199,9 @@ describe('TimelineItem', () => {
     it('provides accessible text for screen readers', () => {
       render(<TimelineItem activity={mockApplicationActivity} />)
       expect(screen.getByText('Applied to TechCorp')).toBeVisible()
-      expect(screen.getByText('New application created for Senior Software Engineer position')).toBeVisible()
+      expect(
+        screen.getByText('New application created for Senior Software Engineer position')
+      ).toBeVisible()
     })
   })
 })

@@ -129,9 +129,7 @@ export async function getDocumentsByApplication(applicationId: string): Promise<
 export async function getDocumentUrl(filePath: string): Promise<string> {
   const supabase = createClient()
 
-  const { data, error } = await supabase.storage
-    .from('documents')
-    .createSignedUrl(filePath, 3600) // 1 hour expiry
+  const { data, error } = await supabase.storage.from('documents').createSignedUrl(filePath, 3600) // 1 hour expiry
 
   if (error) {
     throw new Error(`Failed to generate signed URL: ${error.message}`)

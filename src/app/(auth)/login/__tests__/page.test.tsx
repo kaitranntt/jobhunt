@@ -131,10 +131,7 @@ describe('LoginPage', () => {
 
   it('should show loading state during login', async () => {
     mockSignIn.mockImplementation(
-      () =>
-        new Promise(resolve =>
-          setTimeout(() => resolve({ data: {}, error: null }), 100)
-        )
+      () => new Promise(resolve => setTimeout(() => resolve({ data: {}, error: null }), 100))
     )
     mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
 

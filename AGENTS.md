@@ -1,6 +1,7 @@
 # JobHunt - AI Assistant Development Guidelines
 
 **Security Policies**
+
 > **⚠️ NEVER COMMIT ENVIRONMENT FILES TO GIT**
 > Never `git add` or `git commit` any `.env*` files except `.env.example`.
 
@@ -15,6 +16,7 @@ JobHunt is a job application tracking system built with Next.js 15, TypeScript, 
 ## 🚨 CRITICAL: Code Quality Gates (NON-NEGOTIABLE)
 
 **BEFORE any commit, ALWAYS run and ensure these pass:**
+
 ```bash
 yarn lint              # ESLint must pass with zero errors/warnings
 yarn typecheck         # TypeScript must compile with zero errors
@@ -24,6 +26,7 @@ yarn test              # All tests must pass
 **If quality gates fail, you MUST fix the issues before proceeding. No exceptions.**
 
 **🛑 ABSOLUTELY FORBIDDEN:**
+
 - ❌ **NEVER use `// eslint-disable` or `// eslint-disable-next-line`** - Fix the issue properly
 - ❌ **NEVER use `// @ts-ignore` or `// @ts-expect-error`** - Fix type issues correctly
 - ❌ **NEVER use `any` types** - Always find or define proper types
@@ -40,12 +43,14 @@ yarn test              # All tests must pass
 **ALWAYS write tests BEFORE implementation.**
 
 **TDD Workflow**:
+
 1. 📝 Write failing test
 2. ✅ Make test pass with minimal code
 3. 🔄 Refactor while keeping tests green
 4. 🔁 Repeat for next feature
 
 **Testing Strategy - Test Value, Not Lines:**
+
 - ✅ **MUST TEST**: Business logic (auth, CRUD, validation schemas)
 - ✅ **MUST TEST**: Reusable UI components (buttons, forms, cards)
 - ✅ **MUST TEST**: Error handling and edge cases
@@ -54,6 +59,7 @@ yarn test              # All tests must pass
 - ❌ **SKIP**: Configuration files
 
 **Test Pattern Examples:**
+
 ```typescript
 // ✅ Business Logic Tests (applications.test.ts, application.schema.test.ts)
 - CRUD operations with proper mocking
@@ -91,6 +97,7 @@ yarn test              # All tests must pass
 **🚨 CRITICAL: Never use `any` types - Always find proper types**
 
 **Quality Standards - NO BYPASSES ALLOWED:**
+
 - Define proper TypeScript interfaces and types for all data structures
 - Use strict type checking - resolve all type errors properly
 - Import types from libraries or define custom types
@@ -98,6 +105,7 @@ yarn test              # All tests must pass
 - Never suppress ESLint rules - fix the underlying issue
 
 **Common Proper Solutions:**
+
 - **Unused variables** → Add underscore prefix (`_unusedVar`) or remove them
 - **Missing properties** → Use proper interfaces with `Partial<T>` or `Pick<T>`
 - **Type issues** → Import correct types or define custom interfaces
@@ -108,12 +116,14 @@ yarn test              # All tests must pass
 ## 🛡️ Quality Standards
 
 ### Test Coverage Requirements
+
 - **Business Logic**: 80%+ coverage required
 - **Components**: 70%+ coverage required
 - **Integration**: Critical paths tested
 - **E2E**: Planned for Phase 2
 
 ### Code Quality Validation Commands
+
 ```bash
 # Daily Development (RECOMMENDED)
 yarn lint                   # ESLint validation
@@ -127,6 +137,7 @@ yarn build                  # Production build verification
 ```
 
 ### Pre-Deployment Checklist
+
 - [ ] Tests passing (`yarn test`) ✅ **CRITICAL**
 - [ ] TypeScript compilation clean (`yarn typecheck`) ✅ **CRITICAL**
 - [ ] ESLint passing (`yarn lint`) ✅ **CRITICAL**
@@ -139,12 +150,14 @@ yarn build                  # Production build verification
 ## 🗄️ Database & Supabase
 
 ### Database Operations Requirements
+
 - **All database calls must be typed** with Supabase generated types
 - **All database operations must have error handling**
 - **All queries must be tested** with mocked Supabase client
 - **Row Level Security (RLS) policies must be respected**
 
 ### Supabase Auth Requirements
+
 - **All authenticated routes must verify user session**
 - **Use Supabase Auth Helpers for Next.js**
 - **Implement proper error handling for auth failures**
@@ -154,12 +167,14 @@ yarn build                  # Production build verification
 ## 🎨 UI/UX Development with Shadcn UI
 
 ### Component Development Rules
+
 1. **Use Shadcn UI components** - Don't reinvent the wheel
 2. **Responsive Design** - Mobile-first approach
 3. **Accessibility** - WCAG 2.1 AA compliance required
 4. **Dark Mode** - Support via Tailwind dark: prefix
 
 ### Form Handling with React Hook Form + Zod
+
 - Use Zod schemas for validation
 - Implement proper error handling and user feedback
 - Type all form data with proper interfaces
@@ -169,11 +184,13 @@ yarn build                  # Production build verification
 ## 🔄 Development Workflow
 
 ### Always Maintain Working State
+
 - **Never break the main branch**
 - **Always deployable after each phase**
 - **All features must be fully functional when merged**
 
 ### Development Process
+
 1. 📋 Check TODO.md for current phase requirements
 2. 🧪 Write tests for the feature/component
 3. 💻 Implement to make tests pass
@@ -187,6 +204,7 @@ yarn build                  # Production build verification
 ## 🚨 Critical Mistakes to Avoid
 
 ### ❌ NEVER DO THESE
+
 1. **Skip quality gates**: Commit without running `yarn lint && yarn typecheck && yarn test`
 2. **Skip tests**: Writing implementation before tests
 3. **Use wrong package manager**: npm/pnpm instead of yarn
@@ -199,6 +217,7 @@ yarn build                  # Production build verification
 10. **Ignore RLS policies**: Direct database access without proper auth
 
 ### ✅ ALWAYS DO THESE
+
 1. **Run quality gates**: `yarn lint && yarn typecheck && yarn test` before every commit
 2. **Write tests first**: TDD approach for all features
 3. **Maintain working state**: Every commit is deployable
@@ -214,10 +233,12 @@ yarn build                  # Production build verification
 ## 📚 Project Documentation References
 
 **For AI Assistants:**
+
 - **TODO.md** - Progressive development checklist (check here for current tasks)
 - **README.md** - Project setup, architecture, and documentation (for reference only)
 
 **External Documentation:**
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Shadcn UI Documentation](https://ui.shadcn.com)

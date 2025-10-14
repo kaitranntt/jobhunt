@@ -233,7 +233,9 @@ describe('ContactCard', () => {
         <ContactCard contact={longEmailContact} onEdit={mockOnEdit} onDelete={mockOnDelete} />
       )
 
-      expect(screen.getByText('john.jacob.jingleheimer.schmidt@verylongdomainname.example.com')).toBeInTheDocument()
+      expect(
+        screen.getByText('john.jacob.jingleheimer.schmidt@verylongdomainname.example.com')
+      ).toBeInTheDocument()
     })
   })
 })

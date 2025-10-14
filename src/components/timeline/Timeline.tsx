@@ -3,7 +3,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Filter, ArrowUpDown } from 'lucide-react'
 import { getTimelineActivities } from '@/lib/api/timeline'
-import type { TimelineActivity, TimelineFilters, TimelineSortOrder, TimelineActivityType } from '@/lib/types/timeline.types'
+import type {
+  TimelineActivity,
+  TimelineFilters,
+  TimelineSortOrder,
+  TimelineActivityType,
+} from '@/lib/types/timeline.types'
 import TimelineItem from './TimelineItem'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -110,16 +115,17 @@ export default function Timeline({ userId }: TimelineProps) {
   }, [fetchActivities])
 
   const toggleType = (type: TimelineActivityType) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+    setSelectedTypes(prev => (prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]))
   }
 
   const groupedActivities = groupActivitiesByDate(activities)
 
   if (loading) {
     return (
-      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
+      <Card
+        className="glass-light rounded-glass shadow-glass-soft"
+        style={{ border: '1px solid var(--glass-border-medium)' }}
+      >
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
@@ -132,12 +138,17 @@ export default function Timeline({ userId }: TimelineProps) {
 
   if (error) {
     return (
-      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
+      <Card
+        className="glass-light rounded-glass shadow-glass-soft"
+        style={{ border: '1px solid var(--glass-border-medium)' }}
+      >
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-label-primary" style={{ color: 'var(--color-error)' }}>Failed to load timeline: {error}</p>
+          <p className="text-label-primary" style={{ color: 'var(--color-error)' }}>
+            Failed to load timeline: {error}
+          </p>
         </CardContent>
       </Card>
     )
@@ -145,7 +156,10 @@ export default function Timeline({ userId }: TimelineProps) {
 
   if (activities.length === 0) {
     return (
-      <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
+      <Card
+        className="glass-light rounded-glass shadow-glass-soft"
+        style={{ border: '1px solid var(--glass-border-medium)' }}
+      >
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
         </CardHeader>
@@ -157,7 +171,10 @@ export default function Timeline({ userId }: TimelineProps) {
   }
 
   return (
-    <Card className="glass-light rounded-glass shadow-glass-soft" style={{ border: '1px solid var(--glass-border-medium)' }}>
+    <Card
+      className="glass-light rounded-glass shadow-glass-soft"
+      style={{ border: '1px solid var(--glass-border-medium)' }}
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold text-label-primary">Timeline</CardTitle>
@@ -173,14 +190,16 @@ export default function Timeline({ userId }: TimelineProps) {
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>Filter Activities</SheetTitle>
-                  <SheetDescription>Filter timeline activities by type and date range</SheetDescription>
+                  <SheetDescription>
+                    Filter timeline activities by type and date range
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="mt-6 space-y-6">
                   {/* Activity Type Filters */}
                   <div className="space-y-3">
                     <Label className="text-sm font-medium">Activity Types</Label>
                     <div className="space-y-2">
-                      {(['application', 'contact', 'document', 'reminder'] as const).map((type) => (
+                      {(['application', 'contact', 'document', 'reminder'] as const).map(type => (
                         <div key={type} className="flex items-center gap-2">
                           <Checkbox
                             id={`filter-${type}`}
@@ -212,7 +231,7 @@ export default function Timeline({ userId }: TimelineProps) {
                           type="text"
                           placeholder="YYYY-MM-DD"
                           value={dateFrom}
-                          onChange={(e) => setDateFrom(e.target.value)}
+                          onChange={e => setDateFrom(e.target.value)}
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -224,7 +243,7 @@ export default function Timeline({ userId }: TimelineProps) {
                           type="text"
                           placeholder="YYYY-MM-DD"
                           value={dateTo}
-                          onChange={(e) => setDateTo(e.target.value)}
+                          onChange={e => setDateTo(e.target.value)}
                         />
                       </div>
                     </div>
@@ -257,7 +276,7 @@ export default function Timeline({ userId }: TimelineProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          {groupOrder.map((group) => {
+          {groupOrder.map(group => {
             const groupActivities = groupedActivities[group]
             if (!groupActivities || groupActivities.length === 0) return null
 

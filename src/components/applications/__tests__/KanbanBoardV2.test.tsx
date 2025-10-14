@@ -144,9 +144,7 @@ describe('KanbanBoardV2', () => {
     })
 
     it('collapses "In Progress" sub-stages when toggled again', async () => {
-      const applications = [
-        createMockApplication({ id: '1', status: 'phone_screen' }),
-      ]
+      const applications = [createMockApplication({ id: '1', status: 'phone_screen' })]
 
       render(<KanbanBoardV2 applications={applications} onUpdateStatus={vi.fn()} />)
 
@@ -218,7 +216,7 @@ describe('KanbanBoardV2', () => {
       const { container } = render(<KanbanBoardV2 applications={[]} onUpdateStatus={vi.fn()} />)
 
       const columns = container.querySelectorAll('[data-testid^="group-column-"]')
-      columns.forEach((column) => {
+      columns.forEach(column => {
         expect(column).toHaveClass('min-w-[280px]')
         expect(column).toHaveClass('md:min-w-[320px]')
         expect(column).toHaveClass('flex-1')
@@ -233,7 +231,9 @@ describe('KanbanBoardV2', () => {
         })
       )
 
-      const { container } = render(<KanbanBoardV2 applications={applications} onUpdateStatus={vi.fn()} />)
+      const { container } = render(
+        <KanbanBoardV2 applications={applications} onUpdateStatus={vi.fn()} />
+      )
 
       expect(container.querySelector('.flex-wrap')).toBeInTheDocument()
       expect(screen.getAllByTestId(/^group-column-/)).toHaveLength(4)
@@ -246,9 +246,7 @@ describe('KanbanBoardV2', () => {
 
       await waitFor(() => {
         expect(screen.getByText('No active applications yet')).toBeInTheDocument()
-        expect(
-          screen.getByText(/Start by adding jobs to your wishlist/)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Start by adding jobs to your wishlist/)).toBeInTheDocument()
         expect(screen.getByText('Add your first application')).toBeInTheDocument()
       })
     })

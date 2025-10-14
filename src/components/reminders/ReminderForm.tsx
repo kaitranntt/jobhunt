@@ -26,10 +26,7 @@ interface ReminderFormProps {
 
 // Form schema with datetime-local compatible validation
 const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, 'Title is required')
-    .max(255, 'Title must be less than 255 characters'),
+  title: z.string().min(1, 'Title is required').max(255, 'Title must be less than 255 characters'),
 
   description: z
     .string()
@@ -41,29 +38,19 @@ const formSchema = z.object({
   reminder_date: z
     .string()
     .min(1, 'Reminder date is required')
-    .refine(
-      date => {
-        // Check if it's a valid datetime-local format and can be parsed
-        const parsed = new Date(date)
-        return !isNaN(parsed.getTime())
-      },
-      'Invalid date format'
-    )
-    .refine(
-      date => new Date(date) > new Date(),
-      'Reminder date must be in the future'
-    ),
+    .refine(date => {
+      // Check if it's a valid datetime-local format and can be parsed
+      const parsed = new Date(date)
+      return !isNaN(parsed.getTime())
+    }, 'Invalid date format')
+    .refine(date => new Date(date) > new Date(), 'Reminder date must be in the future'),
 
   is_completed: z.boolean(),
 })
 
 type FormData = z.infer<typeof formSchema>
 
-export default function ReminderForm({
-  applicationId,
-  onSuccess,
-  initialData,
-}: ReminderFormProps) {
+export default function ReminderForm({ applicationId, onSuccess, initialData }: ReminderFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const isEditMode = !!initialData
 
@@ -115,11 +102,7 @@ export default function ReminderForm({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-6"
-        noValidate
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6" noValidate>
         <FormField
           control={form.control}
           name="title"
@@ -182,11 +165,7 @@ export default function ReminderForm({
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isLoading}>
-            {isLoading
-              ? 'Saving...'
-              : isEditMode
-                ? 'Update Reminder'
-                : 'Create Reminder'}
+            {isLoading ? 'Saving...' : isEditMode ? 'Update Reminder' : 'Create Reminder'}
           </Button>
         </div>
       </form>

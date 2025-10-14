@@ -11,15 +11,23 @@ interface ContactCardProps {
 
 export default function ContactCard({ contact, onEdit, onDelete }: ContactCardProps) {
   return (
-    <Card className="glass-light rounded-glass shadow-glass-soft glass-interactive" style={{ border: '1px solid var(--glass-border-medium)' }}>
+    <Card
+      className="glass-light rounded-glass shadow-glass-soft glass-interactive"
+      style={{ border: '1px solid var(--glass-border-medium)' }}
+    >
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full glass-medium shadow-glass-soft"
+          <div
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full glass-medium shadow-glass-soft"
             style={{ border: '1px solid var(--glass-border-medium)' }}
           >
-            <span className="text-lg font-semibold text-label-primary">{contact.name.charAt(0).toUpperCase()}</span>
+            <span className="text-lg font-semibold text-label-primary">
+              {contact.name.charAt(0).toUpperCase()}
+            </span>
           </div>
-          <CardTitle className="text-base font-semibold text-label-primary">{contact.name}</CardTitle>
+          <CardTitle className="text-base font-semibold text-label-primary">
+            {contact.name}
+          </CardTitle>
         </div>
         <div className="flex gap-1">
           <Button

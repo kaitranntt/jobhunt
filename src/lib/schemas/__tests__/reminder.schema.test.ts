@@ -1,15 +1,17 @@
 import { describe, it, expect } from 'vitest'
-import {
-  reminderFormSchema,
-  createReminderSchema,
-  updateReminderSchema,
-} from '../reminder.schema'
+import { reminderFormSchema, createReminderSchema, updateReminderSchema } from '../reminder.schema'
+
+const getFutureDate = (daysFromNow = 7) => {
+  const date = new Date()
+  date.setDate(date.getDate() + daysFromNow)
+  return date.toISOString()
+}
 
 describe('reminderFormSchema', () => {
   const validReminderData = {
     title: 'Follow up on application',
     description: 'Send a follow-up email to the hiring manager',
-    reminder_date: '2025-10-10T10:00:00Z',
+    reminder_date: getFutureDate(7),
     is_completed: false,
   }
 
@@ -107,7 +109,7 @@ describe('createReminderSchema', () => {
     application_id: '123e4567-e89b-12d3-a456-426614174001',
     title: 'Follow up on application',
     description: 'Send a follow-up email',
-    reminder_date: '2025-10-10T10:00:00Z',
+    reminder_date: getFutureDate(7),
     is_completed: false,
   }
 

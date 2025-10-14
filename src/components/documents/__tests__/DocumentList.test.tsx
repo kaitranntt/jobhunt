@@ -104,7 +104,11 @@ describe('DocumentList', () => {
 
     it('displays file type for each document', async () => {
       const documents = [
-        createMockDocument({ id: 'doc-1', file_name: 'document.pdf', file_type: 'application/pdf' }),
+        createMockDocument({
+          id: 'doc-1',
+          file_name: 'document.pdf',
+          file_type: 'application/pdf',
+        }),
         createMockDocument({
           id: 'doc-2',
           file_name: 'document.docx',
@@ -299,7 +303,10 @@ describe('DocumentList', () => {
       await user.click(confirmButton)
 
       await waitFor(() => {
-        expect(documentsApi.deleteDocument).toHaveBeenCalledWith('doc-123', 'user-123/app-456/resume.pdf')
+        expect(documentsApi.deleteDocument).toHaveBeenCalledWith(
+          'doc-123',
+          'user-123/app-456/resume.pdf'
+        )
       })
     })
 
@@ -409,10 +416,7 @@ describe('DocumentList', () => {
 
   describe('Accessibility', () => {
     it('uses semantic list structure', async () => {
-      const documents = [
-        createMockDocument({ id: 'doc-1' }),
-        createMockDocument({ id: 'doc-2' }),
-      ]
+      const documents = [createMockDocument({ id: 'doc-1' }), createMockDocument({ id: 'doc-2' })]
 
       vi.mocked(documentsApi.getDocumentsByApplication).mockResolvedValue(documents)
 

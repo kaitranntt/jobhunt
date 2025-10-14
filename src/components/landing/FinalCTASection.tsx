@@ -20,8 +20,8 @@ export function FinalCTASection() {
                 Take Control of Your Job Search Today
               </h2>
               <p className="mx-auto mb-10 max-w-2xl text-xl text-purple-100">
-                Join thousands tracking applications. Your data, your way. Start free or
-                self-host in minutes.
+                Join thousands tracking applications. Your data, your way. Start free or self-host
+                in minutes.
               </p>
 
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -54,21 +54,15 @@ export function FinalCTASection() {
               {/* Trust signals */}
               <div className="mt-12 grid gap-6 sm:grid-cols-3">
                 <div className="text-purple-100">
-                  <div className="text-3xl font-bold text-white mb-1">
-                    100%
-                  </div>
+                  <div className="text-3xl font-bold text-white mb-1">100%</div>
                   <div className="text-sm">Open Source</div>
                 </div>
                 <div className="text-purple-100">
-                  <div className="text-3xl font-bold text-white mb-1">
-                    MIT
-                  </div>
+                  <div className="text-3xl font-bold text-white mb-1">MIT</div>
                   <div className="text-sm">License</div>
                 </div>
                 <div className="text-purple-100">
-                  <div className="text-3xl font-bold text-white mb-1">
-                    Free
-                  </div>
+                  <div className="text-3xl font-bold text-white mb-1">Free</div>
                   <div className="text-sm">Forever</div>
                 </div>
               </div>

@@ -273,7 +273,7 @@ describe('DocumentUpload', () => {
     it('shows progress indicator during upload', async () => {
       const user = userEvent.setup()
       vi.mocked(documentsApi.uploadDocument).mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 100))
+        () => new Promise(resolve => setTimeout(resolve, 100))
       )
 
       render(
@@ -327,7 +327,11 @@ describe('DocumentUpload', () => {
       await user.click(uploadButton)
 
       await waitFor(() => {
-        expect(documentsApi.uploadDocument).toHaveBeenCalledWith(file, mockApplicationId, mockUserId)
+        expect(documentsApi.uploadDocument).toHaveBeenCalledWith(
+          file,
+          mockApplicationId,
+          mockUserId
+        )
       })
     })
 
@@ -546,20 +550,21 @@ describe('DocumentUpload', () => {
 
       // Mock a slow upload to catch the uploading state
       vi.mocked(documentsApi.uploadDocument).mockImplementation(
-        () => new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              id: 'doc-123',
-              user_id: mockUserId,
-              application_id: mockApplicationId,
-              file_name: 'test.pdf',
-              file_path: 'user-123/app-456/123456789-test.pdf',
-              file_type: 'application/pdf',
-              file_size: 4,
-              created_at: new Date().toISOString(),
-            })
-          }, 100)
-        })
+        () =>
+          new Promise(resolve => {
+            setTimeout(() => {
+              resolve({
+                id: 'doc-123',
+                user_id: mockUserId,
+                application_id: mockApplicationId,
+                file_name: 'test.pdf',
+                file_path: 'user-123/app-456/123456789-test.pdf',
+                file_type: 'application/pdf',
+                file_size: 4,
+                created_at: new Date().toISOString(),
+              })
+            }, 100)
+          })
       )
 
       render(

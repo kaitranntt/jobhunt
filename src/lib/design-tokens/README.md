@@ -5,6 +5,7 @@ Production-ready design tokens for JobHunt's macOS 26-inspired UI redesign.
 ## Overview
 
 This design system implements the "Liquid Glass" aesthetic with:
+
 - **RGBA-based color system** for proper alpha channel support
 - **8pt grid spacing system** for consistent layouts
 - **Responsive typography scale** following 4pt baseline grid
@@ -59,9 +60,11 @@ const MyComponent = () => (
 ## Design Token Files
 
 ### `colors.ts`
+
 macOS 26 semantic color system with RGBA values for both light and dark modes.
 
 **Available exports:**
+
 - `labelColors` - Text colors (primary, secondary, tertiary, quaternary)
 - `fillColors` - Background fill colors
 - `systemGrays` - Gray scale (gray1-gray6)
@@ -73,6 +76,7 @@ macOS 26 semantic color system with RGBA values for both light and dark modes.
 - `shadowColors` - Shadow colors for depth
 
 **CSS Variables:**
+
 ```css
 /* Label Colors */
 --macos-label-primary
@@ -94,16 +98,19 @@ macOS 26 semantic color system with RGBA values for both light and dark modes.
 ```
 
 ### `spacing.ts`
+
 8pt grid system with semantic component spacing.
 
 **Available exports:**
+
 - `spacing` - Base spacing scale (0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 20, 24)
 - `componentSpacing` - Semantic spacing (containerPadding, cardPadding, stack, inline, section, gap)
 - `borderRadius` - Border radius values (sm: 4px, default: 8px, md: 12px, lg: 20px, xl: 32px)
 
 **Examples:**
+
 ```typescript
-import { spacing, componentSpacing } from '@/lib/design-tokens';
+import { spacing, componentSpacing } from '@/lib/design-tokens'
 
 // Base spacing
 padding: spacing[3] // 24px
@@ -114,9 +121,11 @@ gap: componentSpacing.stackMd // 24px
 ```
 
 ### `typography.ts`
+
 Responsive typography scale with proper line heights and letter spacing.
 
 **Available exports:**
+
 - `fontSizes` - Display, title, heading, body, UI sizes
 - `fontWeights` - regular (400), medium (500), semibold (600), bold (700)
 - `lineHeights` - display, title, heading, body, ui
@@ -124,13 +133,14 @@ Responsive typography scale with proper line heights and letter spacing.
 - `typographyPresets` - Complete style presets
 
 **Examples:**
+
 ```typescript
-import { typographyPresets } from '@/lib/design-tokens';
+import { typographyPresets } from '@/lib/design-tokens'
 
 // Use complete preset
 const TitleText = styled.h1({
   ...typographyPresets.titleLg,
-});
+})
 
 // Or individual tokens
 fontSize: fontSizes.titleLg.desktop // 48px on desktop
@@ -200,14 +210,10 @@ lineHeight: lineHeights.title // 1.2
 
 ```html
 <!-- Interactive glass element -->
-<button class="glass-interactive rounded-glass-lg">
-  Hover me for spring physics
-</button>
+<button class="glass-interactive rounded-glass-lg">Hover me for spring physics</button>
 
 <!-- Glass button -->
-<button class="btn-glass rounded-glass">
-  Glass Button
-</button>
+<button class="btn-glass rounded-glass">Glass Button</button>
 ```
 
 ### Surface Treatments
@@ -237,7 +243,7 @@ lineHeight: lineHeights.title // 1.2
 ## Complete Component Example
 
 ```tsx
-import { spacing, borderRadius } from '@/lib/design-tokens';
+import { spacing, borderRadius } from '@/lib/design-tokens'
 
 export const GlassCard = ({ children }: { children: React.ReactNode }) => (
   <div
@@ -260,7 +266,7 @@ export const GlassCard = ({ children }: { children: React.ReactNode }) => (
       {children}
     </p>
   </div>
-);
+)
 ```
 
 ## Color Modes

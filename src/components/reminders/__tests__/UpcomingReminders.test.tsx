@@ -37,9 +37,7 @@ describe('UpcomingReminders', () => {
     application_id: applicationId,
     title,
     description: `Description for ${title}`,
-    reminder_date: new Date(
-      Date.now() + hoursFromNow * 60 * 60 * 1000
-    ).toISOString(),
+    reminder_date: new Date(Date.now() + hoursFromNow * 60 * 60 * 1000).toISOString(),
     is_completed: false,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -77,18 +75,14 @@ describe('UpcomingReminders', () => {
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
       await waitFor(() => {
-        expect(remindersApi.getUpcomingReminders).toHaveBeenCalledWith(
-          mockUserId
-        )
+        expect(remindersApi.getUpcomingReminders).toHaveBeenCalledWith(mockUserId)
       })
     })
   })
 
   describe('Display Next 5 Reminders', () => {
     it('should display up to 5 upcoming reminders', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders)
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -102,9 +96,7 @@ describe('UpcomingReminders', () => {
     })
 
     it('should not display more than 5 reminders', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders)
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -114,9 +106,7 @@ describe('UpcomingReminders', () => {
     })
 
     it('should display fewer than 5 reminders if less available', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 3)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 3))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -131,9 +121,7 @@ describe('UpcomingReminders', () => {
 
   describe('Compact Card Design', () => {
     it('should render reminders in compact format', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 2)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 2))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -144,9 +132,7 @@ describe('UpcomingReminders', () => {
     })
 
     it('should display reminder title in compact view', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 1)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 1))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -156,9 +142,7 @@ describe('UpcomingReminders', () => {
     })
 
     it('should display reminder date in compact view', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 1)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 1))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -171,9 +155,7 @@ describe('UpcomingReminders', () => {
 
   describe('Navigation to Application', () => {
     it('should navigate to application detail when reminder is clicked', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 1)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 1))
       const user = userEvent.setup()
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
@@ -196,9 +178,7 @@ describe('UpcomingReminders', () => {
         application_id: null,
       }
 
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue([
-        reminderWithoutApp,
-      ])
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue([reminderWithoutApp])
       const user = userEvent.setup()
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
@@ -224,18 +204,14 @@ describe('UpcomingReminders', () => {
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/no upcoming reminders/i)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/no upcoming reminders/i)).toBeInTheDocument()
       })
     })
   })
 
   describe('Loading State', () => {
     it('should show loading indicator while fetching', () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockImplementation(
-        () => new Promise(() => {})
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockImplementation(() => new Promise(() => {}))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
@@ -245,25 +221,19 @@ describe('UpcomingReminders', () => {
 
   describe('Error Handling', () => {
     it('should display error message when fetch fails', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockRejectedValue(
-        new Error('Failed to fetch')
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockRejectedValue(new Error('Failed to fetch'))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/failed to load reminders/i)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/failed to load reminders/i)).toBeInTheDocument()
       })
     })
   })
 
   describe('Accessibility', () => {
     it('should have accessible reminder buttons', async () => {
-      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(
-        mockReminders.slice(0, 2)
-      )
+      vi.mocked(remindersApi.getUpcomingReminders).mockResolvedValue(mockReminders.slice(0, 2))
 
       renderWithTheme(<UpcomingReminders userId={mockUserId} />)
 

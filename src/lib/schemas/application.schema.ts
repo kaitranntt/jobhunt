@@ -32,12 +32,7 @@ export const applicationFormSchema = z.object({
     .min(1, 'Job title is required')
     .max(255, 'Job title must be less than 255 characters'),
 
-  job_url: z
-    .string()
-    .url('Must be a valid URL')
-    .optional()
-    .nullable()
-    .or(z.literal('')),
+  job_url: z.string().url('Must be a valid URL').optional().nullable().or(z.literal('')),
 
   location: z
     .string()

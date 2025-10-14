@@ -2,19 +2,8 @@
 
 import * as React from 'react'
 import { format } from 'date-fns'
-import {
-  MoreVertical,
-  Eye,
-  Edit2,
-  Trash2,
-  MapPin,
-  GripVertical,
-} from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from '@/components/ui/card'
+import { MoreVertical, Eye, Edit2, Trash2, MapPin, GripVertical } from 'lucide-react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,17 +28,28 @@ interface ApplicationCardProps {
 const getStatusColor = (status: ApplicationStatus): string => {
   const statusColorMap: Record<ApplicationStatus, string> = {
     wishlist: 'glass-ultra text-label-secondary',
-    applied: 'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
-    phone_screen: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    assessment: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    take_home: 'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    interviewing: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    final_round: 'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    offered: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    accepted: 'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    rejected: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    withdrawn: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    ghosted: 'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    applied:
+      'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
+    phone_screen:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    assessment:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    take_home:
+      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
+    interviewing:
+      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    final_round:
+      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
+    offered:
+      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    accepted:
+      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
+    rejected:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    withdrawn:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
+    ghosted:
+      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
   }
 
   return statusColorMap[status]
@@ -165,7 +165,12 @@ export function ApplicationCard({
       </CardHeader>
       <CardContent className="pt-0 pb-6 px-6">
         <div className="flex items-center justify-between gap-4">
-          <Badge className={cn('text-xs font-medium px-3 py-1 rounded-glass-sm transition-all', statusColor)}>
+          <Badge
+            className={cn(
+              'text-xs font-medium px-3 py-1 rounded-glass-sm transition-all',
+              statusColor
+            )}
+          >
             {application.status.replace('_', ' ')}
           </Badge>
           <span className="text-xs text-label-tertiary">

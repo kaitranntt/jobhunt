@@ -101,8 +101,7 @@ describe('Documents API', () => {
             data: {
               ...mockDocument,
               file_name: 'cover-letter.docx',
-              file_type:
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              file_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             },
             error: null,
           }),
@@ -281,9 +280,7 @@ describe('Documents API', () => {
         deleteDocument('doc-1', 'user-1/app-1/1234567890-resume.pdf')
       ).resolves.toBeUndefined()
 
-      expect(mockStorageRemove).toHaveBeenCalledWith([
-        'user-1/app-1/1234567890-resume.pdf',
-      ])
+      expect(mockStorageRemove).toHaveBeenCalledWith(['user-1/app-1/1234567890-resume.pdf'])
       expect(mockDatabaseDelete).toHaveBeenCalled()
     })
 
@@ -293,9 +290,9 @@ describe('Documents API', () => {
         error: { message: 'Storage deletion error' },
       })
 
-      await expect(
-        deleteDocument('doc-1', 'user-1/app-1/1234567890-resume.pdf')
-      ).rejects.toThrow('Failed to delete file from storage: Storage deletion error')
+      await expect(deleteDocument('doc-1', 'user-1/app-1/1234567890-resume.pdf')).rejects.toThrow(
+        'Failed to delete file from storage: Storage deletion error'
+      )
 
       expect(mockDatabaseDelete).not.toHaveBeenCalled()
     })
@@ -312,9 +309,9 @@ describe('Documents API', () => {
         }),
       })
 
-      await expect(
-        deleteDocument('doc-1', 'user-1/app-1/1234567890-resume.pdf')
-      ).rejects.toThrow('Failed to delete document record: Database deletion error')
+      await expect(deleteDocument('doc-1', 'user-1/app-1/1234567890-resume.pdf')).rejects.toThrow(
+        'Failed to delete document record: Database deletion error'
+      )
     })
   })
 })

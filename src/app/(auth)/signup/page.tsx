@@ -167,7 +167,9 @@ export default function SignupPage() {
         desired_industries: formData.desired_industries.trim()
           ? formData.desired_industries.split(',').map(i => i.trim())
           : null,
-        experience_years: formData.experience_years ? parseInt(formData.experience_years, 10) : null,
+        experience_years: formData.experience_years
+          ? parseInt(formData.experience_years, 10)
+          : null,
         linkedin_url: formData.linkedin_url.trim() || null,
         portfolio_url: formData.portfolio_url.trim() || null,
       }
@@ -194,7 +196,8 @@ export default function SignupPage() {
     try {
       const supabase = createClient()
       const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '')
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        (typeof window !== 'undefined' ? window.location.origin : '')
       const redirectUrl = `${siteUrl}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
 
       const { error } = await supabase.auth.signInWithOAuth({
@@ -220,7 +223,9 @@ export default function SignupPage() {
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-foreground">Create your account</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Start tracking your job applications today</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Start tracking your job applications today
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -232,7 +237,11 @@ export default function SignupPage() {
           </div>
 
           <div className="space-y-6">
-            {error && <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">{error}</div>}
+            {error && (
+              <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">
+                {error}
+              </div>
+            )}
 
             {currentStep === 1 && (
               <div className="space-y-4">
@@ -257,7 +266,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Password (min. 6 characters) *
                   </label>
                   <Input
@@ -289,13 +301,21 @@ export default function SignupPage() {
                   {googleLoading ? 'Redirecting...' : 'Continue with Google'}
                 </Button>
 
-                <Button type="button" onClick={handleNext} disabled={loading} className="w-full btn-brand-gradient">
+                <Button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={loading}
+                  className="w-full btn-brand-gradient"
+                >
                   Next
                 </Button>
 
                 <p className="text-center text-sm text-foreground">
                   Already have an account?{' '}
-                  <Link href="/login" className="font-medium text-brand-primary hover:text-brand-primary/80">
+                  <Link
+                    href="/login"
+                    className="font-medium text-brand-primary hover:text-brand-primary/80"
+                  >
                     Sign in
                   </Link>
                 </p>
@@ -311,7 +331,10 @@ export default function SignupPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="first_name" className="block text-sm font-medium text-foreground mb-1">
+                    <label
+                      htmlFor="first_name"
+                      className="block text-sm font-medium text-foreground mb-1"
+                    >
                       First Name *
                     </label>
                     <Input
@@ -325,7 +348,10 @@ export default function SignupPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="last_name" className="block text-sm font-medium text-foreground mb-1">
+                    <label
+                      htmlFor="last_name"
+                      className="block text-sm font-medium text-foreground mb-1"
+                    >
                       Last Name *
                     </label>
                     <Input
@@ -355,7 +381,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="location" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="location"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Location
                   </label>
                   <Input
@@ -386,11 +415,16 @@ export default function SignupPage() {
               <div className="space-y-4">
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-foreground">Professional Info</h3>
-                  <p className="text-sm text-muted-foreground">Share your professional background</p>
+                  <p className="text-sm text-muted-foreground">
+                    Share your professional background
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="job_role" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="job_role"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Current Role
                   </label>
                   <Input
@@ -404,7 +438,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="experience_years" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="experience_years"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Years of Experience
                   </label>
                   <Input
@@ -420,7 +457,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="linkedin_url" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="linkedin_url"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     LinkedIn URL
                   </label>
                   <Input
@@ -434,7 +474,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="portfolio_url" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="portfolio_url"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Portfolio URL
                   </label>
                   <Input
@@ -469,7 +512,10 @@ export default function SignupPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="desired_roles" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="desired_roles"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Desired Roles
                   </label>
                   <Input
@@ -480,11 +526,16 @@ export default function SignupPage() {
                     variant="glass"
                     placeholder="Frontend Engineer, Full Stack Developer (comma-separated)"
                   />
-                  <p className="mt-1 text-xs text-muted-foreground">Separate multiple roles with commas</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Separate multiple roles with commas
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="desired_industries" className="block text-sm font-medium text-foreground mb-1">
+                  <label
+                    htmlFor="desired_industries"
+                    className="block text-sm font-medium text-foreground mb-1"
+                  >
                     Desired Industries
                   </label>
                   <Input
@@ -495,7 +546,9 @@ export default function SignupPage() {
                     variant="glass"
                     placeholder="Technology, FinTech, Healthcare (comma-separated)"
                   />
-                  <p className="mt-1 text-xs text-muted-foreground">Separate multiple industries with commas</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Separate multiple industries with commas
+                  </p>
                 </div>
 
                 <div className="flex gap-2">

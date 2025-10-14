@@ -107,7 +107,9 @@ describe('SignupPage', () => {
     renderWithTheme(<SignupPage />)
 
     const emailInput = screen.getByLabelText(/email address/i) as HTMLInputElement
-    const passwordInput = screen.getByLabelText(/password \(min\. 6 characters\)/i) as HTMLInputElement
+    const passwordInput = screen.getByLabelText(
+      /password \(min\. 6 characters\)/i
+    ) as HTMLInputElement
 
     fireEvent.change(emailInput, { target: { value: 'newuser@example.com' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
@@ -249,7 +251,9 @@ describe('SignupPage', () => {
 
     renderWithTheme(<SignupPage />)
 
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    })
     fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
 
@@ -267,7 +271,9 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /professional info/i })).toBeInTheDocument()
     })
 
-    fireEvent.change(screen.getByLabelText(/current role/i), { target: { value: 'Software Engineer' } })
+    fireEvent.change(screen.getByLabelText(/current role/i), {
+      target: { value: 'Software Engineer' },
+    })
     fireEvent.change(screen.getByLabelText(/years of experience/i), { target: { value: '5' } })
     fireEvent.change(screen.getByLabelText(/linkedin url/i), {
       target: { value: 'https://linkedin.com/in/johndoe' },
@@ -278,8 +284,12 @@ describe('SignupPage', () => {
       expect(screen.getByRole('heading', { name: /job preferences/i })).toBeInTheDocument()
     })
 
-    fireEvent.change(screen.getByLabelText(/desired roles/i), { target: { value: 'Senior Engineer, Tech Lead' } })
-    fireEvent.change(screen.getByLabelText(/desired industries/i), { target: { value: 'Technology, FinTech' } })
+    fireEvent.change(screen.getByLabelText(/desired roles/i), {
+      target: { value: 'Senior Engineer, Tech Lead' },
+    })
+    fireEvent.change(screen.getByLabelText(/desired industries/i), {
+      target: { value: 'Technology, FinTech' },
+    })
 
     const completeButton = screen.getByRole('button', { name: /complete signup/i })
     fireEvent.click(completeButton)
@@ -313,7 +323,9 @@ describe('SignupPage', () => {
   it('should validate URL formats in step 3', async () => {
     renderWithTheme(<SignupPage />)
 
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    })
     fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
 
@@ -348,7 +360,9 @@ describe('SignupPage', () => {
 
     renderWithTheme(<SignupPage />)
 
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    })
     fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
     fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
 

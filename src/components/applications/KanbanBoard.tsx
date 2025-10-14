@@ -60,14 +60,19 @@ interface SortableApplicationProps {
   onApplicationClick?: (application: Application) => void
 }
 
-function SortableApplication({ application, isDragging, onApplicationClick }: SortableApplicationProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, setActivatorNodeRef } = useSortable({
-    id: application.id,
-    data: {
-      applicationId: application.id,
-      currentStatus: application.status,
-    },
-  })
+function SortableApplication({
+  application,
+  isDragging,
+  onApplicationClick,
+}: SortableApplicationProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, setActivatorNodeRef } =
+    useSortable({
+      id: application.id,
+      data: {
+        applicationId: application.id,
+        currentStatus: application.status,
+      },
+    })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -105,14 +110,17 @@ function KanbanColumn({ status, applications, activeId, onApplicationClick }: Ka
         </Badge>
       </div>
 
-      <SortableContext items={applications.map((app) => app.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext
+        items={applications.map(app => app.id)}
+        strategy={verticalListSortingStrategy}
+      >
         <div className="flex flex-1 flex-col gap-3">
           {applications.length === 0 ? (
             <div className="flex flex-1 items-center justify-center rounded-md border-2 border-dashed border-muted-foreground/25 p-8 text-center">
               <p className="text-sm text-muted-foreground">No applications</p>
             </div>
           ) : (
-            applications.map((application) => (
+            applications.map(application => (
               <SortableApplication
                 key={application.id}
                 application={application}
@@ -127,9 +135,15 @@ function KanbanColumn({ status, applications, activeId, onApplicationClick }: Ka
   )
 }
 
-export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, isLoading = false }: KanbanBoardProps) {
+export function KanbanBoard({
+  applications,
+  onUpdateStatus,
+  onApplicationClick,
+  isLoading = false,
+}: KanbanBoardProps) {
   const [activeId, setActiveId] = React.useState<string | null>(null)
-  const [optimisticApplications, setOptimisticApplications] = React.useState<Application[]>(applications)
+  const [optimisticApplications, setOptimisticApplications] =
+    React.useState<Application[]>(applications)
   const [announcement, setAnnouncement] = React.useState<string>('')
 
   // Update optimistic state when applications prop changes
@@ -154,7 +168,7 @@ export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, 
       ghosted: [],
     }
 
-    optimisticApplications.forEach((app) => {
+    optimisticApplications.forEach(app => {
       if (grouped[app.status]) {
         grouped[app.status].push(app)
       }
@@ -189,7 +203,7 @@ export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, 
     const newStatus = over.id as ApplicationStatus
 
     // Find the application being dragged
-    const application = optimisticApplications.find((app) => app.id === applicationId)
+    const application = optimisticApplications.find(app => app.id === applicationId)
 
     if (!application || application.status === newStatus) {
       return
@@ -198,7 +212,7 @@ export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, 
     const oldStatus = application.status
 
     // Optimistic update: Update UI immediately
-    const updatedApplications = optimisticApplications.map((app) =>
+    const updatedApplications = optimisticApplications.map(app =>
       app.id === applicationId ? { ...app, status: newStatus } : app
     )
     setOptimisticApplications(updatedApplications)
@@ -220,7 +234,7 @@ export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, 
   }
 
   const activeApplication = React.useMemo(
-    () => optimisticApplications.find((app) => app.id === activeId),
+    () => optimisticApplications.find(app => app.id === activeId),
     [activeId, optimisticApplications]
   )
 
@@ -251,7 +265,7 @@ export function KanbanBoard({ applications, onUpdateStatus, onApplicationClick, 
       >
         <div data-testid="kanban-dnd-context" className="overflow-x-auto">
           <div className="flex gap-4 p-4 pb-8">
-            {ALL_STATUSES.map((status) => (
+            {ALL_STATUSES.map(status => (
               <KanbanColumn
                 key={status}
                 status={status}

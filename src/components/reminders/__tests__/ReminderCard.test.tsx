@@ -60,9 +60,7 @@ describe('ReminderCard', () => {
         />
       )
 
-      expect(
-        screen.getByText('Send follow-up email to hiring manager')
-      ).toBeInTheDocument()
+      expect(screen.getByText('Send follow-up email to hiring manager')).toBeInTheDocument()
     })
 
     it('should display formatted reminder date', () => {

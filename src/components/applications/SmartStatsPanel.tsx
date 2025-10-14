@@ -23,7 +23,12 @@ const StatCard = ({ icon, label, value, trend, colorClass }: StatCardProps) => {
     <Card className="glass-medium rounded-glass shadow-glass-soft border-0">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <div className={cn('p-3 rounded-glass-sm glass-ultra transition-all', colorClass || 'bg-blue-500/10')}>
+          <div
+            className={cn(
+              'p-3 rounded-glass-sm glass-ultra transition-all',
+              colorClass || 'bg-blue-500/10'
+            )}
+          >
             {icon}
           </div>
           {trend && (
@@ -33,7 +38,9 @@ const StatCard = ({ icon, label, value, trend, colorClass }: StatCardProps) => {
           )}
         </div>
         <div className="mt-4">
-          <div className="text-4xl font-semibold tracking-tight text-label-primary mb-1">{value}</div>
+          <div className="text-4xl font-semibold tracking-tight text-label-primary mb-1">
+            {value}
+          </div>
           <p className="text-sm text-label-secondary font-medium">{label}</p>
         </div>
       </CardContent>
@@ -45,22 +52,18 @@ const calculateStats = (applications: Application[]) => {
   const total = applications.length
 
   // Response rate - applications beyond 'wishlist' and 'applied'
-  const responded = applications.filter(
-    (app) => !['wishlist', 'applied'].includes(app.status)
-  ).length
+  const responded = applications.filter(app => !['wishlist', 'applied'].includes(app.status)).length
   const responseRate = total > 0 ? Math.round((responded / total) * 100) : 0
 
   // Active interviews - specific interview stage statuses
-  const activeInterviews = applications.filter((app) =>
-    ['phone_screen', 'assessment', 'take_home', 'interviewing', 'final_round'].includes(
-      app.status
-    )
+  const activeInterviews = applications.filter(app =>
+    ['phone_screen', 'assessment', 'take_home', 'interviewing', 'final_round'].includes(app.status)
   ).length
 
   // Average response time - calculate from date_applied to updated_at
   // For applications that moved beyond 'applied' status
   const respondedApps = applications.filter(
-    (app) => !['wishlist', 'applied'].includes(app.status) && app.date_applied && app.updated_at
+    app => !['wishlist', 'applied'].includes(app.status) && app.date_applied && app.updated_at
   )
 
   let avgResponseTime = 0

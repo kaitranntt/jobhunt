@@ -9,10 +9,10 @@
 
 export const labelColors = {
   light: {
-    primary: 'rgba(0, 0, 0, 0.847)',      // labelColor
-    secondary: 'rgba(0, 0, 0, 0.498)',    // secondaryLabelColor
-    tertiary: 'rgba(0, 0, 0, 0.259)',     // tertiaryLabelColor
-    quaternary: 'rgba(0, 0, 0, 0.098)',   // quaternaryLabelColor
+    primary: 'rgba(0, 0, 0, 0.847)', // labelColor
+    secondary: 'rgba(0, 0, 0, 0.498)', // secondaryLabelColor
+    tertiary: 'rgba(0, 0, 0, 0.259)', // tertiaryLabelColor
+    quaternary: 'rgba(0, 0, 0, 0.098)', // quaternaryLabelColor
   },
   dark: {
     primary: 'rgba(255, 255, 255, 0.847)', // labelColor
@@ -20,7 +20,7 @@ export const labelColors = {
     tertiary: 'rgba(255, 255, 255, 0.251)', // tertiaryLabelColor
     quaternary: 'rgba(255, 255, 255, 0.098)', // quaternaryLabelColor
   },
-} as const;
+} as const
 
 // ============================================================================
 // macOS 26 System Fill Colors (RGBA)
@@ -28,18 +28,18 @@ export const labelColors = {
 
 export const fillColors = {
   light: {
-    primary: 'rgba(120, 120, 128, 0.2)',     // systemFill
-    secondary: 'rgba(120, 120, 128, 0.16)',  // secondarySystemFill
-    tertiary: 'rgba(118, 118, 128, 0.12)',   // tertiarySystemFill
+    primary: 'rgba(120, 120, 128, 0.2)', // systemFill
+    secondary: 'rgba(120, 120, 128, 0.16)', // secondarySystemFill
+    tertiary: 'rgba(118, 118, 128, 0.12)', // tertiarySystemFill
     quaternary: 'rgba(116, 116, 128, 0.08)', // quaternarySystemFill
   },
   dark: {
-    primary: 'rgba(120, 120, 128, 0.36)',    // systemFill
-    secondary: 'rgba(120, 120, 128, 0.32)',  // secondarySystemFill
-    tertiary: 'rgba(118, 118, 128, 0.24)',   // tertiarySystemFill
+    primary: 'rgba(120, 120, 128, 0.36)', // systemFill
+    secondary: 'rgba(120, 120, 128, 0.32)', // secondarySystemFill
+    tertiary: 'rgba(118, 118, 128, 0.24)', // tertiarySystemFill
     quaternary: 'rgba(116, 116, 128, 0.18)', // quaternarySystemFill
   },
-} as const;
+} as const
 
 // ============================================================================
 // macOS 26 System Gray Colors (RGBA)
@@ -62,7 +62,7 @@ export const systemGrays = {
     gray5: 'rgba(44, 44, 46, 1)',
     gray6: 'rgba(28, 28, 30, 1)',
   },
-} as const;
+} as const
 
 // ============================================================================
 // System Background Colors (RGBA)
@@ -70,22 +70,22 @@ export const systemGrays = {
 
 export const systemBackgrounds = {
   light: {
-    primary: 'rgba(255, 255, 255, 1)',           // systemBackground
-    secondary: 'rgba(242, 242, 247, 1)',         // secondarySystemBackground
-    tertiary: 'rgba(255, 255, 255, 1)',          // tertiarySystemBackground
-    grouped: 'rgba(242, 242, 247, 1)',           // systemGroupedBackground
-    groupedSecondary: 'rgba(255, 255, 255, 1)',  // secondarySystemGroupedBackground
-    groupedTertiary: 'rgba(242, 242, 247, 1)',   // tertiarySystemGroupedBackground
+    primary: 'rgba(255, 255, 255, 1)', // systemBackground
+    secondary: 'rgba(242, 242, 247, 1)', // secondarySystemBackground
+    tertiary: 'rgba(255, 255, 255, 1)', // tertiarySystemBackground
+    grouped: 'rgba(242, 242, 247, 1)', // systemGroupedBackground
+    groupedSecondary: 'rgba(255, 255, 255, 1)', // secondarySystemGroupedBackground
+    groupedTertiary: 'rgba(242, 242, 247, 1)', // tertiarySystemGroupedBackground
   },
   dark: {
-    primary: 'rgba(0, 0, 0, 1)',                 // systemBackground
-    secondary: 'rgba(28, 28, 30, 1)',            // secondarySystemBackground
-    tertiary: 'rgba(44, 44, 46, 1)',             // tertiarySystemBackground
-    grouped: 'rgba(0, 0, 0, 1)',                 // systemGroupedBackground
-    groupedSecondary: 'rgba(28, 28, 30, 1)',     // secondarySystemGroupedBackground
-    groupedTertiary: 'rgba(44, 44, 46, 1)',      // tertiarySystemGroupedBackground
+    primary: 'rgba(0, 0, 0, 1)', // systemBackground
+    secondary: 'rgba(28, 28, 30, 1)', // secondarySystemBackground
+    tertiary: 'rgba(44, 44, 46, 1)', // tertiarySystemBackground
+    grouped: 'rgba(0, 0, 0, 1)', // systemGroupedBackground
+    groupedSecondary: 'rgba(28, 28, 30, 1)', // secondarySystemGroupedBackground
+    groupedTertiary: 'rgba(44, 44, 46, 1)', // tertiarySystemGroupedBackground
   },
-} as const;
+} as const
 
 // ============================================================================
 // System Tint Colors (Brand/Accent)
@@ -128,7 +128,7 @@ export const systemTints = {
     light: 'rgba(88, 86, 214, 1)',
     dark: 'rgba(94, 92, 230, 1)',
   },
-} as const;
+} as const
 
 // ============================================================================
 // Liquid Glass Material Colors (with Alpha Channels)
@@ -136,18 +136,18 @@ export const systemTints = {
 
 export const liquidGlassMaterials = {
   light: {
-    ultra: 'rgba(255, 255, 255, 0.15)',       // Ultra-light glass (15px blur, 5% tint)
-    light: 'rgba(255, 255, 255, 0.25)',       // Light glass (20px blur, 8% tint)
-    medium: 'rgba(255, 255, 255, 0.35)',      // Medium glass (30px blur, 15% tint)
-    heavy: 'rgba(255, 255, 255, 0.45)',       // Heavy glass (40px blur, 25% tint)
+    ultra: 'rgba(255, 255, 255, 0.15)', // Ultra-light glass (15px blur, 5% tint)
+    light: 'rgba(255, 255, 255, 0.25)', // Light glass (20px blur, 8% tint)
+    medium: 'rgba(255, 255, 255, 0.35)', // Medium glass (30px blur, 15% tint)
+    heavy: 'rgba(255, 255, 255, 0.45)', // Heavy glass (40px blur, 25% tint)
   },
   dark: {
-    ultra: 'rgba(18, 18, 18, 0.4)',           // Ultra-light glass dark
-    light: 'rgba(18, 18, 18, 0.5)',           // Light glass dark
-    medium: 'rgba(18, 18, 18, 0.65)',         // Medium glass dark
-    heavy: 'rgba(18, 18, 18, 0.8)',           // Heavy glass dark
+    ultra: 'rgba(18, 18, 18, 0.4)', // Ultra-light glass dark
+    light: 'rgba(18, 18, 18, 0.5)', // Light glass dark
+    medium: 'rgba(18, 18, 18, 0.65)', // Medium glass dark
+    heavy: 'rgba(18, 18, 18, 0.8)', // Heavy glass dark
   },
-} as const;
+} as const
 
 // ============================================================================
 // Glass Border Colors (for Liquid Glass effect)
@@ -155,16 +155,16 @@ export const liquidGlassMaterials = {
 
 export const glassBorders = {
   light: {
-    subtle: 'rgba(255, 255, 255, 0.4)',       // Subtle border
-    medium: 'rgba(255, 255, 255, 0.6)',       // Medium border
-    strong: 'rgba(255, 255, 255, 0.8)',       // Strong border
+    subtle: 'rgba(255, 255, 255, 0.4)', // Subtle border
+    medium: 'rgba(255, 255, 255, 0.6)', // Medium border
+    strong: 'rgba(255, 255, 255, 0.8)', // Strong border
   },
   dark: {
-    subtle: 'rgba(255, 255, 255, 0.1)',       // Subtle border
-    medium: 'rgba(255, 255, 255, 0.15)',      // Medium border
-    strong: 'rgba(255, 255, 255, 0.25)',      // Strong border
+    subtle: 'rgba(255, 255, 255, 0.1)', // Subtle border
+    medium: 'rgba(255, 255, 255, 0.15)', // Medium border
+    strong: 'rgba(255, 255, 255, 0.25)', // Strong border
   },
-} as const;
+} as const
 
 // ============================================================================
 // Semantic State Colors
@@ -187,7 +187,7 @@ export const semanticColors = {
     light: 'rgba(0, 122, 255, 1)',
     dark: 'rgba(10, 132, 255, 1)',
   },
-} as const;
+} as const
 
 // ============================================================================
 // Shadow Colors for Depth
@@ -195,20 +195,20 @@ export const semanticColors = {
 
 export const shadowColors = {
   light: {
-    subtle: 'rgba(0, 0, 0, 0.05)',           // Subtle elevation
-    soft: 'rgba(0, 0, 0, 0.1)',              // Soft shadow
-    medium: 'rgba(0, 0, 0, 0.15)',           // Medium shadow
-    strong: 'rgba(0, 0, 0, 0.2)',            // Strong shadow
-    specular: 'rgba(255, 255, 255, 0.3)',    // Specular highlight (inset)
+    subtle: 'rgba(0, 0, 0, 0.05)', // Subtle elevation
+    soft: 'rgba(0, 0, 0, 0.1)', // Soft shadow
+    medium: 'rgba(0, 0, 0, 0.15)', // Medium shadow
+    strong: 'rgba(0, 0, 0, 0.2)', // Strong shadow
+    specular: 'rgba(255, 255, 255, 0.3)', // Specular highlight (inset)
   },
   dark: {
-    subtle: 'rgba(0, 0, 0, 0.2)',            // Subtle elevation
-    soft: 'rgba(0, 0, 0, 0.3)',              // Soft shadow
-    medium: 'rgba(0, 0, 0, 0.4)',            // Medium shadow
-    strong: 'rgba(0, 0, 0, 0.6)',            // Strong shadow
-    specular: 'rgba(255, 255, 255, 0.1)',    // Specular highlight (inset)
+    subtle: 'rgba(0, 0, 0, 0.2)', // Subtle elevation
+    soft: 'rgba(0, 0, 0, 0.3)', // Soft shadow
+    medium: 'rgba(0, 0, 0, 0.4)', // Medium shadow
+    strong: 'rgba(0, 0, 0, 0.6)', // Strong shadow
+    specular: 'rgba(255, 255, 255, 0.1)', // Specular highlight (inset)
   },
-} as const;
+} as const
 
 // ============================================================================
 // CSS Custom Properties Generator
@@ -278,18 +278,18 @@ export function generateCSSVariables(mode: 'light' | 'dark'): Record<string, str
     '--shadow-medium': shadowColors[mode].medium,
     '--shadow-strong': shadowColors[mode].strong,
     '--shadow-specular': shadowColors[mode].specular,
-  };
+  }
 }
 
 // ============================================================================
 // Type Exports for TypeScript
 // ============================================================================
 
-export type ColorMode = 'light' | 'dark';
-export type LabelColorKey = keyof typeof labelColors.light;
-export type FillColorKey = keyof typeof fillColors.light;
-export type SystemGrayKey = keyof typeof systemGrays.light;
-export type SystemBackgroundKey = keyof typeof systemBackgrounds.light;
-export type TintColorKey = keyof typeof systemTints;
-export type GlassMaterialKey = keyof typeof liquidGlassMaterials.light;
-export type SemanticColorKey = keyof typeof semanticColors;
+export type ColorMode = 'light' | 'dark'
+export type LabelColorKey = keyof typeof labelColors.light
+export type FillColorKey = keyof typeof fillColors.light
+export type SystemGrayKey = keyof typeof systemGrays.light
+export type SystemBackgroundKey = keyof typeof systemBackgrounds.light
+export type TintColorKey = keyof typeof systemTints
+export type GlassMaterialKey = keyof typeof liquidGlassMaterials.light
+export type SemanticColorKey = keyof typeof semanticColors

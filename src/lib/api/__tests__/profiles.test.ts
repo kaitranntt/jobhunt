@@ -93,7 +93,9 @@ describe('Profiles API', () => {
         error: { message: errorMessage },
       })
 
-      await expect(getProfile(mockSupabase, 'user-1')).rejects.toThrow(`Failed to fetch profile: ${errorMessage}`)
+      await expect(getProfile(mockSupabase, 'user-1')).rejects.toThrow(
+        `Failed to fetch profile: ${errorMessage}`
+      )
     })
   })
 
@@ -202,7 +204,9 @@ describe('Profiles API', () => {
         error: { message: errorMessage },
       })
 
-      await expect(createProfile(mockSupabase, newProfile)).rejects.toThrow(`Failed to create profile: ${errorMessage}`)
+      await expect(createProfile(mockSupabase, newProfile)).rejects.toThrow(
+        `Failed to create profile: ${errorMessage}`
+      )
     })
   })
 

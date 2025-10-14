@@ -152,7 +152,7 @@ describe('ThemeProvider', () => {
 
   it('throws error when useTheme is called outside ThemeProvider', () => {
     // Suppress console.error for this test
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => { })
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     expect(() => {
       renderHook(() => useTheme())
@@ -170,7 +170,7 @@ describe('ThemeProvider', () => {
 
     // Simulate system preference change to dark
     act(() => {
-      mediaQueryListeners.forEach((listener) => {
+      mediaQueryListeners.forEach(listener => {
         listener({ matches: true } as MediaQueryListEvent)
       })
     })

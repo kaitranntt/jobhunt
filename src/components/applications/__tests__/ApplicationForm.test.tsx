@@ -168,7 +168,9 @@ describe('ApplicationForm', () => {
       await user.click(submitButton)
 
       await waitFor(() => {
-        expect(screen.getByText(/company name must be less than 255 characters/i)).toBeInTheDocument()
+        expect(
+          screen.getByText(/company name must be less than 255 characters/i)
+        ).toBeInTheDocument()
       })
 
       expect(mockOnSubmit).not.toHaveBeenCalled()

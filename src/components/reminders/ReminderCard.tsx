@@ -20,8 +20,7 @@ export default function ReminderCard({
   onDelete,
   onComplete,
 }: ReminderCardProps) {
-  const isOverdue =
-    new Date(reminder.reminder_date) < new Date() && !reminder.is_completed
+  const isOverdue = new Date(reminder.reminder_date) < new Date() && !reminder.is_completed
 
   const truncateText = (text: string | null, maxLength: number) => {
     if (!text) return ''

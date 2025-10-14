@@ -9,12 +9,7 @@ export const contactFormSchema = z.object({
     .min(1, 'Contact name is required')
     .max(255, 'Contact name must be less than 255 characters'),
 
-  email: z
-    .string()
-    .email('Must be a valid email address')
-    .optional()
-    .nullable()
-    .or(z.literal('')),
+  email: z.string().email('Must be a valid email address').optional().nullable().or(z.literal('')),
 
   phone: z
     .string()
