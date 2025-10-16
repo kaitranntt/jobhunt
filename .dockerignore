@@ -68,6 +68,7 @@ claudedocs/
 supabase/.temp
 supabase/.branches
 
-# Yarn
+# Yarn (exclude cache but keep main directory)
 .yarn/cache
 .yarn/install-state.gz
+!.yarn/

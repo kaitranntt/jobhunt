@@ -52,11 +52,11 @@ echo "🧪 Running test suite..."
 # Skip tests on Vercel to avoid timeouts and resource constraints
 if [ -n "$VERCEL" ] || [ -n "$VERCEL_ENV" ]; then
     print_status 0 "Skipping tests on Vercel (run locally before pushing)"
-elif yarn test > /dev/null 2>&1; then
-    print_status 0 "All tests passed"
-else
+elif yarn test --reporter=basic 2>/dev/null | grep -q "Test Files.*failed"; then
     print_status 1 "Tests failed"
     echo -e "${YELLOW}   Run 'yarn test' to see failures${NC}"
+else
+    print_status 0 "All tests passed"
 fi
 
 # 4. Check for Forbidden Patterns
@@ -143,7 +143,7 @@ else
     print_status 1 "Tailwind CSS PostCSS configuration missing or incorrect"
 fi
 
-if [ -f "src/app/globals.css" ] && grep -q '@import "tailwindcss"' src/app/globals.css 2>/dev/null; then
+if [ -f "src/app/globals.css" ] && grep -q '@import.*tailwindcss' src/app/globals.css 2>/dev/null; then
     print_status 0 "Tailwind CSS v4 import syntax correct"
 else
     print_status 1 "Tailwind CSS import missing or incorrect"

@@ -2,7 +2,7 @@
 
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /app
 
@@ -17,6 +17,7 @@ RUN corepack enable && \
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
+RUN apk add --no-cache libc6-compat bash git
 
 WORKDIR /app
 
@@ -35,6 +36,8 @@ ENV NODE_ENV=production
 # Build the application
 RUN corepack enable && \
     corepack prepare yarn@4.10.3 --activate && \
+    NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co \
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=dummy-key-for-build \
     yarn build
 
 # Stage 3: Runner

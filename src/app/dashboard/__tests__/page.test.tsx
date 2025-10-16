@@ -8,6 +8,20 @@ import type { Application } from '@/lib/types/database.types'
 import * as actions from '../actions'
 import { createClient } from '@/lib/supabase/client'
 
+// Mock the Supabase API functions that are causing issues
+vi.mock('@/lib/api/profiles', () => ({
+  getUserProfile: vi.fn().mockResolvedValue(null),
+}))
+
+vi.mock('@/lib/api/reminders', () => ({
+  getUpcomingReminders: vi.fn().mockResolvedValue([]),
+  getRemindersByApplication: vi.fn().mockResolvedValue([]),
+  createReminder: vi.fn(),
+  updateReminder: vi.fn(),
+  markReminderComplete: vi.fn(),
+  deleteReminder: vi.fn(),
+}))
+
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
   return render(<ThemeProvider>{ui}</ThemeProvider>)
