@@ -95,7 +95,7 @@ export function GetStartedSection() {
               <div className="text-center pt-6">
                 <Link
                   href="/signup"
-                  className="inline-flex items-center justify-center rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
+                  className="inline-flex items-center justify-center rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-orange-500/50"
                 >
                   Start Free Account
                   <ArrowRight className="ml-2 h-5 w-5" />

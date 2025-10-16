@@ -47,7 +47,7 @@ export function HeroSection() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-slide-up opacity-0 stagger-4">
             <Link
               href="/signup"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50 dark:shadow-purple-900/50"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl btn-brand-gradient px-8 py-4 text-lg font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-orange-500/50 dark:shadow-orange-900/50"
               aria-label="Start tracking applications for free"
             >
               <span className="relative z-10 flex items-center gap-2">

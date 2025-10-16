@@ -19,7 +19,7 @@ export function FinalCTASection() {
               <h2 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
                 Take Control of Your Job Search Today
               </h2>
-              <p className="mx-auto mb-10 max-w-2xl text-xl text-purple-100">
+              <p className="mx-auto mb-10 max-w-2xl text-xl text-orange-100">
                 Join thousands tracking applications. Your data, your way. Start free or self-host
                 in minutes.
               </p>
@@ -27,7 +27,7 @@ export function FinalCTASection() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
                   href="/signup"
-                  className="group inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-lg font-semibold text-purple-600 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-white/50"
+                  className="group inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-lg font-semibold text-orange-600 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-white/50"
                   aria-label="Start tracking applications for free"
                 >
                   <span className="flex items-center gap-2">
@@ -53,21 +53,21 @@ export function FinalCTASection() {
 
               {/* Trust signals */}
               <div className="mt-12 grid gap-6 sm:grid-cols-3">
-                <div className="text-purple-100">
+                <div className="text-orange-100">
                   <div className="text-3xl font-bold text-white mb-1">100%</div>
                   <div className="text-sm">Open Source</div>
                 </div>
-                <div className="text-purple-100">
+                <div className="text-orange-100">
                   <div className="text-3xl font-bold text-white mb-1">MIT</div>
                   <div className="text-sm">License</div>
                 </div>
-                <div className="text-purple-100">
+                <div className="text-orange-100">
                   <div className="text-3xl font-bold text-white mb-1">Free</div>
                   <div className="text-sm">Forever</div>
                 </div>
               </div>
 
-              <p className="mt-8 text-sm text-purple-200">
+              <p className="mt-8 text-sm text-orange-200">
                 Open Source • MIT License • Active Development
               </p>
             </div>
