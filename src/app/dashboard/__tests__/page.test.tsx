@@ -768,9 +768,12 @@ describe('DashboardPage', () => {
       await user.click(submitButton)
 
       // Should show loading state
-      await waitFor(() => {
-        expect(screen.getByText(/submitting/i)).toBeInTheDocument()
-      })
+      await waitFor(
+        () => {
+          expect(screen.getByText(/submitting/i)).toBeInTheDocument()
+        },
+        { timeout: 1000 }
+      )
     })
   })
 
