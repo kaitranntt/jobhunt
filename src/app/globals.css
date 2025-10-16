@@ -95,20 +95,27 @@
   --info: 217 91% 60%;
   --info-foreground: 0 0% 98%;
 
-  /* Brand Gradients (Purple/Blue) - Legacy */
-  --brand-primary: 266 85% 58%;
-  --brand-primary-dark: 266 85% 48%;
-  --brand-primary-light: 266 85% 68%;
-  --brand-secondary: 221 83% 53%;
-  --brand-secondary-dark: 221 83% 43%;
-  --brand-secondary-light: 221 83% 63%;
+  /* Copper Brand Colors */
+  --copper: 25 95% 53%;
+  --copper-light: 25 85% 65%;
+  --copper-dark: 25 100% 45%;
+  --copper-glow: 25 95% 70%;
+  --copper-shimmer: 25 90% 75%;
+
+  /* Brand Gradients (Copper) */
+  --brand-primary: var(--copper);
+  --brand-primary-dark: var(--copper-dark);
+  --brand-primary-light: var(--copper-light);
+  --brand-secondary: var(--copper-light);
+  --brand-secondary-dark: var(--copper);
+  --brand-secondary-light: var(--copper-glow);
 
   /* Animated Background Gradients */
   --gradient-light-start: 220 70% 98%;
   --gradient-light-mid: 240 60% 97%;
   --gradient-light-end: 260 65% 96%;
-  --gradient-accent-start: 266 85% 58%;
-  --gradient-accent-end: 221 83% 53%;
+  --gradient-accent-start: var(--copper);
+  --gradient-accent-end: var(--copper-light);
 
   /* Floating Orb Colors */
   --accent-pink-start: 340 82% 65%;
@@ -244,20 +251,27 @@
   --info: 217 91% 60%;
   --info-foreground: 210 40% 98%;
 
-  /* Brand Gradients - Legacy */
-  --brand-primary: 266 85% 68%;
-  --brand-primary-dark: 266 85% 58%;
-  --brand-primary-light: 266 85% 78%;
-  --brand-secondary: 221 83% 63%;
-  --brand-secondary-dark: 221 83% 53%;
-  --brand-secondary-light: 221 83% 73%;
+  /* Copper Brand Colors (Dark Mode) */
+  --copper: 25 95% 53%;
+  --copper-light: 25 85% 65%;
+  --copper-dark: 25 100% 45%;
+  --copper-glow: 25 95% 70%;
+  --copper-shimmer: 25 90% 75%;
+
+  /* Brand Gradients (Copper - Dark Mode) */
+  --brand-primary: var(--copper);
+  --brand-primary-dark: var(--copper-dark);
+  --brand-primary-light: var(--copper-light);
+  --brand-secondary: var(--copper-light);
+  --brand-secondary-dark: var(--copper);
+  --brand-secondary-light: var(--copper-glow);
 
   /* Animated Background Gradients (Dark Mode) */
   --gradient-light-start: 222 47% 13%;
   --gradient-light-mid: 217 33% 17%;
   --gradient-light-end: 222 47% 15%;
-  --gradient-accent-start: 266 85% 68%;
-  --gradient-accent-end: 221 83% 63%;
+  --gradient-accent-start: var(--copper);
+  --gradient-accent-end: var(--copper-light);
 
   /* Floating Orb Colors (Dark Mode) */
   --accent-pink-start: 340 82% 55%;
