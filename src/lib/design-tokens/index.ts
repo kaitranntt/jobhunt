@@ -14,6 +14,9 @@ export {
   glassBorders,
   semanticColors,
   shadowColors,
+  copperColors,
+  copperTheme,
+  copperGradients,
   generateCSSVariables,
   type ColorMode,
   type LabelColorKey,
@@ -23,6 +26,8 @@ export {
   type TintColorKey,
   type GlassMaterialKey,
   type SemanticColorKey,
+  type CopperColorKey,
+  type CopperThemeKey,
 } from './colors'
 
 // Spacing System

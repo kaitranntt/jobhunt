@@ -211,7 +211,62 @@ export const shadowColors = {
 } as const
 
 // ============================================================================
-// CSS Custom Properties Generator
+// Copper Brand Color System
+// ============================================================================
+
+export const copperColors = {
+  primary: '25 95% 53%', // Main copper color #D97706
+  light: '25 85% 65%', // Lighter copper variant
+  dark: '25 100% 45%', // Darker copper variant
+  glow: '25 95% 70%', // Glowing copper effect
+  shimmer: '25 90% 75%', // Shimmer effect copper
+} as const
+
+// ============================================================================
+// Copper Color Variants (Light/Dark)
+// ============================================================================
+
+export const copperTheme = {
+  light: {
+    primary: copperColors.primary,
+    primaryLight: copperColors.light,
+    primaryDark: copperColors.dark,
+    primaryGlow: copperColors.glow,
+    primaryShimmer: copperColors.shimmer,
+    // Light mode specific variants
+    background: '250 100% 99%', // Very light blue-white
+    foreground: '20 14.3% 4.1%', // Near-black for text
+    card: '0 0% 100%', // Pure white
+    secondary: '20 14.3% 96.1%', // Light gray
+  },
+  dark: {
+    primary: copperColors.primary,
+    primaryLight: copperColors.light,
+    primaryDark: copperColors.dark,
+    primaryGlow: copperColors.glow,
+    primaryShimmer: copperColors.shimmer,
+    // Dark mode specific variants
+    background: '20 8% 4%', // Very dark slate
+    foreground: '25 20% 95%', // Near-white for text
+    card: '20 10% 8%', // Dark gray-blue
+    secondary: '20 10% 12%', // Medium dark
+  },
+} as const
+
+// ============================================================================
+// Copper Gradient System
+// ============================================================================
+
+export const copperGradients = {
+  hero: 'linear-gradient(135deg, hsl(var(--copper) / 0.15) 0%, hsl(var(--background)) 30%, hsl(var(--copper-light) / 0.08) 60%, hsl(var(--background)) 100%)',
+  buttonHero: 'linear-gradient(135deg, hsl(var(--copper)) 0%, hsl(var(--copper-dark)) 100%)',
+  avatar:
+    'linear-gradient(135deg, hsl(var(--copper)) 0%, hsl(var(--copper-light)) 50%, hsl(var(--copper-glow)) 100%)',
+  buttonHover: 'linear-gradient(135deg, hsl(var(--copper-dark)) 0%, hsl(var(--copper)) 100%)',
+} as const
+
+// ============================================================================
+// CSS Custom Properties Generator (Updated with Copper)
 // ============================================================================
 
 export function generateCSSVariables(mode: 'light' | 'dark'): Record<string, string> {
@@ -278,6 +333,25 @@ export function generateCSSVariables(mode: 'light' | 'dark'): Record<string, str
     '--shadow-medium': shadowColors[mode].medium,
     '--shadow-strong': shadowColors[mode].strong,
     '--shadow-specular': shadowColors[mode].specular,
+
+    // Copper Color System
+    '--copper': copperColors.primary,
+    '--copper-light': copperColors.light,
+    '--copper-dark': copperColors.dark,
+    '--copper-glow': copperColors.glow,
+    '--copper-shimmer': copperColors.shimmer,
+
+    // Copper Theme Variants
+    '--copper-bg': copperTheme[mode].background,
+    '--copper-fg': copperTheme[mode].foreground,
+    '--copper-card': copperTheme[mode].card,
+    '--copper-secondary': copperTheme[mode].secondary,
+
+    // Copper Gradients
+    '--copper-hero-gradient': copperGradients.hero,
+    '--copper-button-gradient': copperGradients.buttonHero,
+    '--copper-avatar-gradient': copperGradients.avatar,
+    '--copper-button-hover-gradient': copperGradients.buttonHover,
   }
 }
 
@@ -293,3 +367,5 @@ export type SystemBackgroundKey = keyof typeof systemBackgrounds.light
 export type TintColorKey = keyof typeof systemTints
 export type GlassMaterialKey = keyof typeof liquidGlassMaterials.light
 export type SemanticColorKey = keyof typeof semanticColors
+export type CopperColorKey = keyof typeof copperColors
+export type CopperThemeKey = keyof typeof copperTheme.light
