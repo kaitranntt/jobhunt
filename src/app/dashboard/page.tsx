@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Plus, Search, Rocket, Lightbulb } from 'lucide-react'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
-import { KanbanBoardV2 } from '@/components/applications/KanbanBoardV2'
+import { EnhancedKanbanBoard } from '@/components/applications/KanbanBoardV3'
 import { SmartStatsPanel } from '@/components/applications/SmartStatsPanel'
 import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
@@ -19,8 +19,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import type { Application } from '@/lib/types/database.types'
-import type { ApplicationFormData } from '@/lib/schemas/application.schema'
+import type { Application, Board, BoardColumn, BoardSettings } from '@/lib/types/database.types'
+import type { ApplicationFormData, ApplicationStatus } from '@/lib/schemas/application.schema'
 import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import {
@@ -50,6 +50,100 @@ export default function DashboardPage() {
   const [user, setUser] = React.useState<User | null>(null)
   const [userId, setUserId] = React.useState<string>('')
 
+  // Mock enhanced board data for now
+  const [mockBoard, setMockBoard] = React.useState<Board>({
+    id: 'default-board',
+    user_id: '',
+    name: 'Job Applications',
+    description: 'Track your job search progress',
+    is_default: true,
+    is_archived: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  })
+
+  const [mockColumns, setMockColumns] = React.useState<BoardColumn[]>([
+    {
+      id: 'wishlist',
+      board_id: 'default-board',
+      user_id: '',
+      name: 'Wishlist',
+      color: '#94a3b8',
+      position: 1,
+      wip_limit: 20,
+      is_default: false,
+      is_archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'applied',
+      board_id: 'default-board',
+      user_id: '',
+      name: 'Applied',
+      color: '#3b82f6',
+      position: 2,
+      wip_limit: 25,
+      is_default: false,
+      is_archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'phone_screen',
+      board_id: 'default-board',
+      user_id: '',
+      name: 'Phone Screen',
+      color: '#8b5cf6',
+      position: 3,
+      wip_limit: 8,
+      is_default: false,
+      is_archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'interviewing',
+      board_id: 'default-board',
+      user_id: '',
+      name: 'Interviewing',
+      color: '#10b981',
+      position: 4,
+      wip_limit: 5,
+      is_default: false,
+      is_archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 'offered',
+      board_id: 'default-board',
+      user_id: '',
+      name: 'Offered',
+      color: '#84cc16',
+      position: 5,
+      wip_limit: 3,
+      is_default: false,
+      is_archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ])
+
+  const [mockSettings, setMockSettings] = React.useState<BoardSettings>({
+    id: 'default-settings',
+    board_id: 'default-board',
+    user_id: '',
+    theme: 'default',
+    compact_mode: false,
+    show_empty_columns: true,
+    show_column_counts: true,
+    enable_animations: true,
+    auto_archive_days: 30,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  })
+
   // Load user session and applications on mount
   React.useEffect(() => {
     async function loadData() {
@@ -73,6 +167,11 @@ export default function DashboardPage() {
         // Set user information
         setUser(currentUser)
         setUserId(currentUser.id)
+
+        // Update mock board data with user ID
+        setMockBoard(prev => ({ ...prev, user_id: currentUser.id }))
+        setMockColumns(prev => prev.map(col => ({ ...col, user_id: currentUser.id })))
+        setMockSettings(prev => ({ ...prev, user_id: currentUser.id }))
 
         // Load applications
         const apps = await getApplicationsAction()
@@ -147,9 +246,12 @@ export default function DashboardPage() {
   }
 
   // Handle update application status (drag-and-drop)
-  const handleUpdateStatus = async (id: string, newStatus: Application['status']) => {
+  const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
-      const updatedApplication = await updateApplicationStatusAction(id, newStatus)
+      const updatedApplication = await updateApplicationStatusAction(
+        id,
+        newStatus as ApplicationStatus
+      )
       setApplications(prev => prev.map(app => (app.id === id ? updatedApplication : app)))
     } catch (err) {
       console.error('Failed to update status:', err)
@@ -306,11 +408,22 @@ export default function DashboardPage() {
                 </Button>
               </div>
 
-              {/* Bottom Section - Kanban Board (Detailed View) */}
-              <KanbanBoardV2
+              {/* Bottom Section - Enhanced Kanban Board (Detailed View) */}
+              <EnhancedKanbanBoard
                 applications={filteredApplications}
-                onUpdateStatus={handleUpdateStatus}
+                board={mockBoard}
+                columns={mockColumns}
+                settings={mockSettings}
+                onUpdateApplicationStatus={handleUpdateStatus}
                 onApplicationClick={handleApplicationClick}
+                onBoardSettingsClick={() => console.log('Board settings not yet implemented')}
+                onBoardAnalyticsClick={() => console.log('Analytics not yet implemented')}
+                onBoardExport={async (format: 'json' | 'csv') => {
+                  console.log(`Export not yet implemented: ${format}`)
+                }}
+                onColumnAdd={() => console.log('Column add not yet implemented')}
+                onColumnEdit={() => console.log('Column edit not yet implemented')}
+                onColumnDelete={() => console.log('Column delete not yet implemented')}
                 isLoading={false}
               />
 

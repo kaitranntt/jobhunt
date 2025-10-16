@@ -15,14 +15,33 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
     },
+    include: [
+      'src/**/__tests__/**/*.{ts,tsx}',
+      'src/**/*.{test,spec}.{ts,tsx}',
+      'tests/**/*.{test,spec}.{ts,tsx}',
+    ],
+    exclude: [
+      'node_modules/**',
+      'tests/e2e/**', // Exclude E2E tests from Vitest
+      '.next/**',
+      'out/**',
+      'dist/**',
+      'build/**',
+      'coverage/**',
+      '.yarn/**',
+      '**/*.config.*',
+      '**/vitest.setup.ts',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         // Build & Dependencies
-        'node_modules/',
-        '.next/',
-        'out/',
+        'node_modules/**',
+        '.next/**',
+        'out/**',
+        'dist/**',
+        'build/**',
         '**/coverage/**',
 
         // Yarn SDK files (not our code)
@@ -40,6 +59,8 @@ export default defineConfig({
         '**/__tests__/**',
         '**/*.test.ts',
         '**/*.test.tsx',
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
 
         // Thin library wrappers (no business logic)
         '**/src/lib/supabase/client.ts',
@@ -54,6 +75,10 @@ export default defineConfig({
         // Pure presentational pages (no business logic)
         '**/src/app/page.tsx',
         '**/src/app/dashboard/page.tsx',
+
+        // E2E tests (run by Playwright)
+        'tests/e2e/**',
+        'tests/e2e/**/*',
       ],
       thresholds: {
         lines: 80,
