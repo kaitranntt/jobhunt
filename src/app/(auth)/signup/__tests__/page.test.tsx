@@ -6,6 +6,14 @@ import { createClient } from '@/lib/supabase/client'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { setupMatchMedia } from '@/test/setup'
 
+// Mock Next.js Image component to prevent URL parsing errors in test environment
+vi.mock('next/image', () => ({
+  default: ({ alt, ...props }: any) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img alt={alt} {...props} />
+  ),
+}))
+
 // Mock the client-side profiles API module
 vi.mock('@/lib/api/profiles', () => ({
   createUserProfile: vi.fn(),
@@ -30,10 +38,11 @@ vi.mock('@/lib/supabase/client', () => ({
   createClient: vi.fn(),
 }))
 
-describe('SignupPage', () => {
+describe('SignupPage with SimplifiedSignupForm', () => {
   const mockPush = vi.fn()
   const mockRefresh = vi.fn()
   const mockSignUp = vi.fn()
+  const mockSignInWithOAuth = vi.fn()
 
   beforeEach(async () => {
     vi.clearAllMocks()
@@ -47,36 +56,19 @@ describe('SignupPage', () => {
     vi.mocked(createClient).mockReturnValue({
       auth: {
         signUp: mockSignUp,
-        signInWithOAuth: vi.fn(),
+        signInWithOAuth: mockSignInWithOAuth,
       },
     } as unknown as ReturnType<typeof createClient>)
 
     // Import and setup the mocked functions
-    const { createUserProfile } = await import('@/lib/api/profiles')
     const { createUserProfileAction } = await import('../actions')
-
-    vi.mocked(createUserProfile).mockResolvedValue({
-      id: 'profile-1',
-      user_id: 'user-123',
-      full_name: 'Test User',
-      phone: null,
-      location: null,
-      job_role: null,
-      desired_roles: null,
-      desired_industries: null,
-      experience_years: null,
-      linkedin_url: null,
-      portfolio_url: null,
-      created_at: '2025-10-04T10:00:00Z',
-      updated_at: '2025-10-04T10:00:00Z',
-    })
 
     vi.mocked(createUserProfileAction).mockResolvedValue({
       success: true,
       data: {
         id: 'profile-1',
         user_id: 'user-123',
-        full_name: 'Test User',
+        full_name: 'John Doe',
         phone: null,
         location: null,
         job_role: null,
@@ -85,233 +77,227 @@ describe('SignupPage', () => {
         experience_years: null,
         linkedin_url: null,
         portfolio_url: null,
-        created_at: '2025-10-04T10:00:00Z',
-        updated_at: '2025-10-04T10:00:00Z',
+        created_at: '2025-10-17T10:00:00Z',
+        updated_at: '2025-10-17T10:00:00Z',
       },
       error: null,
     })
   })
 
-  it('should render step 1 (account credentials) initially', () => {
+  it('should render the simplified signup form', () => {
     renderWithTheme(<SignupPage />)
 
     expect(screen.getByRole('heading', { name: /create your account/i })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /account credentials/i })).toBeInTheDocument()
+    expect(
+      screen.getByText(/join thousands of professionals who trust jobhunt for career tracking/i)
+    ).toBeInTheDocument()
+
+    // Personal Information section
+    expect(screen.getByRole('heading', { name: /personal information/i })).toBeInTheDocument()
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument()
+
+    // Account Information section
+    expect(screen.getByRole('heading', { name: /account information/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/password \(min\. 6 characters\)/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /^next$/i })).toBeInTheDocument()
-    expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/^password \(min\. 6 characters\)/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument()
+
+    // Google signup button
+    expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument()
+
+    // Create account button
+    expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument()
+
+    // Sign in link
+    expect(screen.getByRole('link', { name: /sign in/i })).toHaveAttribute('href', '/login')
   })
 
-  it('should update email and password fields on input', () => {
+  it('should update form fields on input', () => {
     renderWithTheme(<SignupPage />)
 
+    const firstNameInput = screen.getByLabelText(/first name/i) as HTMLInputElement
+    const lastNameInput = screen.getByLabelText(/last name/i) as HTMLInputElement
     const emailInput = screen.getByLabelText(/email address/i) as HTMLInputElement
     const passwordInput = screen.getByLabelText(
-      /password \(min\. 6 characters\)/i
+      /^password \(min\. 6 characters\)/i
     ) as HTMLInputElement
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i) as HTMLInputElement
 
-    fireEvent.change(emailInput, { target: { value: 'newuser@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-
-    expect(emailInput.value).toBe('newuser@example.com')
-    expect(passwordInput.value).toBe('password123')
-  })
-
-  it('should validate email and password before moving to step 2', async () => {
-    renderWithTheme(<SignupPage />)
-
-    const nextButton = screen.getByRole('button', { name: /^next$/i })
-
-    fireEvent.click(nextButton)
-
-    await waitFor(() => {
-      expect(screen.getByText(/email and password are required/i)).toBeInTheDocument()
-    })
-  })
-
-  it('should move to step 2 after valid step 1', async () => {
-    renderWithTheme(<SignupPage />)
-
-    const emailInput = screen.getByLabelText(/email address/i)
-    const passwordInput = screen.getByLabelText(/password \(min\. 6 characters\)/i)
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-
-    const nextButton = screen.getByRole('button', { name: /^next$/i })
-    fireEvent.click(nextButton)
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-      expect(screen.getByText(/step 2 of 4/i)).toBeInTheDocument()
-    })
-  })
-
-  it('should allow navigation back from step 2 to step 1', async () => {
-    renderWithTheme(<SignupPage />)
-
-    const emailInput = screen.getByLabelText(/email address/i)
-    const passwordInput = screen.getByLabelText(/password \(min\. 6 characters\)/i)
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
-    const backButton = screen.getByRole('button', { name: /^back$/i })
-    fireEvent.click(backButton)
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /account credentials/i })).toBeInTheDocument()
-      expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument()
-    })
-  })
-
-  it('should require first and last name in step 2', async () => {
-    renderWithTheme(<SignupPage />)
-
-    const emailInput = screen.getByLabelText(/email address/i)
-    const passwordInput = screen.getByLabelText(/password \(min\. 6 characters\)/i)
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
-    const nextButton = screen.getByRole('button', { name: /^next$/i })
-    fireEvent.click(nextButton)
-
-    await waitFor(() => {
-      expect(screen.getByText(/first name is required/i)).toBeInTheDocument()
-    })
-  })
-
-  it('should allow skipping optional steps', async () => {
-    renderWithTheme(<SignupPage />)
-
-    const emailInput = screen.getByLabelText(/email address/i)
-    const passwordInput = screen.getByLabelText(/password \(min\. 6 characters\)/i)
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
-    const firstNameInput = screen.getByLabelText(/first name/i)
-    const lastNameInput = screen.getByLabelText(/last name/i)
     fireEvent.change(firstNameInput, { target: { value: 'John' } })
     fireEvent.change(lastNameInput, { target: { value: 'Doe' } })
+    fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } })
+    fireEvent.change(passwordInput, { target: { value: 'password123' } })
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } })
 
-    const skipButton = screen.getByRole('button', { name: /^skip$/i })
-    fireEvent.click(skipButton)
+    expect(firstNameInput.value).toBe('John')
+    expect(lastNameInput.value).toBe('Doe')
+    expect(emailInput.value).toBe('john.doe@example.com')
+    expect(passwordInput.value).toBe('password123')
+    expect(confirmPasswordInput.value).toBe('password123')
+  })
+
+  it('should show validation error for empty fields', async () => {
+    renderWithTheme(<SignupPage />)
+
+    // Bypass HTML5 validation by calling the submit handler directly
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
+    if (form) {
+      fireEvent.submit(form)
+    }
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /professional info/i })).toBeInTheDocument()
-      expect(screen.getByText(/step 3 of 4/i)).toBeInTheDocument()
+      expect(screen.getByText(/all fields are required/i)).toBeInTheDocument()
     })
   })
 
-  it('should complete full signup flow with all steps', async () => {
-    const { createUserProfileAction } = await import('../actions')
+  it('should show validation error for invalid email format', async () => {
+    renderWithTheme(<SignupPage />)
 
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'invalid-email' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
+    })
+
+    // Bypass HTML5 validation by calling the submit handler directly
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
+    if (form) {
+      fireEvent.submit(form)
+    }
+
+    await waitFor(() => {
+      expect(screen.getByText(/please enter a valid email address/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should show validation error for short password', async () => {
+    renderWithTheme(<SignupPage />)
+
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: '123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), { target: { value: '123' } })
+
+    // Bypass HTML5 validation by calling the submit handler directly
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
+    if (form) {
+      fireEvent.submit(form)
+    }
+
+    await waitFor(() => {
+      expect(screen.getByText(/password must be at least 6 characters/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should show validation error for password mismatch', async () => {
+    renderWithTheme(<SignupPage />)
+
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'different123' },
+    })
+
+    // Bypass HTML5 validation by calling the submit handler directly
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
+    if (form) {
+      fireEvent.submit(form)
+    }
+
+    await waitFor(() => {
+      expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument()
+    })
+  })
+
+  it('should toggle password visibility', () => {
+    renderWithTheme(<SignupPage />)
+
+    const passwordInput = screen.getByLabelText(
+      /^password \(min\. 6 characters\)/i
+    ) as HTMLInputElement
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i) as HTMLInputElement
+
+    // Initially password should be hidden
+    expect(passwordInput.type).toBe('password')
+    expect(confirmPasswordInput.type).toBe('password')
+
+    // Find the toggle buttons (they don't have accessible names, so we find them by their role and position)
+    const passwordToggleButtons = screen
+      .getAllByRole('button')
+      .filter(button => button.querySelector('svg') && !button.textContent)
+
+    // Toggle password visibility
+    fireEvent.click(passwordToggleButtons[0])
+    expect(passwordInput.type).toBe('text')
+
+    // Toggle back to hidden
+    fireEvent.click(passwordToggleButtons[0])
+    expect(passwordInput.type).toBe('password')
+
+    // Toggle confirm password visibility
+    fireEvent.click(passwordToggleButtons[1])
+    expect(confirmPasswordInput.type).toBe('text')
+
+    // Toggle back to hidden
+    fireEvent.click(passwordToggleButtons[1])
+    expect(confirmPasswordInput.type).toBe('password')
+  })
+
+  it('should handle successful form submission', async () => {
     mockSignUp.mockResolvedValue({
       data: { user: { id: 'user-123' } },
       error: null,
     })
-    vi.mocked(createUserProfileAction).mockResolvedValue({
-      success: true,
-      data: {
-        id: 'profile-1',
-        user_id: 'user-123',
-        full_name: 'John Doe',
-        phone: '+1234567890',
-        location: 'San Francisco, CA',
-        job_role: 'Software Engineer',
-        desired_roles: ['Senior Engineer', 'Tech Lead'],
-        desired_industries: ['Technology', 'FinTech'],
-        experience_years: 5,
-        linkedin_url: 'https://linkedin.com/in/johndoe',
-        portfolio_url: null,
-        created_at: '2025-10-04T10:00:00Z',
-        updated_at: '2025-10-04T10:00:00Z',
-      },
-      error: null,
-    })
 
     renderWithTheme(<SignupPage />)
 
-    fireEvent.change(screen.getByLabelText(/email address/i), {
-      target: { value: 'test@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
+    // Fill out the form
     fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
     fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
-    fireEvent.change(screen.getByLabelText(/phone/i), { target: { value: '+1234567890' } })
-    fireEvent.change(screen.getByLabelText(/location/i), { target: { value: 'San Francisco, CA' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /professional info/i })).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
     })
 
-    fireEvent.change(screen.getByLabelText(/current role/i), {
-      target: { value: 'Software Engineer' },
-    })
-    fireEvent.change(screen.getByLabelText(/years of experience/i), { target: { value: '5' } })
-    fireEvent.change(screen.getByLabelText(/linkedin url/i), {
-      target: { value: 'https://linkedin.com/in/johndoe' },
-    })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /job preferences/i })).toBeInTheDocument()
-    })
-
-    fireEvent.change(screen.getByLabelText(/desired roles/i), {
-      target: { value: 'Senior Engineer, Tech Lead' },
-    })
-    fireEvent.change(screen.getByLabelText(/desired industries/i), {
-      target: { value: 'Technology, FinTech' },
-    })
-
-    const completeButton = screen.getByRole('button', { name: /complete signup/i })
-    fireEvent.click(completeButton)
+    const createAccountButton = screen.getByRole('button', { name: /create account/i })
+    fireEvent.click(createAccountButton)
 
     await waitFor(() => {
       expect(mockSignUp).toHaveBeenCalledWith({
-        email: 'test@example.com',
+        email: 'john.doe@example.com',
         password: 'password123',
       })
-      expect(createUserProfileAction).toHaveBeenCalledWith(
-        expect.objectContaining({
-          user_id: 'user-123',
-          full_name: 'John Doe',
-          phone: '+1234567890',
-          location: 'San Francisco, CA',
-          job_role: 'Software Engineer',
-          experience_years: 5,
-          linkedin_url: 'https://linkedin.com/in/johndoe',
-          desired_roles: ['Senior Engineer', 'Tech Lead'],
-          desired_industries: ['Technology', 'FinTech'],
-        })
-      )
+    })
+
+    const { createUserProfileAction } = await import('../actions')
+    await waitFor(() => {
+      expect(createUserProfileAction).toHaveBeenCalledWith({
+        user_id: 'user-123',
+        full_name: 'John Doe',
+        phone: null,
+        location: null,
+        job_role: null,
+        desired_roles: null,
+        desired_industries: null,
+        experience_years: null,
+        linkedin_url: null,
+        portfolio_url: null,
+      })
     })
 
     await waitFor(() => {
@@ -320,38 +306,7 @@ describe('SignupPage', () => {
     })
   })
 
-  it('should validate URL formats in step 3', async () => {
-    renderWithTheme(<SignupPage />)
-
-    fireEvent.change(screen.getByLabelText(/email address/i), {
-      target: { value: 'test@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
-    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
-    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /professional info/i })).toBeInTheDocument()
-    })
-
-    fireEvent.change(screen.getByLabelText(/linkedin url/i), { target: { value: 'not-a-url' } })
-
-    const nextButton = screen.getByRole('button', { name: /^next$/i })
-    fireEvent.click(nextButton)
-
-    await waitFor(() => {
-      expect(screen.getByText(/linkedin url must be a valid url/i)).toBeInTheDocument()
-    })
-  })
-
-  it('should display error message on signup failure', async () => {
+  it('should handle signup error', async () => {
     const errorMessage = 'User already registered'
     mockSignUp.mockResolvedValue({
       data: null,
@@ -360,32 +315,19 @@ describe('SignupPage', () => {
 
     renderWithTheme(<SignupPage />)
 
-    fireEvent.change(screen.getByLabelText(/email address/i), {
-      target: { value: 'test@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /basic information/i })).toBeInTheDocument()
-    })
-
+    // Fill out the form
     fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
     fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /professional info/i })).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: /^next$/i }))
-
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /job preferences/i })).toBeInTheDocument()
-    })
-
-    const completeButton = screen.getByRole('button', { name: /complete signup/i })
-    fireEvent.click(completeButton)
+    const createAccountButton = screen.getByRole('button', { name: /create account/i })
+    fireEvent.click(createAccountButton)
 
     await waitFor(() => {
       expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -394,17 +336,225 @@ describe('SignupPage', () => {
     expect(mockPush).not.toHaveBeenCalled()
   })
 
-  it('should have link to login page', () => {
+  it('should handle profile creation error', async () => {
+    mockSignUp.mockResolvedValue({
+      data: { user: { id: 'user-123' } },
+      error: null,
+    })
+
+    const { createUserProfileAction } = await import('../actions')
+    vi.mocked(createUserProfileAction).mockResolvedValue({
+      success: false,
+      data: null,
+      error: 'Profile creation failed',
+    })
+
     renderWithTheme(<SignupPage />)
 
-    const loginLink = screen.getByRole('link', { name: /sign in/i })
-    expect(loginLink).toHaveAttribute('href', '/login')
+    // Fill out the form
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
+    })
+
+    const createAccountButton = screen.getByRole('button', { name: /create account/i })
+    fireEvent.click(createAccountButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/profile creation failed/i)).toBeInTheDocument()
+    })
+
+    expect(mockPush).not.toHaveBeenCalled()
   })
 
-  it('should show progress indicator', () => {
+  it('should handle Google signup successfully', async () => {
+    mockSignInWithOAuth.mockResolvedValue({
+      data: null,
+      error: null,
+    })
+
+    // Mock window.location.origin
+    const originalLocation = window.location
+    Object.defineProperty(window, 'location', {
+      value: {
+        origin: 'http://localhost:3000',
+      },
+      writable: true,
+    })
+
     renderWithTheme(<SignupPage />)
 
-    expect(screen.getByText(/step 1 of 4/i)).toBeInTheDocument()
-    expect(screen.getByText(/25% complete/i)).toBeInTheDocument()
+    const googleButton = screen.getByRole('button', { name: /continue with google/i })
+    fireEvent.click(googleButton)
+
+    await waitFor(() => {
+      expect(mockSignInWithOAuth).toHaveBeenCalledWith({
+        provider: 'google',
+        options: {
+          redirectTo: 'http://localhost:3000/auth/callback?redirect_to=%2Fdashboard',
+        },
+      })
+    })
+
+    // Restore original location
+    Object.defineProperty(window, 'location', {
+      value: originalLocation,
+      writable: true,
+    })
+  })
+
+  it('should handle Google signup error', async () => {
+    const errorMessage = 'Google sign-up failed'
+    mockSignInWithOAuth.mockResolvedValue({
+      data: null,
+      error: new Error(errorMessage),
+    })
+
+    renderWithTheme(<SignupPage />)
+
+    const googleButton = screen.getByRole('button', { name: /continue with google/i })
+    fireEvent.click(googleButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(errorMessage)).toBeInTheDocument()
+    })
+  })
+
+  it('should disable all inputs and buttons during loading', async () => {
+    mockSignUp.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
+
+    renderWithTheme(<SignupPage />)
+
+    // Fill out the form
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
+    })
+
+    const createAccountButton = screen.getByRole('button', { name: /create account/i })
+    fireEvent.click(createAccountButton)
+
+    // Check that button shows loading state
+    expect(screen.getByRole('button', { name: /creating account\.\.\./i })).toBeInTheDocument()
+
+    // Check that inputs are disabled
+    expect(screen.getByLabelText(/first name/i)).toBeDisabled()
+    expect(screen.getByLabelText(/last name/i)).toBeDisabled()
+    expect(screen.getByLabelText(/email address/i)).toBeDisabled()
+    expect(screen.getByLabelText(/^password/i)).toBeDisabled()
+    expect(screen.getByLabelText(/confirm password/i)).toBeDisabled()
+
+    // Check that Google button is also disabled
+    expect(screen.getByRole('button', { name: /continue with google/i })).toBeDisabled()
+  })
+
+  it('should disable all inputs and buttons during Google loading', async () => {
+    mockSignInWithOAuth.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
+
+    renderWithTheme(<SignupPage />)
+
+    const googleButton = screen.getByRole('button', { name: /continue with google/i })
+    fireEvent.click(googleButton)
+
+    // Check that button shows loading state
+    expect(screen.getByRole('button', { name: /redirecting\.\.\./i })).toBeInTheDocument()
+
+    // Check that inputs are disabled
+    expect(screen.getByLabelText(/first name/i)).toBeDisabled()
+    expect(screen.getByLabelText(/last name/i)).toBeDisabled()
+    expect(screen.getByLabelText(/email address/i)).toBeDisabled()
+    expect(screen.getByLabelText(/^password/i)).toBeDisabled()
+    expect(screen.getByLabelText(/confirm password/i)).toBeDisabled()
+
+    // Check that create account button is also disabled
+    expect(screen.getByRole('button', { name: /create account/i })).toBeDisabled()
+  })
+
+  it('should clear error message when user starts typing', async () => {
+    renderWithTheme(<SignupPage />)
+
+    // Submit empty form to trigger error
+    const form = screen.getByRole('button', { name: /create account/i }).closest('form')
+    if (form) {
+      fireEvent.submit(form)
+    }
+
+    await waitFor(() => {
+      expect(screen.getByText(/all fields are required/i)).toBeInTheDocument()
+    })
+
+    // Start typing in first name field
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
+
+    // Error should be cleared
+    expect(screen.queryByText(/all fields are required/i)).not.toBeInTheDocument()
+  })
+
+  it('should have proper accessibility attributes', () => {
+    renderWithTheme(<SignupPage />)
+
+    // Check that all form controls have proper labels
+    expect(screen.getByLabelText(/first name/i)).toHaveAttribute('id', 'firstName')
+    expect(screen.getByLabelText(/last name/i)).toHaveAttribute('id', 'lastName')
+    expect(screen.getByLabelText(/email address/i)).toHaveAttribute('id', 'email')
+    expect(screen.getByLabelText(/^password \(min\. 6 characters\)/i)).toHaveAttribute(
+      'id',
+      'password'
+    )
+    expect(screen.getByLabelText(/confirm password/i)).toHaveAttribute('id', 'confirmPassword')
+
+    // Check that required fields have the required attribute
+    expect(screen.getByLabelText(/first name/i)).toHaveAttribute('required')
+    expect(screen.getByLabelText(/last name/i)).toHaveAttribute('required')
+    expect(screen.getByLabelText(/email address/i)).toHaveAttribute('required')
+    expect(screen.getByLabelText(/^password/i)).toHaveAttribute('required')
+    expect(screen.getByLabelText(/confirm password/i)).toHaveAttribute('required')
+
+    // Check that email and password inputs have proper types
+    expect(screen.getByLabelText(/email address/i)).toHaveAttribute('type', 'email')
+    expect(screen.getByLabelText(/^password/i)).toHaveAttribute('type', 'password')
+    expect(screen.getByLabelText(/confirm password/i)).toHaveAttribute('type', 'password')
+  })
+
+  it('should trim whitespace from name fields in submission', async () => {
+    mockSignUp.mockResolvedValue({
+      data: { user: { id: 'user-123' } },
+      error: null,
+    })
+
+    renderWithTheme(<SignupPage />)
+
+    // Fill out the form with extra whitespace
+    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: '  John  ' } })
+    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: '  Doe  ' } })
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'john.doe@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password/i), { target: { value: 'password123' } })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'password123' },
+    })
+
+    const createAccountButton = screen.getByRole('button', { name: /create account/i })
+    fireEvent.click(createAccountButton)
+
+    const { createUserProfileAction } = await import('../actions')
+    await waitFor(() => {
+      expect(createUserProfileAction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          full_name: 'John Doe', // Whitespace should be trimmed
+        })
+      )
+    })
   })
 })
