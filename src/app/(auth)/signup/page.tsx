@@ -219,7 +219,7 @@ export default function SignupPage() {
   return (
     <AnimatedBackground>
       <NavBar variant="auth-pages" />
-      <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="flex min-h-screen items-center justify-center px-4 py-12 pt-20">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-foreground">Create your account</h2>

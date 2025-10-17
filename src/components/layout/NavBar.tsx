@@ -23,21 +23,27 @@ export function NavBar({
   showThemeToggle = true,
   className,
 }: NavBarProps) {
+  // Unified styling for all variants
+  const unifiedStyles = {
+    borderColor: 'var(--glass-border-subtle)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+  }
+
+  // Determine logo destination based on variant
+  const logoHref = variant === 'authenticated' ? '/dashboard' : '/'
+
   // Variant 1: Landing Page NavBar
   if (variant === 'landing') {
     return (
       <header
         className={cn('fixed top-0 left-0 right-0 z-50 border-b glass-light', className)}
-        style={{
-          borderColor: 'var(--glass-border-subtle)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-        }}
+        style={unifiedStyles}
       >
-        <div className="mx-auto w-[85%] px-6 py-4">
+        <div className="mx-auto w-[85%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
-              href="/"
+              href={logoHref}
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
               <Image
@@ -107,18 +113,12 @@ export function NavBar({
   // Variant 2: Authenticated Pages NavBar (Dashboard)
   if (variant === 'authenticated') {
     return (
-      <header
-        className={cn('border-b glass-medium shadow-glass-soft', className)}
-        style={{
-          borderColor: 'var(--glass-border-medium)',
-          backdropFilter: 'blur(30px) saturate(200%)',
-        }}
-      >
-        <div className="mx-auto w-[85%] px-6 py-4">
+      <header className={cn('border-b glass-light', className)} style={unifiedStyles}>
+        <div className="mx-auto w-[85%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
-              href="/dashboard"
+              href={logoHref}
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
               <Image
@@ -128,12 +128,20 @@ export function NavBar({
                 height={24}
                 className="h-6 w-6"
               />
-              JobHunt
+              <span className="gradient-brand-text">JobHunt</span>
             </Link>
 
             {/* User Info & Actions */}
             <div className="flex items-center gap-4">
-              {user && userId && <ProfileDropdown userId={userId} user={{ email: user.email }} />}
+              {user && userId && (
+                <>
+                  {/* User Email - shown on desktop only */}
+                  <div className="hidden sm:block">
+                    <span className="text-sm text-label-secondary">{user.email}</span>
+                  </div>
+                  <ProfileDropdown userId={userId} user={{ email: user.email }} />
+                </>
+              )}
 
               {showThemeToggle && <ThemeToggle />}
             </div>
@@ -146,18 +154,12 @@ export function NavBar({
   // Variant 3: Auth Pages NavBar (Login/Signup)
   if (variant === 'auth-pages') {
     return (
-      <header
-        className={cn('border-b glass-ultra', className)}
-        style={{
-          borderColor: 'var(--glass-border-subtle)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-        }}
-      >
-        <div className="mx-auto w-[85%] px-6 py-4">
+      <header className={cn('border-b glass-light', className)} style={unifiedStyles}>
+        <div className="mx-auto w-[85%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
-              href="/"
+              href={logoHref}
               className="flex items-center gap-2 text-xl font-semibold text-label-primary transition-opacity hover:opacity-80"
             >
               <Image

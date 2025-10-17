@@ -184,30 +184,34 @@ export function ProfileDropdown({ userId, user }: ProfileDropdownProps) {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 h-auto p-2 glass-medium rounded-glass-sm hover:glass-heavy transition-all duration-300"
+            className="flex items-center gap-2 h-10 p-2 glass-light rounded-glass-sm hover:glass-heavy transition-all duration-300"
             style={{
-              border: '1px solid var(--glass-border-medium)',
+              border: '1px solid var(--glass-border-subtle)',
+              backdropFilter: 'blur(20px) saturate(180%)',
             }}
+            aria-label="User profile menu"
           >
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-medium">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs font-medium">
               {initials}
             </div>
-            <div className="hidden sm:block text-left">
-              <div className="text-sm font-medium text-label-primary">
-                {profile?.full_name || 'Profile'}
-              </div>
-              <div className="text-xs text-label-secondary truncate max-w-[120px]">
-                {user?.email}
-              </div>
-            </div>
-            <ChevronDown className="h-4 w-4 text-label-tertiary" />
+            <ChevronDown className="h-3 w-3 text-label-tertiary flex-shrink-0" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
           className="w-80 glass-light rounded-glass shadow-glass-medium"
+          style={{
+            border: '1px solid var(--glass-border-subtle)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+          }}
         >
-          <DropdownMenuLabel className="glass-light rounded-glass-sm">
+          <DropdownMenuLabel
+            className="glass-light rounded-glass-sm"
+            style={{
+              border: '1px solid var(--glass-border-subtle)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+            }}
+          >
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white font-medium">
                 {initials}
@@ -312,14 +316,17 @@ export function ProfileDropdown({ userId, user }: ProfileDropdownProps) {
             </>
           )}
 
-          <DropdownMenuItem onClick={() => setIsEditModalOpen(true)} className="cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => setIsEditModalOpen(true)}
+            className="cursor-pointer glass-interactive"
+          >
             <Edit className="mr-2 h-4 w-4" />
             <span>Edit Profile</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
             onClick={handleSignOut}
-            className="cursor-pointer text-red-600 focus:text-red-600"
+            className="cursor-pointer text-red-600 focus:text-red-600 glass-interactive"
             aria-label="Sign out of your account"
           >
             <LogOut className="mr-2 h-4 w-4" />

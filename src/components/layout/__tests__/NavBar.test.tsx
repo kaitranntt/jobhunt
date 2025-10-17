@@ -193,12 +193,11 @@ describe('NavBar Component', () => {
       expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
     })
 
-    it('should have glass-medium styling for authenticated variant', () => {
+    it('should have glass-light styling for authenticated variant', () => {
       const { container } = renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('glass-medium')
+      expect(header).toHaveClass('glass-light')
       expect(header).toHaveClass('border-b')
-      expect(header).toHaveClass('shadow-glass-soft')
     })
 
     it('should not have fixed positioning', () => {
@@ -256,10 +255,10 @@ describe('NavBar Component', () => {
       expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
     })
 
-    it('should have glass-ultra styling for auth-pages variant', () => {
+    it('should have glass-light styling for auth-pages variant', () => {
       const { container } = renderWithTheme(<NavBar variant="auth-pages" />)
       const header = container.querySelector('header')
-      expect(header).toHaveClass('glass-ultra')
+      expect(header).toHaveClass('glass-light')
       expect(header).toHaveClass('border-b')
     })
 
