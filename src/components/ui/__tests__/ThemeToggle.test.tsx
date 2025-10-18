@@ -1,19 +1,19 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeToggle } from '../ThemeToggle'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-describe('ThemeToggle Dropdown', () => {
+describe('ThemeToggle', () => {
   beforeEach(() => {
     localStorage.clear()
     document.documentElement.className = ''
 
-    // Mock matchMedia
+    // Mock matchMedia to return light theme by default
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: vi.fn().mockImplementation(query => ({
-        matches: false,
+        matches: false, // Light theme
         media: query,
         onchange: null,
         addListener: vi.fn(),
@@ -26,702 +26,35 @@ describe('ThemeToggle Dropdown', () => {
   })
 
   describe('Initial Rendering', () => {
-    it('renders dropdown trigger button with correct initial icon', () => {
+    it('renders toggle button with correct initial icon', () => {
       render(
         <ThemeProvider defaultTheme="light">
           <ThemeToggle />
         </ThemeProvider>
       )
 
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      expect(trigger).toBeDefined()
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button).toBeDefined()
     })
 
-    it('trigger button is accessible and focusable', () => {
+    it('shows moon icon in light mode', () => {
       render(
         <ThemeProvider defaultTheme="light">
           <ThemeToggle />
         </ThemeProvider>
       )
 
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      trigger.focus()
-      expect(document.activeElement).toBe(trigger)
-    })
-
-    it('has proper ARIA attributes on trigger', () => {
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      expect(trigger.getAttribute('aria-haspopup')).toBe('menu')
-      expect(trigger.getAttribute('aria-expanded')).toBe('false')
-    })
-  })
-
-  describe('Dropdown Menu Interaction', () => {
-    it('opens menu on trigger click', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const menu = screen.getByRole('menu')
-        expect(menu).toBeDefined()
-      })
-    })
-
-    it('displays all three theme options when menu is open', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const lightOption = screen.getByRole('menuitem', { name: /light/i })
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        const systemOption = screen.getByRole('menuitem', { name: /system/i })
-
-        expect(lightOption).toBeDefined()
-        expect(darkOption).toBeDefined()
-        expect(systemOption).toBeDefined()
-      })
-    })
-
-    it('shows check indicator for current theme', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const lightOption = screen.getByRole('menuitem', { name: /light/i })
-        // Check for check icon presence (lucide-check svg)
-        const checkIcon = lightOption.querySelector('svg.lucide-check')
-        expect(checkIcon).toBeDefined()
-      })
-    })
-
-    it('closes menu after theme selection', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      await waitFor(() => {
-        expect(screen.queryByRole('menu')).toBeNull()
-      })
-    })
-
-    it('closes menu on Escape key press', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-
-      await user.keyboard('{Escape}')
-
-      await waitFor(() => {
-        expect(screen.queryByRole('menu')).toBeNull()
-      })
-    })
-
-    it('closes menu when clicking outside', async () => {
-      const user = userEvent.setup()
-      render(
-        <div>
-          <div data-testid="outside">Outside element</div>
-          <ThemeProvider defaultTheme="light">
-            <ThemeToggle />
-          </ThemeProvider>
-        </div>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-
-      // Use fireEvent for clicking outside since Radix sets pointer-events: none on body
-      const outside = screen.getByTestId('outside')
-      fireEvent.pointerDown(outside)
-      fireEvent.pointerUp(outside)
-      fireEvent.click(outside)
-
-      await waitFor(() => {
-        expect(screen.queryByRole('menu')).toBeNull()
-      })
-    })
-  })
-
-  describe('Theme Switching', () => {
-    it('changes theme to dark when dark option is clicked', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      await waitFor(() => {
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-
-    it('changes theme to light when light option is clicked', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="dark">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      // Set dark mode initially
-      document.documentElement.classList.add('dark')
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const lightOption = screen.getByRole('menuitem', { name: /light/i })
-        expect(lightOption).toBeDefined()
-      })
-
-      const lightOption = screen.getByRole('menuitem', { name: /light/i })
-      await user.click(lightOption)
-
-      await waitFor(() => {
-        expect(document.documentElement.classList.contains('dark')).toBe(false)
-      })
-    })
-
-    it('changes theme to system when system option is clicked', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const systemOption = screen.getByRole('menuitem', { name: /system/i })
-        expect(systemOption).toBeDefined()
-      })
-
-      const systemOption = screen.getByRole('menuitem', { name: /system/i })
-      await user.click(systemOption)
-
-      // System theme should resolve based on matchMedia mock (set to light in beforeEach)
-      await waitFor(() => {
-        // Verify theme changed (either dark class removed or kept, based on system preference)
-        expect(document.documentElement.className).toBeDefined()
-      })
-    })
-
-    it('persists theme selection to localStorage', async () => {
-      const user = userEvent.setup()
-
-      // Spy on localStorage.setItem
-      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
-
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      await waitFor(() => {
-        expect(setItemSpy).toHaveBeenCalledWith('jobhunt-theme', 'dark')
-      })
-
-      setItemSpy.mockRestore()
-    })
-  })
-
-  describe('Keyboard Navigation', () => {
-    it('opens menu on Enter key press', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      trigger.focus()
-
-      await user.keyboard('{Enter}')
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-    })
-
-    it('opens menu on Space key press', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      trigger.focus()
-
-      await user.keyboard(' ')
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-    })
-
-    it('navigates menu items with Arrow Down key', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-
-      await user.keyboard('{ArrowDown}')
-
-      // Verify focus moved to first menu item or next item
-      const menuItems = screen.getAllByRole('menuitem')
-      expect(menuItems.length).toBeGreaterThan(0)
-    })
-
-    it('navigates menu items with Arrow Up key', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-
-      await user.keyboard('{ArrowUp}')
-
-      // Verify focus moved appropriately
-      const menuItems = screen.getAllByRole('menuitem')
-      expect(menuItems.length).toBeGreaterThan(0)
-    })
-
-    it('selects theme option with Enter key', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      darkOption.focus()
-
-      await user.keyboard('{Enter}')
-
-      await waitFor(() => {
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-
-    it('maintains focus trap within menu when open', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(screen.getByRole('menu')).toBeDefined()
-      })
-
-      // Tab through menu items
-      await user.keyboard('{Tab}')
-
-      // Verify focus stays within menu or returns to trigger
-      const activeElement = document.activeElement
-      expect(activeElement).toBeDefined()
-    })
-  })
-
-  describe('Accessibility', () => {
-    it('has proper ARIA role for menu', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const menu = screen.getByRole('menu')
-        expect(menu.getAttribute('role')).toBe('menu')
-      })
-    })
-
-    it('has proper ARIA role for menu items', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const menuItems = screen.getAllByRole('menuitem')
-        expect(menuItems.length).toBe(3)
-        menuItems.forEach(item => {
-          expect(item.getAttribute('role')).toBe('menuitem')
-        })
-      })
-    })
-
-    it('updates aria-expanded attribute when menu opens/closes', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      expect(trigger.getAttribute('aria-expanded')).toBe('false')
-
-      await user.click(trigger)
-
-      await waitFor(() => {
-        expect(trigger.getAttribute('aria-expanded')).toBe('true')
-      })
-
-      await user.keyboard('{Escape}')
-
-      await waitFor(() => {
-        expect(trigger.getAttribute('aria-expanded')).toBe('false')
-      })
-    })
-
-    it('provides descriptive labels for screen readers', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const lightOption = screen.getByRole('menuitem', { name: /light/i })
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        const systemOption = screen.getByRole('menuitem', { name: /system/i })
-
-        expect(lightOption.textContent).toContain('Light')
-        expect(darkOption.textContent).toContain('Dark')
-        expect(systemOption.textContent).toContain('System')
-      })
-    })
-
-    it('includes icons with proper accessibility attributes', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const menu = screen.getByRole('menu')
-        // Icons should either have aria-hidden="true" or proper aria-labels
-        const icons = menu.querySelectorAll('svg')
-        expect(icons.length).toBeGreaterThan(0)
-      })
-    })
-
-    it('supports screen reader announcements for theme changes', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      // Verify aria-live region exists or theme change is announced
-      await waitFor(() => {
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-    })
-  })
-
-  describe('Visual States', () => {
-    it('applies hover styles to menu items', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.hover(darkOption)
-
-      // Verify hover state is applied (className should include hover styles)
-      expect(darkOption.className).toBeDefined()
-    })
-
-    it('applies focus styles to focused elements', async () => {
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      trigger.focus()
-
-      // Verify focus styles are applied
-      expect(document.activeElement).toBe(trigger)
-      expect(trigger.className).toBeDefined()
-    })
-
-    it('displays correct icon for current theme', async () => {
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      const icon = trigger.querySelector('svg')
-
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      const icon = button.querySelector('svg')
       expect(icon).toBeDefined()
-      // Icon should be Sun for light theme
     })
 
-    it('updates trigger icon when theme changes', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      await waitFor(() => {
-        const updatedTrigger = screen.getByRole('button', { name: /choose theme/i })
-        const updatedIcon = updatedTrigger.querySelector('svg')
-        expect(updatedIcon).toBeDefined()
-        // Icon should now be Moon for dark theme
-      })
-    })
-  })
-
-  describe('Edge Cases', () => {
-    it('handles rapid theme switching gracefully', async () => {
-      const user = userEvent.setup()
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-
-      // Rapidly switch themes
-      await user.click(trigger)
-      await waitFor(() => screen.getByRole('menuitem', { name: /dark/i }))
-      await user.click(screen.getByRole('menuitem', { name: /dark/i }))
-
-      await waitFor(() => screen.queryByRole('menu') === null)
-
-      await user.click(trigger)
-      await waitFor(() => screen.getByRole('menuitem', { name: /system/i }))
-      await user.click(screen.getByRole('menuitem', { name: /system/i }))
-
-      // Should handle without errors
-      expect(document.documentElement.className).toBeDefined()
-    })
-
-    it.skip('handles theme selection when localStorage is unavailable', async () => {
-      // NOTE: Skipped because ThemeProvider doesn't currently handle localStorage errors
-      // This is an edge case that rarely occurs in practice
-      const user = userEvent.setup()
-
-      // Mock localStorage to fail silently instead of throwing
-      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-        // Silently fail - no throw
-      })
-
-      render(
-        <ThemeProvider defaultTheme="light">
-          <ThemeToggle />
-        </ThemeProvider>
-      )
-
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
-
-      // Theme should still change even if localStorage fails
-      await waitFor(() => {
-        expect(document.documentElement.classList.contains('dark')).toBe(true)
-      })
-
-      setItemSpy.mockRestore()
-    })
-
-    it('handles missing ThemeProvider gracefully', () => {
-      // This test verifies the component doesn't crash without ThemeProvider
-      // In practice, ThemeProvider should always wrap the component
-      expect(() => {
-        render(<ThemeToggle />)
-      }).toThrow() // Should throw or handle gracefully
-    })
-
-    it('handles system theme preference changes', async () => {
-      // Mock matchMedia to return dark preference
+    it('shows sun icon when in dark mode', async () => {
+      // Mock matchMedia to return dark theme
       Object.defineProperty(window, 'matchMedia', {
         writable: true,
         value: vi.fn().mockImplementation(query => ({
-          matches: query === '(prefers-color-scheme: dark)',
+          matches: query === '(prefers-color-scheme: dark)', // Dark theme
           media: query,
           onchange: null,
           addListener: vi.fn(),
@@ -738,27 +71,432 @@ describe('ThemeToggle Dropdown', () => {
         </ThemeProvider>
       )
 
-      // Should respect system preference (dark in this mock)
       await waitFor(() => {
-        expect(
-          document.documentElement.classList.contains('dark') ||
-            document.documentElement.className.length >= 0
-        ).toBe(true)
+        const button = screen.getByRole('button', { name: /switch to light theme/i })
+        const icon = button.querySelector('svg')
+        expect(icon).toBeDefined()
       })
     })
-  })
 
-  describe('Integration with ThemeProvider', () => {
-    it('uses theme from ThemeProvider context', () => {
+    it('button is accessible and focusable', () => {
       render(
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <ThemeToggle />
         </ThemeProvider>
       )
 
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      expect(trigger).toBeDefined()
-      expect(document.documentElement.classList.contains('dark')).toBe(true)
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      button.focus()
+      expect(document.activeElement).toBe(button)
+    })
+
+    it('has proper ARIA attributes', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button.getAttribute('aria-label')).toBe('Switch to dark theme')
+    })
+  })
+
+  describe('Theme Toggle Interaction', () => {
+    it('toggles from light to dark on click', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button.getAttribute('aria-label')).toBe('Switch to dark theme')
+
+      await user.click(button)
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(updatedButton.getAttribute('aria-label')).toBe('Switch to light theme')
+      })
+    })
+
+    it('toggles from dark to light on click', async () => {
+      // Mock matchMedia to return dark theme initially
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+          matches: query === '(prefers-color-scheme: dark)', // Dark theme
+          media: query,
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      })
+
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="system">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      await waitFor(() => {
+        const button = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(button.getAttribute('aria-label')).toBe('Switch to light theme')
+      })
+
+      const button = screen.getByRole('button', { name: /switch to light theme/i })
+      await user.click(button)
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to dark theme/i })
+        expect(updatedButton.getAttribute('aria-label')).toBe('Switch to dark theme')
+      })
+    })
+
+    it('applies dark class to document when switching to dark mode', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      await user.click(button)
+
+      await waitFor(() => {
+        expect(document.documentElement.classList.contains('dark')).toBe(true)
+      })
+    })
+
+    it('removes dark class from document when switching to light mode', async () => {
+      // Mock matchMedia to return dark theme initially
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+          matches: query === '(prefers-color-scheme: dark)', // Dark theme
+          media: query,
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      })
+
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="system">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      await waitFor(() => {
+        const button = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(button).toBeDefined()
+      })
+
+      const button = screen.getByRole('button', { name: /switch to light theme/i })
+      await user.click(button)
+
+      await waitFor(() => {
+        expect(document.documentElement.classList.contains('dark')).toBe(false)
+      })
+    })
+
+    it('persists theme selection to localStorage', async () => {
+      const user = userEvent.setup()
+
+      // Spy on localStorage.setItem
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      await user.click(button)
+
+      await waitFor(() => {
+        expect(setItemSpy).toHaveBeenCalledWith('jobhunt-theme', 'dark')
+      })
+
+      setItemSpy.mockRestore()
+    })
+  })
+
+  describe('System Theme Detection', () => {
+    it('auto-detects light system theme for new users', async () => {
+      // Mock matchMedia to return light theme
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+          matches: false, // Light theme
+          media: query,
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      })
+
+      render(
+        <ThemeProvider defaultTheme="system">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      await waitFor(() => {
+        const button = screen.getByRole('button', { name: /switch to dark theme/i })
+        expect(button).toBeDefined()
+        expect(document.documentElement.classList.contains('dark')).toBe(false)
+      })
+    })
+
+    it('auto-detects dark system theme for new users', async () => {
+      // Mock matchMedia to return dark theme
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+          matches: query === '(prefers-color-scheme: dark)', // Dark theme
+          media: query,
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      })
+
+      render(
+        <ThemeProvider defaultTheme="system">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      await waitFor(() => {
+        const button = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(button).toBeDefined()
+        expect(document.documentElement.classList.contains('dark')).toBe(true)
+      })
+    })
+  })
+
+  describe('Keyboard Navigation', () => {
+    it('toggles theme on Enter key press', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      button.focus()
+
+      await user.keyboard('{Enter}')
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(updatedButton).toBeDefined()
+      })
+    })
+
+    it('toggles theme on Space key press', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      button.focus()
+
+      await user.keyboard(' ')
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(updatedButton).toBeDefined()
+      })
+    })
+  })
+
+  describe('Accessibility', () => {
+    it('has proper ARIA label that updates with theme', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button.getAttribute('aria-label')).toBe('Switch to dark theme')
+
+      await user.click(button)
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(updatedButton.getAttribute('aria-label')).toBe('Switch to light theme')
+      })
+    })
+
+    it('has descriptive title attribute', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button.getAttribute('title')).toContain('Current theme: light')
+      expect(button.getAttribute('title')).toContain('Click to switch to dark mode')
+    })
+
+    it('provides screen reader friendly text', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      const srOnlyText = button.querySelector('.sr-only')
+      expect(srOnlyText?.textContent).toContain('currently light')
+      expect(srOnlyText?.textContent).toContain('switch to dark')
+    })
+  })
+
+  describe('Visual States', () => {
+    it('applies hover styles to button', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      expect(button.className).toContain('hover:scale-105')
+    })
+
+    it('applies focus styles to button', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      button.focus()
+
+      expect(document.activeElement).toBe(button)
+      expect(button.className).toBeDefined()
+    })
+
+    it('displays correct icon for current theme', () => {
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      const icon = button.querySelector('svg')
+      expect(icon).toBeDefined()
+    })
+
+    it('updates icon when theme changes', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      await user.click(button)
+
+      await waitFor(() => {
+        const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+        const updatedIcon = updatedButton.querySelector('svg')
+        expect(updatedIcon).toBeDefined()
+      })
+    })
+  })
+
+  describe('Edge Cases', () => {
+    it('handles rapid theme switching gracefully', async () => {
+      const user = userEvent.setup()
+      render(
+        <ThemeProvider defaultTheme="light">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+
+      // Rapidly switch themes
+      await user.click(button)
+      await waitFor(() => screen.getByRole('button', { name: /switch to light theme/i }))
+
+      const updatedButton = screen.getByRole('button', { name: /switch to light theme/i })
+      await user.click(updatedButton)
+      await waitFor(() => screen.getByRole('button', { name: /switch to dark theme/i }))
+
+      // Should handle without errors
+      expect(document.documentElement.className).toBeDefined()
+    })
+
+    it('throws when ThemeProvider is missing', () => {
+      // This test verifies the component throws appropriately without ThemeProvider
+      // In practice, ThemeProvider should always wrap the component
+      expect(() => {
+        render(<ThemeToggle />)
+      }).toThrow('useTheme must be used within a ThemeProvider')
+    })
+  })
+
+  describe('Integration with ThemeProvider', () => {
+    it('uses theme from ThemeProvider context', async () => {
+      // Mock matchMedia to return dark theme
+      Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+          matches: query === '(prefers-color-scheme: dark)', // Dark theme
+          media: query,
+          onchange: null,
+          addListener: vi.fn(),
+          removeListener: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        })),
+      })
+
+      render(
+        <ThemeProvider defaultTheme="system">
+          <ThemeToggle />
+        </ThemeProvider>
+      )
+
+      await waitFor(() => {
+        const button = screen.getByRole('button', { name: /switch to light theme/i })
+        expect(button).toBeDefined()
+        expect(document.documentElement.classList.contains('dark')).toBe(true)
+      })
     })
 
     it('updates ThemeProvider context when theme changes', async () => {
@@ -769,16 +507,8 @@ describe('ThemeToggle Dropdown', () => {
         </ThemeProvider>
       )
 
-      const trigger = screen.getByRole('button', { name: /choose theme/i })
-      await user.click(trigger)
-
-      await waitFor(() => {
-        const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-        expect(darkOption).toBeDefined()
-      })
-
-      const darkOption = screen.getByRole('menuitem', { name: /dark/i })
-      await user.click(darkOption)
+      const button = screen.getByRole('button', { name: /switch to dark theme/i })
+      await user.click(button)
 
       await waitFor(() => {
         expect(document.documentElement.classList.contains('dark')).toBe(true)

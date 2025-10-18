@@ -85,7 +85,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
 
     it('should have fixed positioning classes', () => {
@@ -181,7 +181,7 @@ describe('NavBar Component', () => {
         const profileButton = buttons.find(
           button =>
             button.getAttribute('aria-haspopup') === 'menu' &&
-            button.getAttribute('aria-label') !== 'Choose theme'
+            !button.getAttribute('aria-label')?.match(/switch to (light|dark) theme/i)
         )
         expect(profileButton).toBeInTheDocument()
         expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
@@ -190,7 +190,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
 
     it('should have glass-light styling for authenticated variant', () => {
@@ -213,7 +213,10 @@ describe('NavBar Component', () => {
       const buttons = screen.getAllByRole('button')
       // Should only have ThemeToggle button
       expect(buttons.length).toBe(1)
-      expect(buttons[0]).toHaveAttribute('aria-label', 'Choose theme')
+      expect(buttons[0]).toHaveAttribute(
+        'aria-label',
+        expect.stringMatching(/switch to (light|dark) theme/i)
+      )
     })
 
     it('should handle user without email gracefully', async () => {
@@ -252,7 +255,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
 
     it('should have glass-light styling for auth-pages variant', () => {
@@ -375,7 +378,7 @@ describe('NavBar Component', () => {
         const profileButton = buttons.find(
           button =>
             button.getAttribute('aria-haspopup') === 'menu' &&
-            button.getAttribute('aria-label') !== 'Choose theme'
+            !button.getAttribute('aria-label')?.match(/switch to (light|dark) theme/i)
         )
         expect(profileButton).toBeInTheDocument()
         expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
@@ -386,7 +389,7 @@ describe('NavBar Component', () => {
   describe('Theme Toggle Integration', () => {
     it('should not render ThemeToggle when showThemeToggle is false for landing', () => {
       renderWithTheme(<NavBar variant="landing" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
     })
 
     it('should not render ThemeToggle when showThemeToggle is false for authenticated', () => {
@@ -401,22 +404,22 @@ describe('NavBar Component', () => {
       renderWithTheme(
         <NavBar variant="authenticated" user={themeTestUser} showThemeToggle={false} />
       )
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
     })
 
     it('should not render ThemeToggle when showThemeToggle is false for auth-pages', () => {
       renderWithTheme(<NavBar variant="auth-pages" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/choose theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
     })
 
     it('should render ThemeToggle when showThemeToggle is true', () => {
       renderWithTheme(<NavBar variant="landing" showThemeToggle={true} />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
 
     it('should render ThemeToggle by default when showThemeToggle is not provided', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/choose theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
   })
 

@@ -34,6 +34,12 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
     [getSystemTheme]
   )
 
+  // Auto-detect system theme for initial load (if no stored preference)
+  const getAutoDetectedTheme = useCallback((): ResolvedTheme => {
+    const systemTheme = getSystemTheme()
+    return systemTheme // Return 'light' or 'dark' directly instead of 'system'
+  }, [getSystemTheme])
+
   // Apply theme to document
   const applyTheme = useCallback((resolvedTheme: ResolvedTheme) => {
     if (typeof window === 'undefined') return
@@ -55,11 +61,13 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
       setResolvedTheme(resolved)
       applyTheme(resolved)
     } else {
-      const resolved = resolveTheme(defaultTheme)
-      setResolvedTheme(resolved)
-      applyTheme(resolved)
+      // Auto-detect system theme for first-time users
+      const autoDetectedTheme = getAutoDetectedTheme()
+      setThemeState(autoDetectedTheme)
+      setResolvedTheme(autoDetectedTheme)
+      applyTheme(autoDetectedTheme)
     }
-  }, [defaultTheme, resolveTheme, applyTheme])
+  }, [defaultTheme, resolveTheme, applyTheme, getAutoDetectedTheme])
 
   // Listen for system theme changes
   useEffect(() => {

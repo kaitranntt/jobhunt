@@ -45,7 +45,9 @@ describe('ThemeProvider', () => {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
     })
 
-    expect(result.current.theme).toBe('system')
+    // With auto-detection, theme is set to resolved system theme ('light' based on mock)
+    expect(result.current.theme).toBe('light')
+    expect(result.current.resolvedTheme).toBe('light')
   })
 
   it('initializes with stored theme from localStorage', () => {
@@ -100,7 +102,8 @@ describe('ThemeProvider', () => {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
     })
 
-    expect(result.current.theme).toBe('system')
+    // With auto-detection, theme is set to resolved system theme directly
+    expect(result.current.theme).toBe('light')
     expect(result.current.resolvedTheme).toBe('light')
   })
 
@@ -120,7 +123,8 @@ describe('ThemeProvider', () => {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
     })
 
-    expect(result.current.theme).toBe('system')
+    // With auto-detection, theme is set to resolved system theme directly
+    expect(result.current.theme).toBe('dark')
     expect(result.current.resolvedTheme).toBe('dark')
   })
 
@@ -166,6 +170,8 @@ describe('ThemeProvider', () => {
       wrapper: ({ children }) => <ThemeProvider defaultTheme="system">{children}</ThemeProvider>,
     })
 
+    // With auto-detection, theme is set to 'light' initially
+    expect(result.current.theme).toBe('light')
     expect(result.current.resolvedTheme).toBe('light')
 
     // Simulate system preference change to dark
