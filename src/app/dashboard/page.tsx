@@ -5,11 +5,8 @@ import { Plus, Search, Rocket, Lightbulb } from 'lucide-react'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
 import { KanbanBoardV2 } from '@/components/applications/KanbanBoardV2'
-import { SmartStatsPanel } from '@/components/applications/SmartStatsPanel'
 import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
-import Timeline from '@/components/timeline/Timeline'
-import UpcomingReminders from '@/components/reminders/UpcomingReminders'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -46,7 +43,7 @@ export default function DashboardPage() {
   const [isCreating, setIsCreating] = React.useState(false)
   const [createError, setCreateError] = React.useState<string | null>(null)
 
-  // User state for NavBar and Timeline
+  // User state for NavBar
   const [user, setUser] = React.useState<User | null>(null)
   const [userId, setUserId] = React.useState<string>('')
 
@@ -265,18 +262,6 @@ export default function DashboardPage() {
             </div>
           ) : applications.length > 0 ? (
             <>
-              {/* Top Section - Global Dashboard (Most Important) */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <div className="lg:col-span-2">
-                  <SmartStatsPanel applications={filteredApplications} />
-                </div>
-                {userId && (
-                  <div className="lg:col-span-1">
-                    <UpcomingReminders userId={userId} />
-                  </div>
-                )}
-              </div>
-
               {/* Middle Section - Action Bar (Secondary) */}
               <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex-1">
@@ -313,13 +298,6 @@ export default function DashboardPage() {
                 onApplicationClick={handleApplicationClick}
                 isLoading={false}
               />
-
-              {/* Timeline Section */}
-              {userId && (
-                <div className="mt-8">
-                  <Timeline userId={userId} />
-                </div>
-              )}
             </>
           ) : null}
         </main>

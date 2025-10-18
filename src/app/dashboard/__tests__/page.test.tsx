@@ -13,15 +13,6 @@ vi.mock('@/lib/api/profiles', () => ({
   getUserProfile: vi.fn().mockResolvedValue(null),
 }))
 
-vi.mock('@/lib/api/reminders', () => ({
-  getUpcomingReminders: vi.fn().mockResolvedValue([]),
-  getRemindersByApplication: vi.fn().mockResolvedValue([]),
-  createReminder: vi.fn(),
-  updateReminder: vi.fn(),
-  markReminderComplete: vi.fn(),
-  deleteReminder: vi.fn(),
-}))
-
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
   return render(<ThemeProvider>{ui}</ThemeProvider>)
@@ -143,17 +134,16 @@ describe('DashboardPage', () => {
       expect(emptyStateContainer).toBeInTheDocument()
     })
 
-    it('should render SmartStatsPanel when applications exist', async () => {
+    it('should render dashboard when applications exist', async () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
-        expect(screen.getByText('Total Applications')).toBeInTheDocument()
+        expect(screen.getByText('Google')).toBeInTheDocument()
       })
 
-      // Verify stats panel metrics
-      expect(screen.getByText('Response Rate')).toBeInTheDocument()
-      expect(screen.getByText('Active Interviews')).toBeInTheDocument()
-      expect(screen.getByText('Avg Response Time')).toBeInTheDocument()
+      // Verify dashboard content renders without SmartStatsPanel
+      expect(screen.getByPlaceholderText(/search by company or job title/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /new application/i })).toBeInTheDocument()
     })
 
     it('should render KanbanBoardV2 with applications', async () => {
@@ -181,21 +171,19 @@ describe('DashboardPage', () => {
       expect(screen.getByRole('button', { name: /new application/i })).toBeInTheDocument()
     })
 
-    it('should follow information hierarchy: Stats → Actions → Kanban', async () => {
+    it('should follow information hierarchy: Actions → Kanban', async () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
-        expect(screen.getByText('Total Applications')).toBeInTheDocument()
+        expect(screen.getByText('Google')).toBeInTheDocument()
       })
 
       // Verify order by getting all main sections
       const main = screen.getByRole('main')
-      const statsText = screen.getByText('Total Applications')
       const searchInput = screen.getByPlaceholderText(/search by company or job title/i)
       const kanbanBoard = screen.getByRole('region', { name: /job applications kanban board/i })
 
       // Verify elements are in correct order in DOM
-      expect(main).toContainElement(statsText)
       expect(main).toContainElement(searchInput)
       expect(main).toContainElement(kanbanBoard)
     })
@@ -912,7 +900,7 @@ describe('DashboardPage', () => {
       // Verify neither empty state nor dashboard content is rendered
       await waitFor(() => {
         expect(screen.queryByText('Start Your Job Hunt Journey')).not.toBeInTheDocument()
-        expect(screen.queryByText('Total Applications')).not.toBeInTheDocument()
+        expect(screen.queryByText('Google')).not.toBeInTheDocument()
       })
 
       // Only modal should be visible
@@ -966,8 +954,8 @@ describe('DashboardPage', () => {
       // Empty state should not return - dashboard content should show instead
       await waitFor(() => {
         expect(screen.queryByText('Start Your Job Hunt Journey')).not.toBeInTheDocument()
-        expect(screen.getByText('Total Applications')).toBeInTheDocument()
         expect(screen.getByText('Apple')).toBeInTheDocument()
+        expect(screen.getByPlaceholderText(/search by company or job title/i)).toBeInTheDocument()
       })
     })
   })
