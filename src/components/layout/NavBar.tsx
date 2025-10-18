@@ -39,7 +39,7 @@ export function NavBar({
         className={cn('fixed top-0 left-0 right-0 z-50 border-b glass-light', className)}
         style={unifiedStyles}
       >
-        <div className="mx-auto w-[85%] px-6 py-3">
+        <div className="mx-auto w-[98%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
@@ -114,7 +114,7 @@ export function NavBar({
   if (variant === 'authenticated') {
     return (
       <header className={cn('border-b glass-light', className)} style={unifiedStyles}>
-        <div className="mx-auto w-[85%] px-6 py-3">
+        <div className="mx-auto w-[98%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
@@ -155,7 +155,7 @@ export function NavBar({
   if (variant === 'auth-pages') {
     return (
       <header className={cn('border-b glass-light', className)} style={unifiedStyles}>
-        <div className="mx-auto w-[85%] px-6 py-3">
+        <div className="mx-auto w-[98%] px-6 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link

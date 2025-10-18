@@ -7,10 +7,17 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { setupMatchMedia } from '@/test/setup'
 
 // Mock Next.js Image component to prevent URL parsing errors in test environment
+// and avoid ESLint @next/next/no-img-element warnings
 vi.mock('next/image', () => ({
-  default: ({ alt, ...props }: any) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img alt={alt} {...props} />
+  default: ({ alt, 'data-testid': testId, className, style, ...props }: any) => (
+    <div
+      data-testid={testId || 'next-image-mock'}
+      role="img"
+      aria-label={alt}
+      className={className}
+      style={style}
+      {...props}
+    />
   ),
 }))
 

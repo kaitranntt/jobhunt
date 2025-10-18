@@ -181,7 +181,7 @@ export default function DashboardPage() {
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
           <NavBar variant="authenticated" user={user} userId={userId} />
-          <main className="mx-auto w-[85%] px-6 py-8">
+          <main className="mx-auto w-[98%] px-6 py-8">
             <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
               <p className="text-label-secondary">Loading applications...</p>
             </div>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
           <NavBar variant="authenticated" user={user} userId={userId} />
-          <main className="mx-auto w-[85%] px-6 py-8">
+          <main className="mx-auto w-[98%] px-6 py-8">
             <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
               <div className="text-center">
                 <p
@@ -221,7 +221,7 @@ export default function DashboardPage() {
       <div className="min-h-screen">
         <NavBar variant="authenticated" user={user} userId={userId} />
 
-        <main className="mx-auto w-[85%] px-6 py-8">
+        <main className="mx-auto w-[98%] px-6 py-8">
           {applications.length === 0 && !isNewApplicationModalOpen ? (
             <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
               <div className="max-w-md text-center space-y-6 glass-ultra rounded-glass-lg p-8 shadow-glass-soft">
