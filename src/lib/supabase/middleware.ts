@@ -1,10 +1,12 @@
 import { createServerClient } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
+type SupabaseClient = ReturnType<typeof createServerClient>
+
 /**
  * Check if user signed up via OAuth and needs profile creation
  */
-async function handleOAuthProfileCreation(request: NextRequest, supabase: any) {
+async function handleOAuthProfileCreation(request: NextRequest, supabase: SupabaseClient) {
   try {
     const {
       data: { user },
@@ -13,7 +15,9 @@ async function handleOAuthProfileCreation(request: NextRequest, supabase: any) {
     if (!user) return false
 
     // Check if user has OAuth identities (non-email providers)
-    const hasOAuthIdentity = user.identities?.some((identity: any) => identity.provider !== 'email')
+    const hasOAuthIdentity = user.identities?.some(
+      (identity: { provider: string }) => identity.provider !== 'email'
+    )
 
     if (!hasOAuthIdentity) return false
 
