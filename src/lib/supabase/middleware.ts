@@ -5,6 +5,11 @@ export async function updateSession(request: NextRequest) {
   const { searchParams } = request.nextUrl
   const error = searchParams.get('error')
 
+  // Skip middleware processing for OAuth callback route - let the route handler handle it
+  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
+    return NextResponse.next()
+  }
+
   // Handle OAuth errors (but not OAuth code exchange - that's handled by route handler)
   if (error) {
     const loginUrl = request.nextUrl.clone()
