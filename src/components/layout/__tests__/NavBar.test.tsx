@@ -12,26 +12,15 @@ vi.mock('next/navigation', () => ({
   }),
 }))
 
-// Mock Supabase client for ProfileDropdown
-vi.mock('@/lib/supabase/client', () => ({
-  createClient: () => ({
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() =>
-            Promise.resolve({
-              data: null,
-              error: { code: 'PGRST116', message: 'No rows found' },
-            })
-          ),
-        })),
-      })),
-    })),
-  }),
+// Mock ThemeToggle
+vi.mock('@/components/ui/ThemeToggle', () => ({
+  ThemeToggle: () => <button aria-label="Toggle theme">Theme Toggle</button>,
 }))
 
-// Mock fetch for sign out
-global.fetch = vi.fn()
+// Mock LogoutButton
+vi.mock('@/components/auth/LogoutButton', () => ({
+  LogoutButton: () => <button data-testid="logout-button">Logout Button</button>,
+}))
 
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
@@ -85,7 +74,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
 
     it('should have fixed positioning classes', () => {
@@ -151,19 +140,16 @@ describe('NavBar Component', () => {
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
     })
 
-    it('should render only ThemeToggle and user email for authenticated user', async () => {
+    it('should render user email, logout button, and ThemeToggle for authenticated user', async () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Should have user email and ThemeToggle button only
+      // Should have user email, logout button, and ThemeToggle
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByTestId('logout-button')).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
 
-      // Should only have ThemeToggle button
+      // Should have ThemeToggle button and LogoutButton
       const buttons = screen.getAllByRole('button')
-      expect(buttons.length).toBe(1)
-      expect(buttons[0]).toHaveAttribute(
-        'aria-label',
-        expect.stringMatching(/switch to (light|dark) theme/i)
-      )
+      expect(buttons.length).toBe(2)
     })
 
     it('should render user email in responsive container', async () => {
@@ -179,7 +165,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
 
     it('should have glass-light styling for authenticated variant', () => {
@@ -198,14 +184,12 @@ describe('NavBar Component', () => {
     it('should handle null user gracefully', () => {
       renderWithTheme(<NavBar variant="authenticated" user={null} userId="test-user-id" />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should not render ProfileDropdown when user is null
-      const buttons = screen.getAllByRole('button')
+      // Should not render LogoutButton when user is null
+      expect(screen.queryByTestId('logout-button')).not.toBeInTheDocument()
       // Should only have ThemeToggle button
+      const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(1)
-      expect(buttons[0]).toHaveAttribute(
-        'aria-label',
-        expect.stringMatching(/switch to (light|dark) theme/i)
-      )
+      expect(buttons[0]).toHaveAttribute('aria-label', 'Toggle theme')
     })
 
     it('should handle user without email gracefully', async () => {
@@ -214,16 +198,13 @@ describe('NavBar Component', () => {
         <NavBar variant="authenticated" user={userWithoutEmail} userId="test-user-id" />
       )
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should still render ThemeToggle even without email
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      // Should still render ThemeToggle and LogoutButton even without email
+      expect(screen.getByTestId('logout-button')).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
 
-      // Should only have ThemeToggle button when email is empty
+      // Should have ThemeToggle button and LogoutButton
       const buttons = screen.getAllByRole('button')
-      expect(buttons.length).toBe(1)
-      expect(buttons[0]).toHaveAttribute(
-        'aria-label',
-        expect.stringMatching(/switch to (light|dark) theme/i)
-      )
+      expect(buttons.length).toBe(2)
     })
 
     it('should apply custom className if provided', () => {
@@ -249,7 +230,7 @@ describe('NavBar Component', () => {
 
     it('should render ThemeToggle by default', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
 
     it('should have glass-light styling for auth-pages variant', () => {
@@ -261,7 +242,7 @@ describe('NavBar Component', () => {
 
     it('should not render user info', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.queryByText(/sign out/i)).not.toBeInTheDocument()
+      expect(screen.queryByTestId('logout-button')).not.toBeInTheDocument()
     })
 
     it('should not render Get Started link', () => {
@@ -371,14 +352,14 @@ describe('NavBar Component', () => {
       expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
       // Should have ThemeToggle with proper ARIA label
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
   })
 
   describe('Theme Toggle Integration', () => {
     it('should not render ThemeToggle when showThemeToggle is false for landing', () => {
       renderWithTheme(<NavBar variant="landing" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('Toggle theme')).not.toBeInTheDocument()
     })
 
     it('should not render ThemeToggle when showThemeToggle is false for authenticated', () => {
@@ -393,22 +374,22 @@ describe('NavBar Component', () => {
       renderWithTheme(
         <NavBar variant="authenticated" user={themeTestUser} showThemeToggle={false} />
       )
-      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('Toggle theme')).not.toBeInTheDocument()
     })
 
     it('should not render ThemeToggle when showThemeToggle is false for auth-pages', () => {
       renderWithTheme(<NavBar variant="auth-pages" showThemeToggle={false} />)
-      expect(screen.queryByLabelText(/switch to (light|dark) theme/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('Toggle theme')).not.toBeInTheDocument()
     })
 
     it('should render ThemeToggle when showThemeToggle is true', () => {
       renderWithTheme(<NavBar variant="landing" showThemeToggle={true} />)
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
 
     it('should render ThemeToggle by default when showThemeToggle is not provided', () => {
       renderWithTheme(<NavBar variant="landing" />)
-      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+      expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
     })
   })
 
