@@ -6,7 +6,7 @@
 export interface OAuthDebugInfo {
   timestamp: string
   step: string
-  data: any
+  data: unknown
   environment: string
   userAgent?: string
   ip?: string

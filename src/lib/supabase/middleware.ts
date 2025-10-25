@@ -5,10 +5,8 @@ export async function updateSession(request: NextRequest) {
   const { searchParams } = request.nextUrl
   const error = searchParams.get('error')
 
-  // Skip middleware processing for OAuth callback route - let the route handler handle it
-  if (request.nextUrl.pathname.startsWith('/auth/callback')) {
-    return NextResponse.next()
-  }
+  // Process OAuth callback route normally - let session establishment work
+  // The callback route will handle OAuth code exchange automatically
 
   // Handle OAuth errors (but not OAuth code exchange - that's handled by route handler)
   if (error) {
@@ -27,7 +25,7 @@ export async function updateSession(request: NextRequest) {
   // Create Supabase client with cookie handling for Edge Runtime
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
