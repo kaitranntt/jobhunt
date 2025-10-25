@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import DashboardPage from '../page'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
@@ -188,12 +188,14 @@ describe('DashboardPage', () => {
       expect(main).toContainElement(kanbanBoard)
     })
 
-    it('should show loading state initially', () => {
+    it('should show loading state initially', async () => {
       vi.mocked(actions.getApplicationsAction).mockImplementation(
         () => new Promise(() => {}) // Never resolves
       )
 
-      renderWithTheme(<DashboardPage />)
+      await act(async () => {
+        renderWithTheme(<DashboardPage />)
+      })
 
       expect(screen.getByText(/loading/i)).toBeInTheDocument()
     })

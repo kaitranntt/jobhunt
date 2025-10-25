@@ -4,11 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { createUserProfileAction } from './actions'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff } from 'lucide-react'
-import type { UserProfileInsert } from '@/lib/types/database.types'
 
 interface SimplifiedFormData {
   firstName: string
@@ -95,25 +93,6 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
 
       if (authError) throw authError
       if (!authData.user) throw new Error('User creation failed')
-
-      const profileData: UserProfileInsert = {
-        user_id: authData.user.id,
-        full_name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
-        phone: null,
-        location: null,
-        job_role: null,
-        desired_roles: null,
-        desired_industries: null,
-        experience_years: null,
-        linkedin_url: null,
-        portfolio_url: null,
-      }
-
-      const result = await createUserProfileAction(profileData)
-
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to create profile')
-      }
 
       if (onSuccess) {
         onSuccess()

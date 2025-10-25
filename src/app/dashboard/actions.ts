@@ -11,8 +11,6 @@ import {
   deleteApplication,
   getApplications,
 } from '@/lib/api/applications'
-import { getUserProfile } from '@/lib/api/profiles'
-import { createUserProfileAction } from '@/app/(auth)/signup/actions'
 
 /**
  * Get all applications for the authenticated user
@@ -170,62 +168,5 @@ export async function updateApplicationStatusAction(
   } catch (error) {
     console.error('Failed to update application status:', error)
     throw new Error('Failed to update application status')
-  }
-}
-
-/**
- * Server action to get user profile for dashboard
- * @param userId - User ID to fetch profile for
- * @returns User profile or null
- */
-export async function getProfileAction(userId: string) {
-  try {
-    const profile = await getUserProfile(userId)
-    return profile
-  } catch (error) {
-    console.error('Failed to get user profile:', error)
-    return null
-  }
-}
-
-/**
- * Server action to ensure user profile exists
- * Creates profile with basic info if it doesn't exist
- * @param userId - User ID
- * @param email - User email (for initial profile)
- * @returns User profile
- */
-export async function ensureProfileExistsAction(userId: string, email: string) {
-  try {
-    // Try to get existing profile first
-    const existingProfile = await getProfileAction(userId)
-    if (existingProfile) {
-      return existingProfile
-    }
-
-    // Create basic profile with email as name if no profile exists
-    const basicProfileData = {
-      user_id: userId,
-      full_name: email.split('@')[0] || 'User',
-      phone: null,
-      location: null,
-      job_role: null,
-      desired_roles: null,
-      desired_industries: null,
-      experience_years: null,
-      linkedin_url: null,
-      portfolio_url: null,
-    }
-
-    const result = await createUserProfileAction(basicProfileData)
-
-    if (result.success && result.data) {
-      return result.data
-    } else {
-      throw new Error(result.error || 'Failed to create profile')
-    }
-  } catch (error) {
-    console.error('Failed to ensure profile exists:', error)
-    throw error
   }
 }

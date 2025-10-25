@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { ProfileDropdown } from '@/components/profile/ProfileDropdown'
 import { cn } from '@/lib/utils'
 import type { User } from '@supabase/supabase-js'
 
@@ -139,7 +138,6 @@ export function NavBar({
                   <div className="hidden sm:block">
                     <span className="text-sm text-label-secondary">{user.email}</span>
                   </div>
-                  <ProfileDropdown userId={userId} user={{ email: user.email }} />
                 </>
               )}
 

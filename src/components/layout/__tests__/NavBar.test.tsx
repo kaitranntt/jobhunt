@@ -145,47 +145,36 @@ describe('NavBar Component', () => {
       expect(logo).toHaveAttribute('href', '/dashboard')
     })
 
-    it('should render user email', async () => {
+    it('should render user email when authenticated', async () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load and render the email
-      await waitFor(() => {
-        expect(screen.getByText('test@example.com')).toBeInTheDocument()
-      })
+      // Wait for user email to render
+      expect(screen.getByText('test@example.com')).toBeInTheDocument()
     })
 
-    it('should render ProfileDropdown for authenticated user', async () => {
+    it('should render only ThemeToggle and user email for authenticated user', async () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
-      await waitFor(() => {
-        // ProfileDropdown should render a button with user initials
-        const buttons = screen.getAllByRole('button')
-        // Should have at least 2 buttons: ProfileDropdown and ThemeToggle
-        expect(buttons.length).toBeGreaterThanOrEqual(2)
-      })
+      // Should have user email and ThemeToggle button only
+      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+
+      // Should only have ThemeToggle button
+      const buttons = screen.getAllByRole('button')
+      expect(buttons.length).toBe(1)
+      expect(buttons[0]).toHaveAttribute(
+        'aria-label',
+        expect.stringMatching(/switch to (light|dark) theme/i)
+      )
     })
 
-    it('should render user email in ProfileDropdown', async () => {
+    it('should render user email in responsive container', async () => {
       renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
-      await waitFor(() => {
-        expect(screen.getByText('test@example.com')).toBeInTheDocument()
-      })
-    })
-
-    it('should render ProfileDropdown with proper accessibility', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for ProfileDropdown to load
-      await waitFor(() => {
-        // ProfileDropdown should have a button trigger
-        const buttons = screen.getAllByRole('button')
-        const profileButton = buttons.find(
-          button =>
-            button.getAttribute('aria-haspopup') === 'menu' &&
-            !button.getAttribute('aria-label')?.match(/switch to (light|dark) theme/i)
-        )
-        expect(profileButton).toBeInTheDocument()
-        expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
-      })
+      // Wait for user email to render
+      const emailSpan = screen.getByText('test@example.com')
+      // The email span itself doesn't have the responsive classes, its parent does
+      const emailContainer = emailSpan.parentElement
+      expect(emailContainer).toBeInTheDocument()
+      expect(emailContainer).toHaveClass('hidden')
+      expect(emailContainer).toHaveClass('sm:block')
     })
 
     it('should render ThemeToggle by default', () => {
@@ -225,11 +214,16 @@ describe('NavBar Component', () => {
         <NavBar variant="authenticated" user={userWithoutEmail} userId="test-user-id" />
       )
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should still render ProfileDropdown even without email
-      await waitFor(() => {
-        const buttons = screen.getAllByRole('button')
-        expect(buttons.length).toBeGreaterThanOrEqual(2)
-      })
+      // Should still render ThemeToggle even without email
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
+
+      // Should only have ThemeToggle button when email is empty
+      const buttons = screen.getAllByRole('button')
+      expect(buttons.length).toBe(1)
+      expect(buttons[0]).toHaveAttribute(
+        'aria-label',
+        expect.stringMatching(/switch to (light|dark) theme/i)
+      )
     })
 
     it('should apply custom className if provided', () => {
@@ -362,7 +356,7 @@ describe('NavBar Component', () => {
       expect(authPagesContainer.querySelector('header')).toBeInTheDocument()
     })
 
-    it('should have proper ARIA label on ProfileDropdown trigger', async () => {
+    it('should have proper accessibility for simplified authenticated variant', async () => {
       const ariaUser = {
         id: 'test-user-id',
         email: 'test@example.com',
@@ -372,17 +366,12 @@ describe('NavBar Component', () => {
         created_at: '2024-01-01T00:00:00Z',
       }
       renderWithTheme(<NavBar variant="authenticated" user={ariaUser} userId="test-user-id" />)
-      await waitFor(() => {
-        // ProfileDropdown trigger should have proper ARIA attributes
-        const buttons = screen.getAllByRole('button')
-        const profileButton = buttons.find(
-          button =>
-            button.getAttribute('aria-haspopup') === 'menu' &&
-            !button.getAttribute('aria-label')?.match(/switch to (light|dark) theme/i)
-        )
-        expect(profileButton).toBeInTheDocument()
-        expect(profileButton).toHaveAttribute('aria-haspopup', 'menu')
-      })
+
+      // Should have user email displayed
+      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+
+      // Should have ThemeToggle with proper ARIA label
+      expect(screen.getByLabelText(/switch to (light|dark) theme/i)).toBeInTheDocument()
     })
   })
 
