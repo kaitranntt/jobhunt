@@ -140,7 +140,7 @@ CREATE POLICY "Users can view their own applications"
 ## Authentication Flow
 
 1. User visits login page
-2. Enters credentials (email/password or OAuth)
+2. Enters credentials (email/password)
 3. Supabase Auth validates and creates session
 4. Session stored in HTTP-only cookie
 5. Middleware validates session on protected routes

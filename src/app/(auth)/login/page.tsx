@@ -3,7 +3,6 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { FcGoogle } from 'react-icons/fc'
 import { createClient } from '@/lib/supabase/client'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
@@ -15,7 +14,6 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [googleLoading, setGoogleLoading] = useState(false)
 
   useEffect(() => {
     if (!searchParams) return
@@ -50,32 +48,6 @@ function LoginForm() {
       setError(err instanceof Error ? err.message : 'Login failed')
     } finally {
       setLoading(false)
-    }
-  }
-
-  const handleGoogleLogin = async () => {
-    setError('')
-    setGoogleLoading(true)
-
-    try {
-      const supabase = createClient()
-      // Use environment variable or fall back to window.location.origin
-      const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        (typeof window !== 'undefined' ? window.location.origin : '')
-      const redirectUrl = `${siteUrl}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
-
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
-        },
-      })
-
-      if (error) throw error
-    } catch (err) {
-      setGoogleLoading(false)
-      setError(err instanceof Error ? err.message : 'Google sign-in failed')
     }
   }
 
@@ -126,26 +98,10 @@ function LoginForm() {
 
           <button
             type="submit"
-            disabled={loading || googleLoading}
+            disabled={loading}
             className="w-full rounded-md btn-brand-gradient px-4 py-2 text-white hover:btn-brand-gradient-hover disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign in'}
-          </button>
-
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="h-px w-full bg-border" aria-hidden="true" />
-            <span>or</span>
-            <span className="h-px w-full bg-border" aria-hidden="true" />
-          </div>
-
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            disabled={googleLoading || loading}
-            className="w-full rounded-md border border-input bg-background px-4 py-2 text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            <FcGoogle className="h-5 w-5" />
-            {googleLoading ? 'Redirecting...' : 'Continue with Google'}
           </button>
 
           <p className="text-center text-sm text-foreground">

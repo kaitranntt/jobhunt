@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FcGoogle } from 'react-icons/fc'
 import { createClient } from '@/lib/supabase/client'
 import { createUserProfileAction } from './actions'
 import { Input } from '@/components/ui/input'
@@ -27,7 +26,6 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
   const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [googleLoading, setGoogleLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -130,31 +128,6 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
     }
   }
 
-  const handleGoogleSignup = async () => {
-    setError('')
-    setGoogleLoading(true)
-
-    try {
-      const supabase = createClient()
-      const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        (typeof window !== 'undefined' ? window.location.origin : '')
-      const redirectUrl = `${siteUrl}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
-
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
-        },
-      })
-
-      if (error) throw error
-    } catch (err) {
-      setGoogleLoading(false)
-      setError(err instanceof Error ? err.message : 'Google sign-up failed')
-    }
-  }
-
   return (
     <div className="w-full max-w-2xl space-y-8">
       <div className="text-center">
@@ -192,7 +165,7 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
                   onChange={e => updateFormData('firstName', e.target.value)}
                   variant="glass"
                   placeholder="John"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -210,7 +183,7 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
                   onChange={e => updateFormData('lastName', e.target.value)}
                   variant="glass"
                   placeholder="Doe"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -232,7 +205,7 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
                 onChange={e => updateFormData('email', e.target.value)}
                 variant="glass"
                 placeholder="you@example.com"
-                disabled={loading || googleLoading}
+                disabled={loading}
               />
             </div>
 
@@ -250,13 +223,13 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
                   onChange={e => updateFormData('password', e.target.value)}
                   variant="glass"
                   placeholder="••••••••"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -280,13 +253,13 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
                   onChange={e => updateFormData('confirmPassword', e.target.value)}
                   variant="glass"
                   placeholder="••••••••"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                 >
                   {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -294,31 +267,8 @@ export function SimplifiedSignupForm({ onSuccess }: SimplifiedSignupFormProps) {
             </div>
           </div>
 
-          {/* Social Login Divider */}
-          <div className="flex items-center justify-center w-full my-6">
-            <div className="h-px bg-border/50 flex-1"></div>
-            <span className="px-4 text-sm text-muted-foreground">or continue with</span>
-            <div className="h-px bg-border/50 flex-1"></div>
-          </div>
-
-          {/* Google Button */}
-          <Button
-            type="button"
-            onClick={handleGoogleSignup}
-            disabled={googleLoading || loading}
-            variant="glass"
-            className="w-full py-3 flex items-center justify-center gap-2"
-          >
-            <FcGoogle className="h-5 w-5" />
-            {googleLoading ? 'Redirecting...' : 'Continue with Google'}
-          </Button>
-
           {/* Create Account Button */}
-          <Button
-            type="submit"
-            disabled={loading || googleLoading}
-            className="w-full btn-brand-gradient py-3"
-          >
+          <Button type="submit" disabled={loading} className="w-full btn-brand-gradient py-3">
             {loading ? 'Creating account...' : 'Create Account'}
           </Button>
 

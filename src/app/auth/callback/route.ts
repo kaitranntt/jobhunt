@@ -8,10 +8,10 @@ export async function GET(request: NextRequest) {
   const errorDescription = searchParams.get('error_description')
   const next = searchParams.get('next') ?? '/dashboard'
 
-  // Handle OAuth errors from provider
+  // Handle authentication errors
   if (error || errorDescription) {
     const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('error', errorDescription || error || 'OAuth authentication failed')
+    loginUrl.searchParams.set('error', errorDescription || error || 'Authentication failed')
     loginUrl.searchParams.delete('code')
     loginUrl.searchParams.delete('access_token')
     loginUrl.searchParams.delete('refresh_token')

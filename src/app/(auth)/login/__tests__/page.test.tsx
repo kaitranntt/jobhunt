@@ -27,7 +27,6 @@ describe('LoginPage', () => {
   const mockPush = vi.fn()
   const mockRefresh = vi.fn()
   const mockSignIn = vi.fn()
-  const mockSignInWithOAuth = vi.fn()
   let currentSearchParams: ReadonlyURLSearchParams
 
   beforeEach(() => {
@@ -44,13 +43,10 @@ describe('LoginPage', () => {
     vi.mocked(createClient).mockReturnValue({
       auth: {
         signInWithPassword: mockSignIn,
-        signInWithOAuth: mockSignInWithOAuth,
       },
     } as unknown as ReturnType<typeof createClient>)
 
     vi.mocked(useSearchParams).mockImplementation(() => currentSearchParams)
-
-    mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
   })
 
   it('should render login form with all required fields', () => {
@@ -60,7 +56,6 @@ describe('LoginPage', () => {
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument()
     expect(screen.getByText(/don't have an account/i)).toBeInTheDocument()
   })
 
@@ -79,7 +74,6 @@ describe('LoginPage', () => {
 
   it('should handle successful login', async () => {
     mockSignIn.mockResolvedValue({ data: {}, error: null })
-    mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
 
     renderWithTheme(<LoginPage />)
 
@@ -110,7 +104,6 @@ describe('LoginPage', () => {
       data: null,
       error: new Error(errorMessage),
     })
-    mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
 
     renderWithTheme(<LoginPage />)
 
@@ -133,7 +126,6 @@ describe('LoginPage', () => {
     mockSignIn.mockImplementation(
       () => new Promise(resolve => setTimeout(() => resolve({ data: {}, error: null }), 100))
     )
-    mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
 
     renderWithTheme(<LoginPage />)
 
@@ -160,7 +152,6 @@ describe('LoginPage', () => {
         error: new Error('First error'),
       })
       .mockResolvedValueOnce({ data: {}, error: null })
-    mockSignInWithOAuth.mockResolvedValue({ data: {}, error: null })
 
     renderWithTheme(<LoginPage />)
 
@@ -205,50 +196,13 @@ describe('LoginPage', () => {
     expect(signupLink).toHaveAttribute('href', '/signup')
   })
 
-  it('should initiate Google sign in flow when button is clicked', async () => {
-    renderWithTheme(<LoginPage />)
-
-    const googleButton = screen.getByRole('button', { name: /continue with google/i })
-    fireEvent.click(googleButton)
-
-    await waitFor(() => {
-      expect(mockSignInWithOAuth).toHaveBeenCalled()
-    })
-
-    const callArgs = mockSignInWithOAuth.mock.calls.at(-1)?.[0]
-
-    const expectedRedirect = `${window.location.origin}/auth/callback?redirect_to=${encodeURIComponent('/dashboard')}`
-
-    expect(callArgs).toMatchObject({
-      provider: 'google',
-      options: {
-        redirectTo: expectedRedirect,
-      },
-    })
-  })
-
-  it('should display error when Google sign in fails', async () => {
-    const googleError = 'Google auth blocked'
-    mockSignInWithOAuth.mockResolvedValue({
-      data: null,
-      error: new Error(googleError),
-    })
-
-    renderWithTheme(<LoginPage />)
-
-    const googleButton = screen.getByRole('button', { name: /continue with google/i })
-    fireEvent.click(googleButton)
-
-    await waitFor(() => {
-      expect(screen.getByText(googleError)).toBeInTheDocument()
-    })
-  })
-
   it('should show error from search params when present', () => {
-    currentSearchParams = new URLSearchParams('error=OAuth%20failed') as ReadonlyURLSearchParams
+    currentSearchParams = new URLSearchParams(
+      'error=Authentication%20failed'
+    ) as ReadonlyURLSearchParams
 
     renderWithTheme(<LoginPage />)
 
-    expect(screen.getByText('OAuth failed')).toBeInTheDocument()
+    expect(screen.getByText('Authentication failed')).toBeInTheDocument()
   })
 })

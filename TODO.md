@@ -118,7 +118,6 @@
 ### Integrations
 
 - [ ] Email integration (auto-import)
-- [ ] LinkedIn OAuth
 - [ ] LinkedIn job import
 
 ### Phase 3 QA & Deployment

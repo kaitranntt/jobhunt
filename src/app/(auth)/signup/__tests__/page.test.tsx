@@ -50,7 +50,6 @@ describe('SignupPage with SimplifiedSignupForm', () => {
   const mockPush = vi.fn()
   const mockRefresh = vi.fn()
   const mockSignUp = vi.fn()
-  const mockSignInWithOAuth = vi.fn()
 
   beforeEach(async () => {
     vi.clearAllMocks()
@@ -64,7 +63,6 @@ describe('SignupPage with SimplifiedSignupForm', () => {
     vi.mocked(createClient).mockReturnValue({
       auth: {
         signUp: mockSignUp,
-        signInWithOAuth: mockSignInWithOAuth,
       },
     } as unknown as ReturnType<typeof createClient>)
 
@@ -110,9 +108,6 @@ describe('SignupPage with SimplifiedSignupForm', () => {
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/^password \(min\. 6 characters\)/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument()
-
-    // Google signup button
-    expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument()
 
     // Create account button
     expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument()
@@ -380,59 +375,6 @@ describe('SignupPage with SimplifiedSignupForm', () => {
     expect(mockPush).not.toHaveBeenCalled()
   })
 
-  it('should handle Google signup successfully', async () => {
-    mockSignInWithOAuth.mockResolvedValue({
-      data: null,
-      error: null,
-    })
-
-    // Mock window.location.origin
-    const originalLocation = window.location
-    Object.defineProperty(window, 'location', {
-      value: {
-        origin: 'http://localhost:3000',
-      },
-      writable: true,
-    })
-
-    renderWithTheme(<SignupPage />)
-
-    const googleButton = screen.getByRole('button', { name: /continue with google/i })
-    fireEvent.click(googleButton)
-
-    await waitFor(() => {
-      expect(mockSignInWithOAuth).toHaveBeenCalledWith({
-        provider: 'google',
-        options: {
-          redirectTo: 'http://localhost:3000/auth/callback?redirect_to=%2Fdashboard',
-        },
-      })
-    })
-
-    // Restore original location
-    Object.defineProperty(window, 'location', {
-      value: originalLocation,
-      writable: true,
-    })
-  })
-
-  it('should handle Google signup error', async () => {
-    const errorMessage = 'Google sign-up failed'
-    mockSignInWithOAuth.mockResolvedValue({
-      data: null,
-      error: new Error(errorMessage),
-    })
-
-    renderWithTheme(<SignupPage />)
-
-    const googleButton = screen.getByRole('button', { name: /continue with google/i })
-    fireEvent.click(googleButton)
-
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument()
-    })
-  })
-
   it('should disable all inputs and buttons during loading', async () => {
     mockSignUp.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
 
@@ -461,31 +403,6 @@ describe('SignupPage with SimplifiedSignupForm', () => {
     expect(screen.getByLabelText(/email address/i)).toBeDisabled()
     expect(screen.getByLabelText(/^password/i)).toBeDisabled()
     expect(screen.getByLabelText(/confirm password/i)).toBeDisabled()
-
-    // Check that Google button is also disabled
-    expect(screen.getByRole('button', { name: /continue with google/i })).toBeDisabled()
-  })
-
-  it('should disable all inputs and buttons during Google loading', async () => {
-    mockSignInWithOAuth.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
-
-    renderWithTheme(<SignupPage />)
-
-    const googleButton = screen.getByRole('button', { name: /continue with google/i })
-    fireEvent.click(googleButton)
-
-    // Check that button shows loading state
-    expect(screen.getByRole('button', { name: /redirecting\.\.\./i })).toBeInTheDocument()
-
-    // Check that inputs are disabled
-    expect(screen.getByLabelText(/first name/i)).toBeDisabled()
-    expect(screen.getByLabelText(/last name/i)).toBeDisabled()
-    expect(screen.getByLabelText(/email address/i)).toBeDisabled()
-    expect(screen.getByLabelText(/^password/i)).toBeDisabled()
-    expect(screen.getByLabelText(/confirm password/i)).toBeDisabled()
-
-    // Check that create account button is also disabled
-    expect(screen.getByRole('button', { name: /create account/i })).toBeDisabled()
   })
 
   it('should clear error message when user starts typing', async () => {
