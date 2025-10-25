@@ -4,7 +4,7 @@ import { ThemeProvider, useTheme } from '../ThemeProvider'
 
 describe('ThemeProvider', () => {
   let localStorageMock: Record<string, string> = {}
-  let mediaQueryListeners: Array<(e: MediaQueryListEvent) => void> = []
+  let mediaQueryListeners: Array<(_e: MediaQueryListEvent) => void> = []
 
   beforeEach(() => {
     // Mock localStorage
@@ -25,7 +25,7 @@ describe('ThemeProvider', () => {
       onchange: null,
       addListener: vi.fn(),
       removeListener: vi.fn(),
-      addEventListener: vi.fn((event: string, listener: (e: MediaQueryListEvent) => void) => {
+      addEventListener: vi.fn((event: string, listener: (_e: MediaQueryListEvent) => void) => {
         if (event === 'change') {
           mediaQueryListeners.push(listener)
         }

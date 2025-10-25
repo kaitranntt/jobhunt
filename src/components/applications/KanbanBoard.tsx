@@ -19,8 +19,8 @@ import type { Application, ApplicationStatus } from '@/lib/types/database.types'
 
 interface KanbanBoardProps {
   applications: Application[]
-  onUpdateStatus: (id: string, newStatus: ApplicationStatus) => Promise<void>
-  onApplicationClick?: (application: Application) => void
+  onUpdateStatus: (_id: string, _newStatus: ApplicationStatus) => Promise<void>
+  onApplicationClick?: (_application: Application) => void
   isLoading?: boolean
 }
 
@@ -57,7 +57,7 @@ const STATUS_LABELS: Record<ApplicationStatus, string> = {
 interface SortableApplicationProps {
   application: Application
   isDragging: boolean
-  onApplicationClick?: (application: Application) => void
+  onApplicationClick?: (_application: Application) => void
 }
 
 function SortableApplication({
@@ -95,7 +95,7 @@ interface KanbanColumnProps {
   status: ApplicationStatus
   applications: Application[]
   activeId: string | null
-  onApplicationClick?: (application: Application) => void
+  onApplicationClick?: (_application: Application) => void
 }
 
 function KanbanColumn({ status, applications, activeId, onApplicationClick }: KanbanColumnProps) {

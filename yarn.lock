@@ -5205,6 +5205,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:^16.4.0":
+  version: 16.4.0
+  resolution: "globals@npm:16.4.0"
+  checksum: 10c0/a14b447a78b664b42f6d324e8675fcae6fe5e57924fecc1f6328dce08af9b2ca3a3138501e1b1f244a49814a732dc60cfc1aa24e714e0b64ac8bd18910bfac90
+  languageName: node
+  linkType: hard
+
 "globalthis@npm:^1.0.4":
   version: 1.0.4
   resolution: "globalthis@npm:1.0.4"
@@ -5873,6 +5880,7 @@ __metadata:
     eslint: "npm:^9"
     eslint-config-next: "npm:15.5.4"
     eslint-plugin-react-hooks: "npm:^6.1.0"
+    globals: "npm:^16.4.0"
     husky: "npm:^9.1.7"
     jsdom: "npm:^27.0.0"
     lint-staged: "npm:^15.3.0"

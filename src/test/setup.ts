@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 
 // Mock matchMedia for ThemeProvider tests
 export function setupMatchMedia() {
-  const mediaQueryListeners: Array<(e: MediaQueryListEvent) => void> = []
+  const mediaQueryListeners: Array<(_e: MediaQueryListEvent) => void> = []
 
   global.matchMedia = vi.fn((query: string) => ({
     matches: query === '(prefers-color-scheme: dark)' ? false : true,
@@ -10,7 +10,7 @@ export function setupMatchMedia() {
     onchange: null,
     addListener: vi.fn(),
     removeListener: vi.fn(),
-    addEventListener: vi.fn((event: string, listener: (e: MediaQueryListEvent) => void) => {
+    addEventListener: vi.fn((event: string, listener: (_e: MediaQueryListEvent) => void) => {
       if (event === 'change') {
         mediaQueryListeners.push(listener)
       }

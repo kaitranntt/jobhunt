@@ -32,8 +32,8 @@ import ReminderList from '@/components/reminders/ReminderList'
 
 interface ApplicationDetailProps {
   application: Application
-  onUpdate: (id: string, data: ApplicationFormData) => Promise<void>
-  onDelete: (id: string) => Promise<void>
+  onUpdate: (_id: string, _data: ApplicationFormData) => Promise<void>
+  onDelete: (_id: string) => Promise<void>
   onClose: () => void
   isOpen: boolean
 }

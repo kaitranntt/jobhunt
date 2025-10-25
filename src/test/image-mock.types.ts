@@ -9,6 +9,6 @@ export interface ImageMockProps {
   className?: string
   style?: React.CSSProperties
   onLoad?: () => void
-  onError?: (event: React.SyntheticEvent<HTMLDivElement>) => void
+  onError?: (_event: React.SyntheticEvent<HTMLDivElement>) => void
   [key: string]: unknown // Allow additional props
 }

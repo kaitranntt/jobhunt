@@ -22,8 +22,8 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
 })
 
 describe('ApplicationDetail', () => {
-  const mockOnUpdate = vi.fn<(id: string, data: ApplicationFormData) => Promise<void>>()
-  const mockOnDelete = vi.fn<(id: string) => Promise<void>>()
+  const mockOnUpdate = vi.fn<(_id: string, _data: ApplicationFormData) => Promise<void>>()
+  const mockOnDelete = vi.fn<(_id: string) => Promise<void>>()
   const mockOnClose = vi.fn()
 
   beforeEach(() => {

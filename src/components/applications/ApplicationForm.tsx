@@ -57,7 +57,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>
 
 interface ApplicationFormProps {
-  onSubmit: (data: ApplicationFormData) => void
+  onSubmit: (_data: ApplicationFormData) => void
   initialData?: Partial<ApplicationFormData>
   isLoading?: boolean
 }

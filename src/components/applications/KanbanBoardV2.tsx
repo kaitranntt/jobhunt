@@ -22,8 +22,8 @@ import type { Application, ApplicationStatus } from '@/lib/types/database.types'
 
 interface KanbanBoardV2Props {
   applications: Application[]
-  onUpdateStatus: (id: string, newStatus: ApplicationStatus) => Promise<void>
-  onApplicationClick?: (application: Application) => void
+  onUpdateStatus: (_id: string, _newStatus: ApplicationStatus) => Promise<void>
+  onApplicationClick?: (_application: Application) => void
   isLoading?: boolean
 }
 
@@ -95,7 +95,7 @@ const EMPTY_STATE_GUIDANCE: Record<StatusGroup, { heading: string; text: string;
 interface SortableApplicationProps {
   application: Application
   isDragging: boolean
-  onApplicationClick?: (application: Application) => void
+  onApplicationClick?: (_application: Application) => void
 }
 
 function SortableApplication({
@@ -133,7 +133,7 @@ interface SubStageColumnProps {
   status: ApplicationStatus
   applications: Application[]
   activeId: string | null
-  onApplicationClick?: (application: Application) => void
+  onApplicationClick?: (_application: Application) => void
 }
 
 function SubStageColumn({
@@ -198,7 +198,7 @@ interface GroupColumnProps {
   applications: Application[]
   applicationsByStatus: Record<ApplicationStatus, Application[]>
   activeId: string | null
-  onApplicationClick?: (application: Application) => void
+  onApplicationClick?: (_application: Application) => void
   isExpanded: boolean
   onToggleExpand: () => void
 }
