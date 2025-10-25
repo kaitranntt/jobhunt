@@ -2,73 +2,87 @@
 
 :root {
   /* ========================================================================== */
-  /* macOS 26 "Liquid Glass" Design System - Light Mode                        */
+  /* macOS 26 "Liquid Glass" Design System - Light Mode (Optimized)              */
   /* ========================================================================== */
 
-  /* macOS Label Colors (RGBA) */
-  --macos-label-primary: rgba(0, 0, 0, 0.847);
-  --macos-label-secondary: rgba(0, 0, 0, 0.498);
-  --macos-label-tertiary: rgba(0, 0, 0, 0.259);
-  --macos-label-quaternary: rgba(0, 0, 0, 0.098);
+  /* Base Colors for color-mix() optimization */
+  --macos-base-black: 0, 0, 0;
+  --macos-base-white: 255, 255, 255;
+  --macos-base-gray: 142, 142, 147;
 
-  /* macOS Fill Colors (RGBA) */
-  --macos-fill-primary: rgba(120, 120, 128, 0.2);
-  --macos-fill-secondary: rgba(120, 120, 128, 0.16);
-  --macos-fill-tertiary: rgba(118, 118, 128, 0.12);
-  --macos-fill-quaternary: rgba(116, 116, 128, 0.08);
+  /* Glass Base Colors */
+  --glass-base-light: var(--macos-base-white);
+  --glass-base-dark: 18, 18, 18;
 
-  /* macOS System Grays */
-  --macos-gray-1: rgba(142, 142, 147, 1);
-  --macos-gray-2: rgba(174, 174, 178, 1);
-  --macos-gray-3: rgba(199, 199, 204, 1);
-  --macos-gray-4: rgba(209, 209, 214, 1);
-  --macos-gray-5: rgba(229, 229, 234, 1);
-  --macos-gray-6: rgba(242, 242, 247, 1);
+  /* macOS Label Colors (Using color-mix for dynamic opacity) */
+  --macos-label-primary: color-mix(in srgb, rgb(var(--macos-base-black)) 84.7%, transparent);
+  --macos-label-secondary: color-mix(in srgb, rgb(var(--macos-base-black)) 49.8%, transparent);
+  --macos-label-tertiary: color-mix(in srgb, rgb(var(--macos-base-black)) 25.9%, transparent);
+  --macos-label-quaternary: color-mix(in srgb, rgb(var(--macos-base-black)) 9.8%, transparent);
+
+  /* macOS Fill Colors */
+  --macos-fill-primary: color-mix(in srgb, rgb(var(--macos-base-gray)) 20%, transparent);
+  --macos-fill-secondary: color-mix(in srgb, rgb(var(--macos-base-gray)) 16%, transparent);
+  --macos-fill-tertiary: color-mix(in srgb, rgb(var(--macos-base-gray)) 12%, transparent);
+  --macos-fill-quaternary: color-mix(in srgb, rgb(var(--macos-base-gray)) 8%, transparent);
 
   /* macOS System Backgrounds */
-  --macos-bg-primary: rgba(255, 255, 255, 1);
-  --macos-bg-secondary: rgba(242, 242, 247, 1);
-  --macos-bg-tertiary: rgba(255, 255, 255, 1);
-  --macos-bg-grouped: rgba(242, 242, 247, 1);
-  --macos-bg-grouped-secondary: rgba(255, 255, 255, 1);
-  --macos-bg-grouped-tertiary: rgba(242, 242, 247, 1);
+  --macos-bg-primary: rgb(var(--macos-base-white));
+  --macos-bg-secondary: rgb(242, 242, 247);
+  --macos-bg-tertiary: rgb(var(--macos-base-white));
+  --macos-bg-grouped: rgb(242, 242, 247);
+  --macos-bg-grouped-secondary: rgb(var(--macos-base-white));
+  --macos-bg-grouped-tertiary: rgb(242, 242, 247);
 
-  /* Liquid Glass Materials */
-  --glass-ultra: rgba(255, 255, 255, 0.15);
-  --glass-light: rgba(255, 255, 255, 0.25);
-  --glass-medium: rgba(255, 255, 255, 0.35);
-  --glass-heavy: rgba(255, 255, 255, 0.45);
+  /* Liquid Glass Materials (Using color-mix for opacity) */
+  --glass-ultra: color-mix(in srgb, rgb(var(--glass-base-light)) 15%, transparent);
+  --glass-light: color-mix(in srgb, rgb(var(--glass-base-light)) 25%, transparent);
+  --glass-medium: color-mix(in srgb, rgb(var(--glass-base-light)) 35%, transparent);
+  --glass-heavy: color-mix(in srgb, rgb(var(--glass-base-light)) 45%, transparent);
 
-  /* Glass Borders */
-  --glass-border-subtle: rgba(255, 255, 255, 0.4);
-  --glass-border-medium: rgba(255, 255, 255, 0.6);
-  --glass-border-strong: rgba(255, 255, 255, 0.8);
+  /* Glass Borders (Using color-mix) */
+  --glass-border-subtle: color-mix(in srgb, rgb(var(--glass-base-light)) 40%, transparent);
+  --glass-border-medium: color-mix(in srgb, rgb(var(--glass-base-light)) 60%, transparent);
+  --glass-border-strong: color-mix(in srgb, rgb(var(--glass-base-light)) 80%, transparent);
 
   /* System Tint Colors */
-  --tint-blue: rgba(0, 122, 255, 1);
-  --tint-purple: rgba(175, 82, 222, 1);
-  --tint-pink: rgba(255, 45, 85, 1);
-  --tint-red: rgba(255, 59, 48, 1);
-  --tint-orange: rgba(255, 149, 0, 1);
-  --tint-yellow: rgba(255, 204, 0, 1);
-  --tint-green: rgba(52, 199, 89, 1);
-  --tint-teal: rgba(90, 200, 250, 1);
-  --tint-indigo: rgba(88, 86, 214, 1);
+  --tint-blue: 0, 122, 255;
+  --tint-purple: 175, 82, 222;
+  --tint-pink: 255, 45, 85;
+  --tint-red: 255, 59, 48;
+  --tint-orange: 255, 149, 0;
+  --tint-yellow: 255, 204, 0;
+  --tint-green: 52, 199, 89;
+  --tint-teal: 90, 200, 250;
+  --tint-indigo: 88, 86, 214;
 
-  /* Semantic Colors */
-  --color-success: rgba(52, 199, 89, 1);
-  --color-warning: rgba(255, 204, 0, 1);
-  --color-error: rgba(255, 59, 48, 1);
-  --color-info: rgba(0, 122, 255, 1);
+  /* Semantic Colors (Using color-mix) */
+  --color-success: rgb(var(--tint-green));
+  --color-warning: rgb(var(--tint-yellow));
+  --color-error: rgb(var(--tint-red));
+  --color-info: rgb(var(--tint-blue));
 
-  /* Shadow Colors */
-  --shadow-subtle: rgba(0, 0, 0, 0.05);
-  --shadow-soft: rgba(0, 0, 0, 0.1);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
-  --shadow-strong: rgba(0, 0, 0, 0.2);
-  --shadow-specular: rgba(255, 255, 255, 0.3);
+  /* Shadow Colors (Using color-mix) */
+  --shadow-subtle: color-mix(in srgb, rgb(var(--macos-base-black)) 5%, transparent);
+  --shadow-soft: color-mix(in srgb, rgb(var(--macos-base-black)) 10%, transparent);
+  --shadow-medium: color-mix(in srgb, rgb(var(--macos-base-black)) 15%, transparent);
+  --shadow-strong: color-mix(in srgb, rgb(var(--macos-base-black)) 20%, transparent);
+  --shadow-specular: color-mix(in srgb, rgb(var(--macos-base-white)) 30%, transparent);
 
-  /* Legacy Compatibility (Shadcn UI) */
+  /* Optimized Backdrop Filters */
+  --glass-blur-light: blur(20px) saturate(180%);
+  --glass-blur-medium: blur(30px) saturate(200%);
+  --glass-blur-heavy: blur(40px) saturate(220%);
+
+  /* Common Box Shadow Patterns */
+  --shadow-glass-standard: 0 8px 32px var(--shadow-medium), inset 0 4px 20px var(--shadow-specular);
+  --shadow-glass-light: 0 6px 24px var(--shadow-soft), inset 0 3px 15px var(--shadow-specular);
+  --shadow-glass-heavy: 0 12px 48px var(--shadow-strong), inset 0 6px 30px var(--shadow-specular);
+
+  /* Spring Animation Timing */
+  --spring-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Legacy Compatibility (Shadcn UI) - Condensed */
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
   --muted: 240 4.8% 95.9%;
@@ -158,73 +172,65 @@
 
 .dark {
   /* ========================================================================== */
-  /* macOS 26 "Liquid Glass" Design System - Dark Mode                         */
+  /* macOS 26 "Liquid Glass" Design System - Dark Mode (Optimized)               */
   /* ========================================================================== */
 
-  /* macOS Label Colors (RGBA) */
-  --macos-label-primary: rgba(255, 255, 255, 0.847);
-  --macos-label-secondary: rgba(255, 255, 255, 0.549);
-  --macos-label-tertiary: rgba(255, 255, 255, 0.251);
-  --macos-label-quaternary: rgba(255, 255, 255, 0.098);
+  /* macOS Label Colors (Using color-mix for dynamic opacity) */
+  --macos-label-primary: color-mix(in srgb, rgb(var(--macos-base-white)) 84.7%, transparent);
+  --macos-label-secondary: color-mix(in srgb, rgb(var(--macos-base-white)) 54.9%, transparent);
+  --macos-label-tertiary: color-mix(in srgb, rgb(var(--macos-base-white)) 25.1%, transparent);
+  --macos-label-quaternary: color-mix(in srgb, rgb(var(--macos-base-white)) 9.8%, transparent);
 
-  /* macOS Fill Colors (RGBA) */
-  --macos-fill-primary: rgba(120, 120, 128, 0.36);
-  --macos-fill-secondary: rgba(120, 120, 128, 0.32);
-  --macos-fill-tertiary: rgba(118, 118, 128, 0.24);
-  --macos-fill-quaternary: rgba(116, 116, 128, 0.18);
-
-  /* macOS System Grays */
-  --macos-gray-1: rgba(142, 142, 147, 1);
-  --macos-gray-2: rgba(99, 99, 102, 1);
-  --macos-gray-3: rgba(72, 72, 74, 1);
-  --macos-gray-4: rgba(58, 58, 60, 1);
-  --macos-gray-5: rgba(44, 44, 46, 1);
-  --macos-gray-6: rgba(28, 28, 30, 1);
+  /* macOS Fill Colors */
+  --macos-fill-primary: color-mix(in srgb, rgb(var(--macos-base-gray)) 36%, transparent);
+  --macos-fill-secondary: color-mix(in srgb, rgb(var(--macos-base-gray)) 32%, transparent);
+  --macos-fill-tertiary: color-mix(in srgb, rgb(var(--macos-base-gray)) 24%, transparent);
+  --macos-fill-quaternary: color-mix(in srgb, rgb(var(--macos-base-gray)) 18%, transparent);
 
   /* macOS System Backgrounds */
-  --macos-bg-primary: rgba(0, 0, 0, 1);
-  --macos-bg-secondary: rgba(28, 28, 30, 1);
-  --macos-bg-tertiary: rgba(44, 44, 46, 1);
-  --macos-bg-grouped: rgba(0, 0, 0, 1);
-  --macos-bg-grouped-secondary: rgba(28, 28, 30, 1);
-  --macos-bg-grouped-tertiary: rgba(44, 44, 46, 1);
+  --macos-bg-primary: rgb(var(--macos-base-black));
+  --macos-bg-secondary: rgb(28, 28, 30);
+  --macos-bg-tertiary: rgb(44, 44, 46);
+  --macos-bg-grouped: rgb(var(--macos-base-black));
+  --macos-bg-grouped-secondary: rgb(28, 28, 30);
+  --macos-bg-grouped-tertiary: rgb(44, 44, 46);
 
-  /* Liquid Glass Materials */
-  --glass-ultra: rgba(18, 18, 18, 0.4);
-  --glass-light: rgba(18, 18, 18, 0.5);
-  --glass-medium: rgba(18, 18, 18, 0.65);
-  --glass-heavy: rgba(18, 18, 18, 0.8);
+  /* Liquid Glass Materials (Using color-mix for opacity) */
+  --glass-ultra: color-mix(in srgb, rgb(var(--glass-base-dark)) 40%, transparent);
+  --glass-light: color-mix(in srgb, rgb(var(--glass-base-dark)) 50%, transparent);
+  --glass-medium: color-mix(in srgb, rgb(var(--glass-base-dark)) 65%, transparent);
+  --glass-heavy: color-mix(in srgb, rgb(var(--glass-base-dark)) 80%, transparent);
 
-  /* Glass Borders */
-  --glass-border-subtle: rgba(255, 255, 255, 0.1);
-  --glass-border-medium: rgba(255, 255, 255, 0.15);
-  --glass-border-strong: rgba(255, 255, 255, 0.25);
+  /* Glass Borders (Using color-mix) */
+  --glass-border-subtle: color-mix(in srgb, rgb(var(--macos-base-white)) 10%, transparent);
+  --glass-border-medium: color-mix(in srgb, rgb(var(--macos-base-white)) 15%, transparent);
+  --glass-border-strong: color-mix(in srgb, rgb(var(--macos-base-white)) 25%, transparent);
 
-  /* System Tint Colors */
-  --tint-blue: rgba(10, 132, 255, 1);
-  --tint-purple: rgba(191, 90, 242, 1);
-  --tint-pink: rgba(255, 55, 95, 1);
-  --tint-red: rgba(255, 69, 58, 1);
-  --tint-orange: rgba(255, 159, 10, 1);
-  --tint-yellow: rgba(255, 214, 10, 1);
-  --tint-green: rgba(48, 209, 88, 1);
-  --tint-teal: rgba(100, 210, 255, 1);
-  --tint-indigo: rgba(94, 92, 230, 1);
+  /* System Tint Colors (Dark Mode) */
+  --tint-blue: 10, 132, 255;
+  --tint-purple: 191, 90, 242;
+  --tint-pink: 255, 55, 95;
+  --tint-red: 255, 69, 58;
+  --tint-orange: 255, 159, 10;
+  --tint-yellow: 255, 214, 10;
+  --tint-green: 48, 209, 88;
+  --tint-teal: 100, 210, 255;
+  --tint-indigo: 94, 92, 230;
 
-  /* Semantic Colors */
-  --color-success: rgba(48, 209, 88, 1);
-  --color-warning: rgba(255, 214, 10, 1);
-  --color-error: rgba(255, 69, 58, 1);
-  --color-info: rgba(10, 132, 255, 1);
+  /* Semantic Colors (Using color-mix) */
+  --color-success: rgb(var(--tint-green));
+  --color-warning: rgb(var(--tint-yellow));
+  --color-error: rgb(var(--tint-red));
+  --color-info: rgb(var(--tint-blue));
 
-  /* Shadow Colors */
-  --shadow-subtle: rgba(0, 0, 0, 0.2);
-  --shadow-soft: rgba(0, 0, 0, 0.3);
-  --shadow-medium: rgba(0, 0, 0, 0.4);
-  --shadow-strong: rgba(0, 0, 0, 0.6);
-  --shadow-specular: rgba(255, 255, 255, 0.1);
+  /* Shadow Colors (Using color-mix) */
+  --shadow-subtle: color-mix(in srgb, rgb(var(--macos-base-black)) 20%, transparent);
+  --shadow-soft: color-mix(in srgb, rgb(var(--macos-base-black)) 30%, transparent);
+  --shadow-medium: color-mix(in srgb, rgb(var(--macos-base-black)) 40%, transparent);
+  --shadow-strong: color-mix(in srgb, rgb(var(--macos-base-black)) 60%, transparent);
+  --shadow-specular: color-mix(in srgb, rgb(var(--macos-base-white)) 10%, transparent);
 
-  /* Legacy Compatibility (Shadcn UI) */
+  /* Legacy Compatibility (Shadcn UI) - Condensed */
   --background: 222 47% 11%;
   --foreground: 210 40% 98%;
   --muted: 217 33% 17%;
@@ -250,21 +256,6 @@
   --warning-foreground: 222 47% 11%;
   --info: 217 91% 60%;
   --info-foreground: 210 40% 98%;
-
-  /* Copper Brand Colors (Dark Mode) */
-  --copper: 25 95% 53%;
-  --copper-light: 25 85% 65%;
-  --copper-dark: 25 100% 45%;
-  --copper-glow: 25 95% 70%;
-  --copper-shimmer: 25 90% 75%;
-
-  /* Brand Gradients (Copper - Dark Mode) */
-  --brand-primary: var(--copper);
-  --brand-primary-dark: var(--copper-dark);
-  --brand-primary-light: var(--copper-light);
-  --brand-secondary: var(--copper-light);
-  --brand-secondary-dark: var(--copper);
-  --brand-secondary-light: var(--copper-glow);
 
   /* Animated Background Gradients (Dark Mode) */
   --gradient-light-start: 222 47% 13%;
@@ -526,13 +517,13 @@ body {
   animation: shimmer 3s infinite;
 }
 
-/* Spring Animation Utilities */
+/* Spring Animation Utilities (Optimized) */
 .animate-spring-bounce {
-  animation: spring-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: spring-bounce 0.5s var(--spring-timing) forwards;
 }
 
 .animate-spring-bounce-in {
-  animation: spring-bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: spring-bounce-in 0.6s var(--spring-timing) forwards;
 }
 
 .animate-glass-shimmer {
@@ -557,81 +548,61 @@ body {
 /* Liquid Glass Material System (macOS 26)                                     */
 /* ============================================================================ */
 
-/* Core Liquid Glass Effect */
+/* Core Liquid Glass Effect (Optimized) */
 .liquid-glass {
   background: var(--glass-light);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: var(--glass-blur-light);
   border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-standard);
 }
 
-/* Glass Variants by Blur Intensity */
+/* Glass Variants (Optimized - Using consolidated variables) */
 .glass-ultra {
   background: var(--glass-ultra);
   backdrop-filter: blur(15px) saturate(150%);
-  -webkit-backdrop-filter: blur(15px) saturate(150%);
   border: 1px solid var(--glass-border-subtle);
-  box-shadow:
-    0 4px 16px var(--shadow-subtle),
-    inset 0 2px 10px var(--shadow-specular);
+  box-shadow: 0 4px 16px var(--shadow-subtle), inset 0 2px 10px var(--shadow-specular);
 }
 
 .glass-light {
   background: var(--glass-light);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: var(--glass-blur-light);
   border: 1px solid var(--glass-border-medium);
-  box-shadow:
-    0 6px 24px var(--shadow-soft),
-    inset 0 3px 15px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-light);
 }
 
 .glass-medium {
   background: var(--glass-medium);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  backdrop-filter: var(--glass-blur-medium);
   border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-standard);
 }
 
 .glass-heavy {
   background: var(--glass-heavy);
-  backdrop-filter: blur(40px) saturate(220%);
-  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  backdrop-filter: var(--glass-blur-heavy);
   border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 12px 48px var(--shadow-strong),
-    inset 0 6px 30px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-heavy);
 }
 
 .glass-frosted {
   background: var(--glass-heavy);
-  backdrop-filter: blur(40px) saturate(220%) brightness(1.05);
-  -webkit-backdrop-filter: blur(40px) saturate(220%) brightness(1.05);
+  backdrop-filter: var(--glass-blur-heavy) brightness(1.05);
   border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 16px 64px var(--shadow-strong),
-    inset 0 8px 40px var(--shadow-specular);
+  box-shadow: 0 16px 64px var(--shadow-strong), inset 0 8px 40px var(--shadow-specular);
 }
 
 /* Legacy Glass (Backward Compatibility) */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 5%, transparent);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 10%, transparent);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 10%, transparent);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 20%, transparent);
 }
 
 /* Perspective for 3D effects */
@@ -825,48 +796,37 @@ body {
 /* ============================================================================ */
 
 .glass-interactive {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s var(--spring-timing);
 }
 
 .glass-interactive:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow:
-    0 12px 48px var(--shadow-strong),
-    inset 0 6px 30px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-heavy);
 }
 
 .glass-interactive:active {
   transform: translateY(0) scale(0.99);
-  box-shadow:
-    0 6px 24px var(--shadow-soft),
-    inset 0 3px 15px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-light);
 }
 
-/* Button with Glass Effect */
+/* Button with Glass Effect (Optimized) */
 .btn-glass {
   background: var(--glass-medium);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  backdrop-filter: var(--glass-blur-medium);
   border: 1px solid var(--glass-border-strong);
-  box-shadow:
-    0 4px 16px var(--shadow-soft),
-    inset 0 2px 10px var(--shadow-specular);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-glass-light);
+  transition: all 0.3s var(--spring-timing);
 }
 
 .btn-glass:hover {
   background: var(--glass-heavy);
   transform: translateY(-1px);
-  box-shadow:
-    0 8px 32px var(--shadow-medium),
-    inset 0 4px 20px var(--shadow-specular);
+  box-shadow: var(--shadow-glass-standard);
 }
 
 .btn-glass:active {
   transform: translateY(0) scale(0.98);
-  box-shadow:
-    0 2px 8px var(--shadow-subtle),
-    inset 0 1px 5px var(--shadow-specular);
+  box-shadow: 0 2px 8px var(--shadow-subtle), inset 0 1px 5px var(--shadow-specular);
 }
 
 /* ============================================================================ */
