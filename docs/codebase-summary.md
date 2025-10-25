@@ -52,6 +52,8 @@ src/
 │   └── page.tsx           # Landing page
 ├── components/            # Reusable React components
 │   ├── applications/      # Job application components
+│   ├── auth/              # Authentication-specific components
+│   │   └── LogoutButton.tsx # Logout button with confirmation dialog
 │   ├── landing/          # Landing page sections
 │   ├── layout/           # Layout components
 │   ├── providers/        # Context providers
@@ -92,6 +94,8 @@ The application uses 5 migration files:
 - **Session Management**: Automatic token refresh and session handling
 - **Protected Routes**: Middleware-based route protection
 - **User Profiles**: Profile management with RLS policies
+- **Secure Logout**: Enhanced logout functionality with confirmation dialog and proper session cleanup
+- **User-Friendly Redirects**: Landing page redirect after logout for improved user experience
 
 ### User Interface
 

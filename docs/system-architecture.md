@@ -62,7 +62,7 @@ src/app/
 │   └── signup/page.tsx    # Signup page
 ├── auth/                  # Authentication API routes
 │   ├── callback/route.ts  # OAuth callback handler
-│   └── signout/route.ts   # Signout handler
+│   └── signout/route.ts   # Enhanced signout handler (POST/GET support)
 └── dashboard/             # Protected application routes
     ├── page.tsx           # Main dashboard
     ├── layout.tsx         # Dashboard layout
@@ -84,6 +84,9 @@ src/components/
 │   ├── button.tsx        # Reusable button component
 │   ├── card.tsx          # Card container component
 │   ├── dialog.tsx        # Modal dialog component
+│   └── ...
+├── auth/                 # Authentication-specific components
+│   ├── LogoutButton.tsx  # Logout button with confirmation dialog
 │   └── ...
 ├── layout/               # Layout-specific components
 │   ├── NavBar.tsx        # Navigation bar
@@ -163,6 +166,7 @@ user_profiles (id, user_id, preferences, settings, ...)
 ### Authentication Flow
 
 ```
+Login Flow:
 1. User Login Request
    ↓
 2. Next.js Middleware → Supabase Auth
@@ -176,6 +180,21 @@ user_profiles (id, user_id, preferences, settings, ...)
 6. Redirect to protected route
    ↓
 7. Server-side session validation on each request
+
+Logout Flow:
+1. User clicks logout button in authenticated navbar
+   ↓
+2. Confirmation dialog prevents accidental logouts
+   ↓
+3. POST request to /auth/signout API route
+   ↓
+4. Supabase auth.signOut() called server-side
+   ↓
+5. Session invalidated and cookies cleared
+   ↓
+6. Redirect to landing page (/) instead of login
+   ↓
+7. Client-side fallback ensures proper redirect
 ```
 
 ### Application Data Flow
