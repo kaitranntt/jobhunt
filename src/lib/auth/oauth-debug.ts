@@ -3,6 +3,8 @@
  * Comprehensive debugging utilities for OAuth authentication flow
  */
 
+import type { OAuthErrorType, OAuthDebugConfig, CallbackUrlConfig } from './oauth.types'
+
 export interface OAuthDebugInfo {
   timestamp: string
   step: string
@@ -15,7 +17,7 @@ export interface OAuthDebugInfo {
 export class OAuthDebugger {
   private static logs: OAuthDebugInfo[] = []
 
-  static log(step: string, data: any, userAgent?: string) {
+  static log(step: string, data: unknown, userAgent?: string) {
     const logEntry: OAuthDebugInfo = {
       timestamp: new Date().toISOString(),
       step,
@@ -54,8 +56,12 @@ export class OAuthDebugger {
   }
 }
 
-export function validateOAuthConfiguration() {
-  const config = {
+export function validateOAuthConfiguration(): {
+  isValid: boolean
+  issues: string[]
+  config: OAuthDebugConfig
+} {
+  const config: OAuthDebugConfig = {
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
     siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
     supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -90,7 +96,7 @@ export function validateOAuthConfiguration() {
   return { isValid, issues, config }
 }
 
-export function buildCallbackUrls(): { allowed: string[]; missing: string[] } {
+export function buildCallbackUrls(): CallbackUrlConfig {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   const allowedUrls: string[] = []
   const missingUrls: string[] = []
@@ -123,7 +129,7 @@ export function buildCallbackUrls(): { allowed: string[]; missing: string[] } {
   return { allowed: allowedUrls, missing: missingUrls }
 }
 
-export function analyzeOAuthError(error: any): {
+export function analyzeOAuthError(error: OAuthErrorType): {
   type: string
   severity: string
   suggestion: string
@@ -132,7 +138,10 @@ export function analyzeOAuthError(error: any): {
     return { type: 'unknown', severity: 'low', suggestion: 'No error information available' }
   }
 
-  const errorMessage = error.message || error.toString()
+  const errorMessage =
+    (error as Error).message || (typeof error === 'object' && error !== null && 'message' in error)
+      ? String(error.message)
+      : String(error)
 
   // Common OAuth error patterns
   if (errorMessage.includes('invalid_request') || errorMessage.includes('Invalid')) {

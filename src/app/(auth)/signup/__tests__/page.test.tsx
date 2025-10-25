@@ -5,11 +5,12 @@ import SignupPage from '../page'
 import { createClient } from '@/lib/supabase/client'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { setupMatchMedia } from '@/test/setup'
+import type { ImageMockProps } from '@/test/image-mock.types'
 
 // Mock Next.js Image component to prevent URL parsing errors in test environment
 // and avoid ESLint @next/next/no-img-element warnings
 vi.mock('next/image', () => ({
-  default: ({ alt, 'data-testid': testId, className, style, ...props }: any) => (
+  default: ({ alt, 'data-testid': testId, className, style, ...props }: ImageMockProps) => (
     <div
       data-testid={testId || 'next-image-mock'}
       role="img"
