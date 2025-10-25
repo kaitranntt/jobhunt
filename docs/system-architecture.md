@@ -1,222 +1,204 @@
-# JobHunt - System Architecture Documentation
+# JobHunt - System Architecture & Design Patterns
 
 **Document Version:** 1.0
-**Last Updated:** 2025-10-25
-**Status:** Production Architecture
+**Last Updated:** October 25, 2025
+**Architecture Style:** Modern Web Application with Serverless Backend
 
-## Overview
+## Executive Summary
 
-JobHunt is built on a modern, serverless architecture using Next.js 15 with the App Router and Supabase as the backend-as-a-service platform. This architecture provides scalability, security, and developer productivity while maintaining a simple and maintainable codebase.
+JobHunt employs a modern, scalable architecture built on Next.js 15 with Supabase as the backend-as-a-service. The system follows a clean architecture pattern with clear separation of concerns, comprehensive security measures, and optimized performance characteristics. This architecture supports the current feature set while providing a solid foundation for future scaling and feature expansion.
 
-## High-Level Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Client Side   │    │   Next.js App   │    │   Supabase BaaS │
-│                 │    │                 │    │                 │
-│ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
-│ │   Browser   │ │◄──►│ │ App Router  │ │◄──►│ │ PostgreSQL  │ │
-│ │   (React)   │ │    │ │ (SSR/CSR)   │ │    │ │   Database  │ │
-│ └─────────────┘ │    │ └─────────────┘ │    │ └─────────────┘ │
-│                 │    │                 │    │                 │
-│ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
-│ │ Local State │ │    │ │  API Routes │ │    │ │   Auth      │ │
-│ │   (React)   │ │    │ │ (Server)    │ │    │ │  Service    │ │
-│ └─────────────┘ │    │ └─────────────┘ │    │ └─────────────┘ │
-│                 │    │                 │    │                 │
-│ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
-│ │ HTTP Cache  │ │    │ │ Middleware  │ │    │ │   Storage   │ │
-│ │   (Vercel)  │ │    │ │   (Auth)    │ │    │ │   Service   │ │
-│ └─────────────┘ │    │ └─────────────┘ │    │ └─────────────┘ │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
-
-## Technology Stack
-
-### Frontend Layer
-
-- **Next.js 15** - React framework with App Router
-- **React 18** - UI library with Server Components
-- **TypeScript 5** - Type-safe JavaScript development
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Shadcn UI** - Component library built on Radix UI
-
-### Backend Layer
-
-- **Supabase** - Backend-as-a-Service platform
-  - **PostgreSQL** - Primary database with ACID compliance
-  - **Supabase Auth** - Authentication and authorization service
-  - **Row Level Security (RLS)** - Data access control
-  - **Supabase Storage** - File storage service
-  - **Real-time subscriptions** - Live data synchronization
-
-### Deployment & Infrastructure
-
-- **Vercel** - Hosting platform for Next.js applications
-- **Edge Network** - Global CDN for content delivery
-- **Serverless Functions** - Scalable API route execution
-- **Environment Variables** - Secure configuration management
-
-## Application Architecture
-
-### Directory Structure
+## High-Level Architecture Overview
 
 ```
-src/
-├── app/                          # Next.js App Router
-│   ├── (auth)/                  # Authentication route group
-│   │   ├── login/
-│   │   └── signup/
-│   ├── auth/                    # Authentication API routes
-│   │   ├── callback/
-│   │   └── signout/
-│   ├── (dashboard)/             # Protected route group
-│   │   ├── applications/
-│   │   ├── contacts/
-│   │   ├── documents/
-│   │   └── reminders/
-│   ├── api/                     # API routes
-│   │   ├── applications/
-│   │   ├── contacts/
-│   │   ├── documents/
-│   │   └── reminders/
-│   ├── layout.tsx               # Root layout
-│   ├── page.tsx                 # Home page
-│   └── globals.css              # Global styles
-├── components/                  # React components
-│   ├── ui/                     # Shadcn UI components
-│   ├── applications/           # Application-specific components
-│   ├── contacts/               # Contact management components
-│   ├── documents/              # Document management components
-│   ├── reminders/              # Reminder system components
-│   └── layout/                 # Layout components
-├── lib/                        # Utilities and configurations
-│   ├── design-tokens/          # Design system tokens
-│   ├── supabase/               # Supabase client configurations
-│   ├── validations/            # Zod schemas
-│   └── utils.ts                # Helper functions
-├── types/                      # TypeScript type definitions
-└── hooks/                      # Custom React hooks
+┌─────────────────────────────────────────────────────────────┐
+│                    Client Layer                              │
+├─────────────────────────────────────────────────────────────┤
+│  Web Browser (Next.js 15 + React 18 + TypeScript 5)       │
+│  - App Router Architecture                                   │
+│  - Server & Client Components                               │
+│  - Tailwind CSS + Shadcn UI                                 │
+│  - Progressive Web App Capabilities                         │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   API Layer                                  │
+├─────────────────────────────────────────────────────────────┤
+│  Next.js API Routes + Supabase Client                       │
+│  - Authentication Routes (callback, signout)                │
+│  - Application CRUD Endpoints                               │
+│  - Server-Side Data Fetching                                │
+│  - Type-Safe API Responses                                  │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Backend-as-a-Service Layer                     │
+├─────────────────────────────────────────────────────────────┤
+│  Supabase Platform                                          │
+│  - PostgreSQL Database with RLS                             │
+│  - Authentication Service                                   │
+│  - Real-time Subscriptions                                  │
+│  - File Storage                                             │
+│  - Edge Functions                                           │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Component Architecture
+## Technology Stack Architecture
 
-#### Atomic Design Principles
+### Frontend Architecture
 
-```
-Atoms (Basic Elements)
-├── Button
-├── Input
-├── Label
-├── Badge
-└── Icon
-
-Molecules (Simple Combinations)
-├── FormField
-├── SearchInput
-├── StatusBadge
-└── CardHeader
-
-Organisms (Complex Components)
-├── ApplicationCard
-├── KanbanBoard
-├── ContactForm
-└── NavigationBar
-
-Templates (Page Layouts)
-├── DashboardLayout
-├── AuthLayout
-└── PublicLayout
-
-Pages (Complete Views)
-├── DashboardPage
-├── LoginPage
-└── ApplicationsPage
-```
-
-## Data Architecture
-
-### Database Schema Design
-
-#### Entity Relationship Diagram
+#### Next.js 15 App Router Implementation
 
 ```
-users (Supabase Auth)
-    │
-    ├── companies (1:N)
-    │   ├── id (PK)
-    │   ├── user_id (FK → users.id)
-    │   ├── name
-    │   ├── website
-    │   └── notes
-    │
-    ├── applications (1:N)
-    │   ├── id (PK)
-    │   ├── user_id (FK → users.id)
-    │   ├── company_id (FK → companies.id)
-    │   ├── position
-    │   ├── status
-    │   ├── salary_range
-    │   ├── location
-    │   ├── job_url
-    │   ├── notes
-    │   └── applied_date
-    │
-    ├── contacts (1:N)
-    │   ├── id (PK)
-    │   ├── user_id (FK → users.id)
-    │   ├── company_id (FK → companies.id)
-    │   ├── name
-    │   ├── email
-    │   ├── phone
-    │   ├── position
-    │   └── notes
-    │
-    ├── documents (1:N)
-    │   ├── id (PK)
-    │   ├── user_id (FK → users.id)
-    │   ├── application_id (FK → applications.id)
-    │   ├── name
-    │   ├── file_path
-    │   ├── file_type
-    │   └── file_size
-    │
-    └── reminders (1:N)
-        ├── id (PK)
-        ├── user_id (FK → users.id)
-        ├── application_id (FK → applications.id)
-        ├── title
-        ├── description
-        ├── due_date
-        ├── is_completed
-        └── created_at
+src/app/
+├── layout.tsx              # Root layout with providers
+├── page.tsx               # Landing page (marketing)
+├── globals.css            # Global styles and design tokens
+├── not-found.tsx          # Custom 404 page
+├── (auth)/                # Authentication route group
+│   ├── login/page.tsx     # Login page
+│   └── signup/page.tsx    # Signup page
+├── auth/                  # Authentication API routes
+│   ├── callback/route.ts  # OAuth callback handler
+│   └── signout/route.ts   # Signout handler
+└── dashboard/             # Protected application routes
+    ├── page.tsx           # Main dashboard
+    ├── layout.tsx         # Dashboard layout
+    └── actions.ts         # Server actions
 ```
 
-### Data Flow Architecture
+**Key Architectural Decisions:**
 
-#### Request-Response Flow
+- **App Router**: Leveraging Next.js 15's App Router for improved performance and developer experience
+- **Server Components**: Using React Server Components for optimal performance and SEO
+- **Route Groups**: Organizing routes with `(auth)` for authentication flows
+- **API Routes**: Implementing secure API endpoints for server-side operations
+
+#### Component Architecture
 
 ```
-1. User Interaction
+src/components/
+├── ui/                    # Base UI components (Shadcn)
+│   ├── button.tsx        # Reusable button component
+│   ├── card.tsx          # Card container component
+│   ├── dialog.tsx        # Modal dialog component
+│   └── ...
+├── layout/               # Layout-specific components
+│   ├── NavBar.tsx        # Navigation bar
+│   ├── AnimatedBackground.tsx # Background animations
+│   └── LandingContent.tsx # Landing page content
+├── applications/         # Feature-specific components
+│   ├── ApplicationCard.tsx # Application display card
+│   ├── ApplicationForm.tsx # Application creation/editing
+│   ├── ApplicationDetail.tsx # Detailed view
+│   └── KanbanBoardV2.tsx # Kanban board interface
+├── landing/              # Landing page sections
+│   ├── HeroSection.tsx   # Hero section
+│   ├── FeaturesSection.tsx # Features showcase
+│   └── ...
+└── providers/            # React context providers
+    ├── ThemeProvider.tsx # Theme management
+    └── ...
+```
+
+**Design Patterns:**
+
+- **Compound Components**: Shadcn UI components follow compound pattern
+- **Custom Hooks**: Business logic encapsulated in custom hooks
+- **Render Props**: Used for complex component composition
+- **Higher-Order Components**: Applied for cross-cutting concerns
+
+### Backend Architecture
+
+#### Supabase Integration
+
+```
+src/lib/supabase/
+├── client.ts             # Client-side Supabase instance
+├── server.ts             # Server-side Supabase instance
+└── middleware.ts         # Auth middleware
+```
+
+**Implementation Details:**
+
+- **Dual Client Pattern**: Separate client and server instances for optimal security
+- **Type Safety**: Auto-generated TypeScript types from database schema
+- **Row Level Security**: Database-level access control for multi-tenancy
+- **Real-time Subscriptions**: Live data updates across connected clients
+
+#### Database Schema Architecture
+
+```sql
+-- Core application tracking
+applications (id, user_id, company, position, status, created_at, updated_at, ...)
+├── Foreign Key: user_id → auth.users.id
+├── Indexes: user_id, status, created_at
+└── RLS Policies: User isolation
+
+-- Contact management
+contacts (id, user_id, name, email, phone, company_id, ...)
+├── Foreign Keys: user_id, company_id
+└── RLS Policies: User isolation
+
+-- Document storage
+documents (id, user_id, application_id, file_path, file_type, ...)
+├── Foreign Keys: user_id, application_id
+└── Storage Integration: Supabase Storage
+
+-- Reminder system
+reminders (id, user_id, application_id, reminder_date, message, ...)
+├── Foreign Keys: user_id, application_id
+└── Scheduling: Automated notifications
+
+-- User profiles
+user_profiles (id, user_id, preferences, settings, ...)
+├── Foreign Key: user_id → auth.users.id
+└── Extended User Data: Beyond auth.users
+```
+
+## Data Flow Architecture
+
+### Authentication Flow
+
+```
+1. User Login Request
    ↓
-2. Component Event Handler
+2. Next.js Middleware → Supabase Auth
    ↓
-3. Client-side Validation
+3. Supabase validates credentials
    ↓
-4. API Route Call (Next.js)
+4. JWT token generation
    ↓
-5. Server-side Validation
+5. Session storage in cookies
    ↓
-6. Supabase Client Request
+6. Redirect to protected route
    ↓
-7. Row Level Security Check
-   ↓
-8. Database Operation
-   ↓
-9. Response Chain (reverse order)
+7. Server-side session validation on each request
 ```
 
-#### Real-time Data Synchronization
+### Application Data Flow
+
+```
+1. User Action (Create/Update/Delete)
+   ↓
+2. Client Component → Custom Hook
+   ↓
+3. API Route / Server Action
+   ↓
+4. Supabase Client (Server-side)
+   ↓
+5. Database Operation with RLS
+   ↓
+6. Response with Type Safety
+   ↓
+7. UI Update + Optimistic Updates
+   ↓
+8. Real-time Subscription Updates (if applicable)
+```
+
+### Real-time Data Synchronization
 
 ```
 1. Database Change Event
@@ -227,416 +209,493 @@ users (Supabase Auth)
    ↓
 4. Client Subscription Handler
    ↓
-5. React State Update
+5. State Update (React Query/Zustand)
    ↓
-6. UI Re-render
+6. UI Re-render with New Data
 ```
 
 ## Security Architecture
 
-### Authentication System
+### Authentication & Authorization
 
 ```
-Authentication Flow
-┌─────────────────┐
-│ 1. Login Page   │
-│  (Email/Password)│
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 2. Supabase Auth│
-│  Validation     │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 3. JWT Token    │
-│  Generation     │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 4. HTTP-only    │
-│  Cookie Set     │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 5. Middleware   │
-│  Validation     │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 6. Protected    │
-│  Route Access   │
-└─────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                  Security Layers                            │
+├─────────────────────────────────────────────────────────────┤
+│  1. Supabase Auth (Email/Password)                         │
+│     - JWT token management                                  │
+│     - Session persistence                                   │
+│     - Automatic token refresh                               │
+├─────────────────────────────────────────────────────────────┤
+│  2. Next.js Middleware                                      │
+│     - Route protection                                      │
+│     - Session validation                                    │
+│     - Redirect handling                                    │
+├─────────────────────────────────────────────────────────────┤
+│  3. Row Level Security (RLS)                               │
+│     - Database-level access control                         │
+│     - User data isolation                                   │
+│     - Fine-grained permissions                             │
+├─────────────────────────────────────────────────────────────┤
+│  4. API Route Security                                      │
+│     - Server-side validation                                │
+│     - Type-safe requests/responses                          │
+│     - Error handling                                        │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Authorization Model
+### Data Protection Strategies
 
-```sql
--- Row Level Security Policies
-CREATE POLICY "Users can view their own applications"
-  ON applications FOR SELECT
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can insert their own applications"
-  ON applications FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can update their own applications"
-  ON applications FOR UPDATE
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete their own applications"
-  ON applications FOR DELETE
-  USING (auth.uid() = user_id);
-```
-
-### Data Protection Layers
-
-1. **Transport Layer Encryption** - HTTPS/TLS 1.3
-2. **Application Layer Security** - JWT tokens, CSRF protection
-3. **Database Layer Security** - Row Level Security, encrypted at rest
-4. **Infrastructure Security** - Vercel's security controls, Supabase security
+- **Input Validation**: Zod schemas for all user inputs
+- **SQL Injection Prevention**: Parameterized queries via Supabase
+- **XSS Protection**: React's built-in XSS prevention
+- **CSRF Protection**: Next.js built-in CSRF protection
+- **Secure Headers**: Security headers configuration
+- **Environment Security**: Secure environment variable management
 
 ## Performance Architecture
 
-### Frontend Optimization
+### Frontend Performance
 
 ```
-Performance Optimization Layers
-┌─────────────────────────────────┐
-│ 1. Code Splitting               │
-│    • Route-based splitting      │
-│    • Component lazy loading     │
-└─────────────────────────────────┘
-┌─────────────────────────────────┐
-│ 2. Asset Optimization           │
-│    • Next.js Image component    │
-│    • Font optimization          │
-│    • Bundle size analysis       │
-└─────────────────────────────────┘
-┌─────────────────────────────────┐
-│ 3. Caching Strategy             │
-│    • HTTP caching headers       │
-│    • Browser cache utilization  │
-│    • CDN edge caching          │
-└─────────────────────────────────┘
-┌─────────────────────────────────┐
-│ 4. Rendering Optimization       │
-│    • Server Components         │
-│    • Static Site Generation    │
-│    • Incremental Static Regeneration │
-└─────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                Performance Optimizations                     │
+├─────────────────────────────────────────────────────────────┤
+│  1. Code Splitting                                           │
+│     - Route-based splitting                                 │
+│     - Component-level lazy loading                          │
+│     - Dynamic imports                                        │
+├─────────────────────────────────────────────────────────────┤
+│  2. Bundle Optimization                                      │
+│     - Tree shaking                                          │
+│     - Unused code elimination                               │
+│     - 11.7% bundle size reduction achieved                  │
+├─────────────────────────────────────────────────────────────┤
+│  3. Caching Strategy                                         │
+│     - Next.js automatic caching                             │
+│     - Supabase client-side caching                          │
+│     - Image optimization with Next.js Image                 │
+├─────────────────────────────────────────────────────────────┤
+│  4. Performance Monitoring                                   │
+│     - Vercel Analytics                                      │
+│     - Speed Insights                                        │
+│     - Core Web Vitals tracking                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Database Optimization
+### Database Performance
 
-```sql
--- Strategic Indexing
-CREATE INDEX idx_applications_user_status
-  ON applications(user_id, status);
+- **Indexing Strategy**: Optimized indexes on frequently queried columns
+- **Query Optimization**: Efficient query patterns with proper joins
+- **Connection Pooling**: Supabase managed connection pooling
+- **Caching Layer**: Supabase edge caching for frequently accessed data
 
-CREATE INDEX idx_applications_created_at
-  ON applications(created_at DESC);
+## Design Patterns Implementation
 
-CREATE INDEX idx_applications_company_user
-  ON applications(company_id, user_id);
-
--- Query Optimization
-SELECT a.*, c.name as company_name
-FROM applications a
-JOIN companies c ON a.company_id = c.id
-WHERE a.user_id = $1
-  AND a.status = $2
-ORDER BY a.created_at DESC
-LIMIT 20;
-```
-
-## Scalability Architecture
-
-### Horizontal Scaling Strategy
-
-```
-Scaling Components
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Vercel Edge   │    │  Supabase       │    │   CDN Network   │
-│                 │    │  Database       │    │                 │
-│ • Auto-scaling  │    │ • Connection    │    │ • Global Cache  │
-│ • Edge Runtime  │    │   Pooling       │    │ • Fast Delivery │
-│ • Geographic    │    │ • Read Replicas │    │ • Low Latency   │
-│   Distribution  │    │ • Point-in-Time │    │                 │
-└─────────────────┘    │   Recovery      │    └─────────────────┘
-                       └─────────────────┘
-```
-
-### Performance Monitoring
+### Repository Pattern
 
 ```typescript
-// Performance Metrics Tracking
-const performanceConfig = {
-  // Core Web Vitals
-  metrics: ['LCP', 'FID', 'CLS', 'FCP', 'TTFB'],
+// Abstract data access layer
+export class ApplicationRepository {
+  constructor(private supabase: SupabaseClient<Database>) {}
 
-  // Custom Application Metrics
-  customMetrics: {
-    api_response_time: 'API call duration',
-    database_query_time: 'Database query duration',
-    component_render_time: 'Component render duration',
-    user_interaction_time: 'User interaction response time',
-  },
+  async findById(id: string): Promise<Application | null> {
+    const { data } = await this.supabase.from('applications').select('*').eq('id', id).single()
 
-  // Monitoring Tools
-  tools: {
-    vercel_analytics: 'Platform analytics',
-    supabase_dashboard: 'Database monitoring',
-    browser_devtools: 'Client-side performance',
-  },
+    return data
+  }
+
+  async findByUserId(userId: string): Promise<Application[]> {
+    const { data } = await this.supabase
+      .from('applications')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    return data || []
+  }
 }
 ```
 
-## Development Architecture
+### Service Layer Pattern
 
-### Build System
+```typescript
+// Business logic layer
+export class ApplicationService {
+  constructor(
+    private repository: ApplicationRepository,
+    private notificationService: NotificationService
+  ) {}
 
-```
-Build Pipeline
-┌─────────────────┐
-│ 1. Source Code  │
-│    (TypeScript) │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 2. TypeScript   │
-│    Compilation  │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 3. Bundling     │
-│    (Next.js)    │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 4. Optimization │
-│    (Minification│
-│    & Compression)│
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 5. Asset        │
-│    Processing   │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 6. Production   │
-│    Build        │
-└─────────────────┘
+  async createApplication(userId: string, data: CreateApplicationData): Promise<Application> {
+    // Business logic validation
+    if (await this.existsDuplicateApplication(userId, data)) {
+      throw new ApplicationError('Duplicate application', 'DUPLICATE_APPLICATION')
+    }
+
+    // Create application
+    const application = await this.repository.create({
+      ...data,
+      user_id: userId,
+    })
+
+    // Send notification
+    await this.notificationService.sendApplicationCreated(application)
+
+    return application
+  }
+}
 ```
 
-### Testing Architecture
+### Observer Pattern (Real-time Updates)
 
+```typescript
+// Real-time subscription management
+export class RealtimeManager {
+  private subscriptions: Map<string, RealtimeChannel> = new Map()
+
+  subscribeToApplications(userId: string, callback: (application: Application) => void): void {
+    const channel = supabase
+      .channel(`applications:${userId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'applications',
+          filter: `user_id=eq.${userId}`,
+        },
+        payload => callback(payload.new as Application)
+      )
+      .subscribe()
+
+    this.subscriptions.set(userId, channel)
+  }
+
+  unsubscribe(userId: string): void {
+    const channel = this.subscriptions.get(userId)
+    if (channel) {
+      supabase.removeChannel(channel)
+      this.subscriptions.delete(userId)
+    }
+  }
+}
 ```
-Testing Strategy
-┌─────────────────┐
-│ Unit Testing    │
-│ • Business Logic│
-│ • Utilities     │
-│ • Hooks         │
-│ • Components    │
-└─────────────────┘
-┌─────────────────┐
-│ Integration     │
-│ Testing         │
-│ • API Routes    │
-│ • Database Ops  │
-│ • Auth Flows    │
-│ • Form Submissions│
-└─────────────────┘
-┌─────────────────┐
-│ E2E Testing     │
-│ • User Journeys │
-│ • Critical Paths│
-│ • Cross-browser │
-│ • Mobile Testing│
-└─────────────────┘
+
+### Factory Pattern (Component Creation)
+
+```typescript
+// Dynamic component creation
+export class ComponentFactory {
+  static createApplicationCard(
+    application: Application,
+    actions: ApplicationCardActions
+  ): React.ReactElement {
+    return React.createElement(ApplicationCard, {
+      key: application.id,
+      application,
+      ...actions,
+    })
+  }
+
+  static createKanbanColumn(
+    status: ApplicationStatus,
+    applications: Application[],
+    onMove: (id: string, newStatus: ApplicationStatus) => void
+  ): React.ReactElement {
+    return React.createElement(KanbanColumn, {
+      key: status,
+      status,
+      applications,
+      onMove,
+    })
+  }
+}
+```
+
+## State Management Architecture
+
+### Client State Management
+
+```typescript
+// Custom hook-based state management
+export function useApplicationState() {
+  const [applications, setApplications] = useState<Application[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // Optimistic updates
+  const updateApplicationOptimistically = useCallback(
+    (id: string, updates: Partial<Application>) => {
+      setApplications(prev => prev.map(app => (app.id === id ? { ...app, ...updates } : app)))
+    },
+    []
+  )
+
+  // Rollback on error
+  const rollbackUpdate = useCallback((id: string, originalApplication: Application) => {
+    setApplications(prev => prev.map(app => (app.id === id ? originalApplication : app)))
+  }, [])
+
+  return {
+    applications,
+    loading,
+    error,
+    updateApplicationOptimistically,
+    rollbackUpdate,
+  }
+}
+```
+
+### Server State Management
+
+```typescript
+// Server Actions for Next.js 15
+export async function createApplicationAction(
+  formData: FormData
+): Promise<ActionResult<Application>> {
+  try {
+    const userId = await getCurrentUserId()
+    const data = createApplicationSchema.parse({
+      company: formData.get('company'),
+      position: formData.get('position'),
+      status: formData.get('status'),
+      // ... other fields
+    })
+
+    const application = await applicationService.createApplication(userId, data)
+
+    revalidatePath('/dashboard') // Invalidate cache
+    return { success: true, data: application }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }
+  }
+}
+```
+
+## Error Handling Architecture
+
+### Global Error Boundaries
+
+```typescript
+// React Error Boundary
+export class ApplicationErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Application Error:', error, errorInfo);
+    // Send to error reporting service
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback error={this.state.error} />;
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+### API Error Handling
+
+```typescript
+// Centralized error handling
+export class ApiErrorHandler {
+  static handleError(error: unknown): ApiResponse<null> {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: 'Validation failed',
+        details: error.errors,
+      }
+    }
+
+    if (error instanceof ApplicationError) {
+      return {
+        success: false,
+        error: error.message,
+        code: error.code,
+      }
+    }
+
+    // Log unexpected errors
+    console.error('Unexpected API error:', error)
+
+    return {
+      success: false,
+      error: 'Internal server error',
+    }
+  }
+}
 ```
 
 ## Deployment Architecture
 
-### Continuous Integration/Continuous Deployment
+### Production Deployment
 
 ```
-CI/CD Pipeline
-┌─────────────────┐
-│ 1. Code Push    │
-│    (Git)        │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 2. Automated    │
-│    Tests        │
-│    (Vitest)     │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 3. Quality      │
-│    Gates        │
-│    (ESLint/TS)  │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 4. Build        │
-│    Process      │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 5. Deploy to    │
-│    Vercel       │
-└─────────┬───────┘
-          │
-┌─────────▼───────┐
-│ 6. Production   │
-│    Environment  │
-└─────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    Vercel Platform                           │
+├─────────────────────────────────────────────────────────────┤
+│  • Automatic deployments from Git                            │
+│  • Global CDN distribution                                   │
+│  • Edge functions support                                   │
+│  • Environment variable management                          │
+│  • Analytics and monitoring                                 │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  Supabase Platform                           │
+├─────────────────────────────────────────────────────────────┤
+│  • Managed PostgreSQL database                               │
+│  • Authentication service                                   │
+│  • File storage                                             │
+│  • Edge functions                                           │
+│  • Real-time subscriptions                                  │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ### Environment Configuration
 
 ```typescript
-// Environment Variables Management
-interface EnvironmentConfig {
-  // Supabase Configuration
-  supabase: {
-    url: string
-    anonKey: string
-    serviceKey: string
-  }
-
-  // Application Configuration
-  app: {
-    url: string
-    environment: 'development' | 'staging' | 'production'
-  }
-
-  // Feature Flags
-  features: {
-    analytics: boolean
-    debugMode: boolean
-    betaFeatures: boolean
-  }
+// Environment-specific configuration
+const config = {
+  development: {
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
+    apiBaseUrl: 'http://localhost:3000/api',
+    enableDebugMode: true,
+  },
+  production: {
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
+    apiBaseUrl: 'https://jobhunt.kaitran.ca/api',
+    enableDebugMode: false,
+  },
 }
+
+export const env = config[process.env.NODE_ENV as keyof typeof config]
 ```
 
-## Monitoring and Observability
+## Monitoring & Observability
 
-### Logging Strategy
+### Performance Monitoring
+
+- **Core Web Vitals**: Automatic tracking with Vercel Speed Insights
+- **Bundle Analysis**: Regular bundle size monitoring and optimization
+- **Database Performance**: Query performance tracking via Supabase
+- **API Performance**: Response time monitoring and error rates
+
+### Error Monitoring
 
 ```typescript
-// Structured Logging
-const logger = {
-  info: (message: string, metadata?: any) => {
-    console.log(
-      JSON.stringify({
-        level: 'info',
-        message,
-        metadata,
-        timestamp: new Date().toISOString(),
-      })
-    )
-  },
+// Error tracking setup
+export function setupErrorMonitoring() {
+  if (typeof window !== 'undefined') {
+    // Client-side error handling
+    window.addEventListener('error', event => {
+      console.error('Client Error:', event.error)
+      // Send to error reporting service
+    })
 
-  error: (message: string, error: Error, metadata?: any) => {
-    console.error(
-      JSON.stringify({
-        level: 'error',
-        message,
-        error: {
-          name: error.name,
-          message: error.message,
-          stack: error.stack,
-        },
-        metadata,
-        timestamp: new Date().toISOString(),
-      })
-    )
-  },
+    window.addEventListener('unhandledrejection', event => {
+      console.error('Unhandled Promise Rejection:', event.reason)
+      // Send to error reporting service
+    })
+  }
 }
 ```
 
-### Error Handling Architecture
+### Analytics Integration
+
+- **User Analytics**: Privacy-focused usage tracking
+- **Feature Adoption**: Feature usage monitoring
+- **Performance Metrics**: Application performance tracking
+- **Business Metrics**: User engagement and retention
+
+## Scalability Considerations
+
+### Database Scaling
+
+- **Read Replicas**: Planned for high read volume scenarios
+- **Connection Pooling**: Supabase managed connection optimization
+- **Query Optimization**: Efficient query patterns and indexing
+- **Data Archiving**: Strategy for historical data management
+
+### Application Scaling
+
+- **Horizontal Scaling**: Stateless application design supports multiple instances
+- **CDN Distribution**: Global content delivery via Vercel Edge Network
+- **Caching Strategy**: Multi-layer caching for optimal performance
+- **Load Balancing**: Automatic load balancing via Vercel platform
+
+### Future Architecture Enhancements
 
 ```
-Error Handling Layers
-┌─────────────────┐
-│ 1. Client Side  │
-│    • Try-Catch  │
-│    • Error      │
-│      Boundaries │
-│    • Toast      │
-│      Notifications│
-└─────────────────┘
-┌─────────────────┐
-│ 2. API Routes   │
-│    • Validation │
-│    • Error      │
-│      Formatting │
-│    • Status     │
-│      Codes      │
-└─────────────────┘
-┌─────────────────┐
-│ 3. Database     │
-│    • Transaction│
-│      Rollback   │
-│    • Constraint │
-│      Handling   │
-└─────────────────┘
-┌─────────────────┐
-│ 4. Global       │
-│    • Error      │
-│      Reporting  │
-│    • Monitoring │
-│      Alerts     │
-└─────────────────┘
+Phase 2 Enhancements (Q4 2025 - Q1 2026):
+├── Microservices Architecture
+│   ├── Notification Service
+│   ├── Analytics Service
+│   └── Export Service
+├── Advanced Caching
+│   ├── Redis Integration
+│   └── Application-level Caching
+└── API Gateway
+    ├── Rate Limiting
+    └── Request Transformation
+
+Phase 3 Enhancements (Q2 2026 - Q3 2026):
+├── Event-Driven Architecture
+│   ├── Message Queues
+│   └── Event Sourcing
+├── Multi-tenant Support
+│   ├── Database Isolation
+│   └── Custom Domains
+└── Advanced Analytics
+    ├── Data Warehouse
+    └── Business Intelligence
 ```
 
-## Future Architecture Considerations
+## Security Best Practices
 
-### Scalability Enhancements
+### OWASP Compliance
 
-1. **Database Optimization**
-   - Read replicas for scaling
-   - Connection pooling optimization
-   - Query performance monitoring
+- **Injection Protection**: Parameterized queries and input validation
+- **Authentication Security**: Secure session management and token handling
+- **Data Protection**: Encryption at rest and in transit
+- **Access Control**: Principle of least privilege with RLS
+- **Security Monitoring**: Regular security audits and vulnerability scanning
 
-2. **Caching Layer**
-   - Redis implementation for session storage
-   - Application-level caching
-   - CDN edge caching strategies
+### Compliance Requirements
 
-3. **Microservices Migration Path**
-   - Service extraction for specific domains
-   - API Gateway implementation
-   - Inter-service communication patterns
-
-### Advanced Features Architecture
-
-1. **AI/ML Integration**
-   - Separate service for ML operations
-   - Data pipeline for training
-   - Real-time inference API
-
-2. **Real-time Collaboration**
-   - WebSocket connection management
-   - Conflict resolution strategies
-   - Operational transformation
+- **GDPR Compliance**: Data protection for EU users
+- **CCPA Compliance**: Privacy rights for California users
+- **Data Retention**: Configurable data retention policies
+- **Privacy by Design**: Privacy considerations in all features
 
 ## Conclusion
 
-The JobHunt system architecture provides a solid foundation for a scalable, secure, and maintainable job application tracking system. The modern tech stack, clear separation of concerns, and comprehensive security measures ensure the application can grow with user demand while maintaining high performance and reliability.
+The JobHunt system architecture represents a modern, scalable approach to web application development. By leveraging Next.js 15's App Router, Supabase's comprehensive backend services, and following established design patterns, the system provides:
 
-Regular architectural reviews and updates will ensure the system continues to meet evolving requirements and technological advancements.
+1. **High Performance**: Optimized bundle size, efficient rendering, and caching strategies
+2. **Strong Security**: Multi-layer security with RLS, authentication, and input validation
+3. **Excellent Developer Experience**: Type safety, comprehensive testing, and modern tooling
+4. **Scalability**: Architecture designed for growth and future enhancements
+5. **Maintainability**: Clean code organization and well-documented patterns
 
----
-
-**Architecture Review Date:** 2025-12-25
-**Architecture Owner:** Development Team
-**Status:** Production Ready
+This architecture serves as a solid foundation for current functionality while providing the flexibility needed for future feature development and scaling requirements.
