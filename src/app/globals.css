@@ -707,6 +707,21 @@ body {
   color: hsl(var(--brand-secondary));
 }
 
+/* Destructive text colors (ensure red color is properly applied) */
+.text-destructive {
+  color: hsl(var(--destructive));
+}
+
+/* Fallback red colors for logout button */
+.text-red-destructive {
+  color: hsl(var(--destructive));
+}
+
+.text-red-destructive:hover {
+  color: hsl(var(--destructive));
+  background-color: hsl(var(--destructive) / 0.1);
+}
+
 /* ============================================================================ */
 /* macOS 26 Shadow System (Depth Layers with Specular Highlights)             */
 /* ============================================================================ */
