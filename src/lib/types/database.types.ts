@@ -27,5 +27,5 @@ export interface Application {
   updated_at: string
 }
 
-export type ApplicationInsert = Omit<Application, 'id' | 'created_at' | 'updated_at'>
+export type ApplicationInsert = Omit<Application, 'id' | 'created_at' | 'updated_at' | 'user_id'>
 export type ApplicationUpdate = Partial<Omit<Application, 'id' | 'user_id'>>

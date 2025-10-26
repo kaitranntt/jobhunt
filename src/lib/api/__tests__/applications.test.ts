@@ -49,6 +49,12 @@ const createMockSupabaseClient = () => {
       update: vi.fn().mockReturnThis(),
       delete: vi.fn().mockReturnThis(),
     })),
+    auth: {
+      getUser: vi.fn().mockResolvedValue({
+        data: { user: { id: 'user-1' } },
+        error: null,
+      }),
+    },
   }
 }
 
@@ -77,7 +83,6 @@ describe('Applications API', () => {
   describe('createApplication', () => {
     it('should create a new application', async () => {
       const newApp = {
-        user_id: 'user-1',
         company_name: 'New Corp',
         job_title: 'Developer',
         status: 'wishlist' as const,
