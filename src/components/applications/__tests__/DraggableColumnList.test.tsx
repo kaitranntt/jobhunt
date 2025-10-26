@@ -7,12 +7,10 @@ import { vi, beforeEach, describe, it, expect } from 'vitest'
 
 // Mock @dnd-kit utilities
 vi.mock('@dnd-kit/sortable', async () => {
-  const actual = await vi.importActual('@dnd-kit/sortable')
   return {
-    ...(actual as any),
     SortableContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     verticalListSortingStrategy: {},
-    arrayMove: vi.fn((array: any[], oldIndex: number, newIndex: number) => {
+    arrayMove: vi.fn((array: unknown[], oldIndex: number, newIndex: number) => {
       const result = [...array]
       const [removed] = result.splice(oldIndex, 1)
       result.splice(newIndex, 0, removed)
@@ -51,15 +49,16 @@ vi.mock('@/lib/utils/column-colors', () => ({
 }))
 
 // Mock @dnd-kit core
-vi.mock('@dnd-kit/core', async () => {
-  const original = await vi.importActual('@dnd-kit/core')
-  return {
-    ...(original as any),
-    useSensor: vi.fn(),
-    useSensors: vi.fn(() => []),
-    closestCenter: vi.fn(),
-  }
-})
+vi.mock('@dnd-kit/core', () => ({
+  useSensor: vi.fn(),
+  useSensors: vi.fn(() => []),
+  closestCenter: vi.fn(),
+  PointerSensor: vi.fn(),
+  MouseSensor: vi.fn(),
+  TouchSensor: vi.fn(),
+  DragOverlay: vi.fn(({ children }: { children: React.ReactNode }) => <div>{children}</div>),
+  DndContext: vi.fn(({ children }: { children: React.ReactNode }) => <div>{children}</div>),
+}))
 
 describe('DraggableColumnList', () => {
   const mockColumns: ColumnConfig[] = [
@@ -419,7 +418,7 @@ describe('DraggableColumnList', () => {
 
       expect(() => {
         render(
-          <DraggableColumnList columns={mockColumns} onReorder={mockOnReorder}>
+          <DraggableColumnList columns={[mockColumns[0]]} onReorder={mockOnReorder}>
             {errorChildren}
           </DraggableColumnList>
         )

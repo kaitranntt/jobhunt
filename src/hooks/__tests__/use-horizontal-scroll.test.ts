@@ -2,9 +2,20 @@ import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useHorizontalScroll } from '../use-horizontal-scroll'
 
+// Partial WheelEvent interface for testing
+interface MockWheelEvent {
+  deltaY: number
+  deltaX?: number
+  preventDefault: ReturnType<typeof vi.fn>
+}
+
 describe('useHorizontalScroll', () => {
   let mockElement: HTMLElement
-  let mockResizeObserver: any
+  let mockResizeObserver: {
+    observe: ReturnType<typeof vi.fn>
+    unobserve: ReturnType<typeof vi.fn>
+    disconnect: ReturnType<typeof vi.fn>
+  }
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -26,7 +37,12 @@ describe('useHorizontalScroll', () => {
       removeEventListener: vi.fn(),
       scrollTo: vi.fn(),
       scrollBy: vi.fn(),
-    } as any
+    } as HTMLElement & {
+      addEventListener: ReturnType<typeof vi.fn>
+      removeEventListener: ReturnType<typeof vi.fn>
+      scrollTo: ReturnType<typeof vi.fn>
+      scrollBy: ReturnType<typeof vi.fn>
+    }
   })
 
   it('should return correct initial state', () => {
@@ -106,12 +122,12 @@ describe('useHorizontalScroll', () => {
 
   it('should handle pure vertical wheel events correctly', () => {
     const { result } = renderHook(() => useHorizontalScroll())
-    let wheelHandler: ((event: WheelEvent) => void) | undefined
+    let wheelHandler: ((event: MockWheelEvent) => void) | undefined
 
     // Mock addEventListener to capture the wheel handler
     mockElement.addEventListener = vi.fn((event, handler) => {
       if (event === 'wheel') {
-        wheelHandler = handler as (event: WheelEvent) => void
+        wheelHandler = handler as (event: MockWheelEvent) => void
       }
     })
 
@@ -126,7 +142,7 @@ describe('useHorizontalScroll', () => {
       deltaY: 100,
       deltaX: 0, // Pure vertical event
       preventDefault: vi.fn(),
-    } as any
+    } as MockWheelEvent
 
     act(() => {
       wheelHandler!(wheelEvent)
@@ -140,11 +156,11 @@ describe('useHorizontalScroll', () => {
 
   it('should ignore wheel events with no deltaY', () => {
     const { result } = renderHook(() => useHorizontalScroll())
-    let wheelHandler: ((event: WheelEvent) => void) | undefined
+    let wheelHandler: ((event: MockWheelEvent) => void) | undefined
 
     mockElement.addEventListener = vi.fn((event, handler) => {
       if (event === 'wheel') {
-        wheelHandler = handler as (event: WheelEvent) => void
+        wheelHandler = handler as (event: MockWheelEvent) => void
       }
     })
 
@@ -155,7 +171,7 @@ describe('useHorizontalScroll', () => {
     const wheelEvent = {
       deltaY: 0,
       preventDefault: vi.fn(),
-    } as any
+    } as MockWheelEvent
 
     act(() => {
       wheelHandler!(wheelEvent)
@@ -200,15 +216,20 @@ describe('useHorizontalScroll', () => {
       removeEventListener: vi.fn(),
       scrollTo: vi.fn(),
       scrollBy: vi.fn(),
-    } as any
+    } as HTMLElement & {
+      addEventListener: ReturnType<typeof vi.fn>
+      removeEventListener: ReturnType<typeof vi.fn>
+      scrollTo: ReturnType<typeof vi.fn>
+      scrollBy: ReturnType<typeof vi.fn>
+    }
 
     const { result } = renderHook(() => useHorizontalScroll())
-    let wheelHandler: ((event: WheelEvent) => void) | undefined
+    let wheelHandler: ((event: MockWheelEvent) => void) | undefined
 
     // Mock addEventListener to capture the wheel handler
     nonScrollableElement.addEventListener = vi.fn((event, handler) => {
       if (event === 'wheel') {
-        wheelHandler = handler as (event: WheelEvent) => void
+        wheelHandler = handler as (event: MockWheelEvent) => void
       }
     })
 
@@ -219,7 +240,7 @@ describe('useHorizontalScroll', () => {
     const wheelEvent = {
       deltaY: 100,
       preventDefault: vi.fn(),
-    } as any
+    } as MockWheelEvent
 
     act(() => {
       wheelHandler!(wheelEvent)
@@ -232,12 +253,12 @@ describe('useHorizontalScroll', () => {
 
   it('should preserve native horizontal scrolling', () => {
     const { result } = renderHook(() => useHorizontalScroll())
-    let wheelHandler: ((event: WheelEvent) => void) | undefined
+    let wheelHandler: ((event: MockWheelEvent) => void) | undefined
 
     // Mock addEventListener to capture the wheel handler
     mockElement.addEventListener = vi.fn((event, handler) => {
       if (event === 'wheel') {
-        wheelHandler = handler as (event: WheelEvent) => void
+        wheelHandler = handler as (event: MockWheelEvent) => void
       }
     })
 
@@ -250,7 +271,7 @@ describe('useHorizontalScroll', () => {
       deltaY: 50,
       deltaX: 30, // Has horizontal component - native scrolling
       preventDefault: vi.fn(),
-    } as any
+    } as MockWheelEvent
 
     act(() => {
       wheelHandler!(horizontalWheelEvent)
