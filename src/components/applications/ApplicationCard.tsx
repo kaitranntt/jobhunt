@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import { format } from 'date-fns'
-import { MoreVertical, Eye, Edit2, Trash2, MapPin, GripVertical } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { MoreVertical, Eye, Edit2, Trash2, GripVertical } from 'lucide-react'
+import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -14,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
-import type { Application, ApplicationStatus } from '@/lib/types/database.types'
+import type { Application } from '@/lib/types/database.types'
 
 interface ApplicationCardProps {
   application: Application
@@ -23,36 +22,6 @@ interface ApplicationCardProps {
   onClick?: () => void
   isDragging?: boolean
   dragHandleProps?: Record<string, unknown>
-}
-
-const getStatusColor = (status: ApplicationStatus): string => {
-  const statusColorMap: Record<ApplicationStatus, string> = {
-    wishlist: 'glass-ultra text-label-secondary',
-    applied:
-      'glass-light bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/40 dark:border-blue-600/40',
-    phone_screen:
-      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    assessment:
-      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    take_home:
-      'glass-light bg-yellow-500/10 text-yellow-700 dark:text-yellow-300 border-yellow-300/40 dark:border-yellow-600/40',
-    interviewing:
-      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    final_round:
-      'glass-light bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-300/40 dark:border-purple-600/40',
-    offered:
-      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    accepted:
-      'glass-light bg-green-500/10 text-green-700 dark:text-green-300 border-green-300/40 dark:border-green-600/40',
-    rejected:
-      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    withdrawn:
-      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-    ghosted:
-      'glass-light bg-red-500/10 text-red-700 dark:text-red-300 border-red-300/40 dark:border-red-600/40',
-  }
-
-  return statusColorMap[status]
 }
 
 const formatDate = (dateString: string): string => {
@@ -71,8 +40,6 @@ export function ApplicationCard({
   isDragging = false,
   dragHandleProps,
 }: ApplicationCardProps) {
-  const statusColor = getStatusColor(application.status)
-
   const handleCardClick = (e: React.MouseEvent) => {
     // Don't trigger onClick if clicking on dropdown, drag handle, or their children
     const target = e.target as HTMLElement
@@ -116,14 +83,6 @@ export function ApplicationCard({
             <p className="text-base font-medium text-label-secondary truncate mb-2 ml-11">
               {application.job_title}
             </p>
-            {application.location && (
-              <div className="flex items-center gap-2 text-sm text-label-tertiary ml-11">
-                <div className="glass-ultra rounded-full p-1">
-                  <MapPin data-testid="map-pin-icon" className="h-3 w-3" />
-                </div>
-                <span>{application.location}</span>
-              </div>
-            )}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -164,15 +123,7 @@ export function ApplicationCard({
         </div>
       </CardHeader>
       <CardContent className="pt-0 pb-6 px-6">
-        <div className="flex items-center justify-between gap-4">
-          <Badge
-            className={cn(
-              'text-xs font-medium px-3 py-1 rounded-glass-sm transition-all',
-              statusColor
-            )}
-          >
-            {application.status.replace('_', ' ')}
-          </Badge>
+        <div className="flex items-center justify-end gap-4">
           <span className="text-xs text-label-tertiary">
             {formatDate(application.date_applied)}
           </span>

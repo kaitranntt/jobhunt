@@ -38,23 +38,6 @@ describe('ApplicationCard', () => {
       expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument()
     })
 
-    it('renders location when present', () => {
-      const application = createMockApplication({ location: 'New York, NY' })
-      render(<ApplicationCard application={application} />)
-
-      expect(screen.getByText('New York, NY')).toBeInTheDocument()
-    })
-
-    it('does not render location section when location is null', () => {
-      const application = createMockApplication({ location: null })
-      const { container } = render(<ApplicationCard application={application} />)
-
-      expect(screen.queryByText(/location/i)).not.toBeInTheDocument()
-      // Verify MapPin icon is not rendered
-      const mapPinIcon = container.querySelector('[data-testid="map-pin-icon"]')
-      expect(mapPinIcon).not.toBeInTheDocument()
-    })
-
     it('renders formatted date applied', () => {
       const application = createMockApplication({ date_applied: '2025-10-15' })
       render(<ApplicationCard application={application} />)
@@ -63,121 +46,16 @@ describe('ApplicationCard', () => {
       expect(screen.getByText(/Oct (14|15), 2025/i)).toBeInTheDocument()
     })
 
-    it('renders all core information in compact layout', () => {
+    it('renders core information in compact layout', () => {
       const application = createMockApplication()
       render(<ApplicationCard application={application} />)
 
       expect(screen.getByText('TechCorp Inc')).toBeInTheDocument()
       expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument()
-      expect(screen.getByText('San Francisco, CA')).toBeInTheDocument()
-    })
-  })
-
-  describe('Status Badge Rendering', () => {
-    it('renders status badge with correct text for applied', () => {
-      const application = createMockApplication({ status: 'applied' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('applied')
-      expect(badge).toBeInTheDocument()
-    })
-
-    it('renders wishlist status with glass-ultra styling', () => {
-      const application = createMockApplication({ status: 'wishlist' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('wishlist')
-      expect(badge).toBeInTheDocument()
-      // Badge should be rendered with glass styling
-      expect(badge.className).toContain('glass-ultra')
-    })
-
-    it('renders applied status with blue styling', () => {
-      const application = createMockApplication({ status: 'applied' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('applied')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders phone_screen status with glass-light styling', () => {
-      const application = createMockApplication({ status: 'phone_screen' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('phone screen')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders assessment status with glass-light styling', () => {
-      const application = createMockApplication({ status: 'assessment' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('assessment')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders take_home status with glass-light styling', () => {
-      const application = createMockApplication({ status: 'take_home' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('take home')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders interviewing status with glass-light styling', () => {
-      const application = createMockApplication({ status: 'interviewing' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('interviewing')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders final_round status with glass-light styling', () => {
-      const application = createMockApplication({ status: 'final_round' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('final round')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders offered status with green styling', () => {
-      const application = createMockApplication({ status: 'offered' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('offered')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders accepted status with green styling', () => {
-      const application = createMockApplication({ status: 'accepted' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('accepted')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders rejected status with red styling', () => {
-      const application = createMockApplication({ status: 'rejected' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('rejected')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders withdrawn status with red styling', () => {
-      const application = createMockApplication({ status: 'withdrawn' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('withdrawn')
-      expect(badge.className).toContain('glass-light')
-    })
-
-    it('renders ghosted status with red styling', () => {
-      const application = createMockApplication({ status: 'ghosted' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('ghosted')
-      expect(badge.className).toContain('glass-light')
+      // Should format date - accounting for potential timezone differences in test environment
+      expect(screen.getByText(/(Sep 30|Oct 01), 2025/i)).toBeInTheDocument()
+      // Location is no longer displayed in the card
+      expect(screen.queryByText('San Francisco, CA')).not.toBeInTheDocument()
     })
   })
 
@@ -411,16 +289,6 @@ describe('ApplicationCard', () => {
       // Select with Enter
       await user.keyboard('{Enter}')
       expect(onEdit).toHaveBeenCalledTimes(1)
-    })
-
-    it('provides status information through accessible badge', () => {
-      const application = createMockApplication({ status: 'interviewing' })
-      render(<ApplicationCard application={application} />)
-
-      const badge = screen.getByText('interviewing')
-      expect(badge).toBeInTheDocument()
-      // Badge component renders as a div, check it exists and is visible
-      expect(badge).toBeVisible()
     })
 
     it('has hover effects when onClick is provided', () => {
