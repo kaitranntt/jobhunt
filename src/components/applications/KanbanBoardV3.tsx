@@ -25,6 +25,7 @@ import type { Application, ApplicationStatus } from '@/lib/types/database.types'
 import type { ColumnConfig } from '@/lib/types/column.types'
 import { columnStorage } from '@/lib/storage/column-storage'
 import { getColumnIcon, getColumnColorClass } from '@/lib/utils/column-colors'
+import { useHorizontalScroll } from '@/hooks/use-horizontal-scroll'
 
 interface KanbanBoardV3Props {
   applications: Application[]
@@ -295,6 +296,9 @@ export function KanbanBoardV3({
   const [columns, setColumns] = React.useState<ColumnConfig[]>([])
   const [isManageModalOpen, setIsManageModalOpen] = React.useState(false)
 
+  // Horizontal scroll hook for kanban container - preserves native horizontal scrolling
+  const kanbanScroll = useHorizontalScroll<HTMLDivElement>({ behavior: 'auto', throttleMs: 8 })
+
   // Initialize columns from storage
   React.useEffect(() => {
     setColumns(columnStorage.getColumns())
@@ -458,7 +462,7 @@ export function KanbanBoardV3({
 
         {/* Search Bar - Positioned between Title and Buttons */}
         {onSearchChange && (
-          <div className="flex-1 max-w-md mx-4">
+          <div className="flex-1 mx-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label-tertiary" />
               <Input
@@ -502,6 +506,7 @@ export function KanbanBoardV3({
         onDragEnd={handleDragEnd}
       >
         <div
+          ref={kanbanScroll.ref}
           data-testid="kanban-dnd-context"
           className="flex-1 w-full overflow-x-auto kanban-scrollbar"
         >

@@ -5,6 +5,15 @@ import * as matchers from '@testing-library/jest-dom/matchers'
 // Import Supabase mocks to set them up globally
 import './src/test/mocks/supabase'
 
+// Mock ResizeObserver globally for all tests
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+global.ResizeObserver = ResizeObserver
+
 expect.extend(matchers)
 
 afterEach(() => {
