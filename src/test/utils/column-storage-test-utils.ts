@@ -82,22 +82,42 @@ export function mockLocalStorage() {
   const store: Record<string, string> = {}
 
   if (typeof window === 'undefined') {
-    // @ts-ignore - mocking for Node.js environment
-    global.window = {
-      localStorage: {
-        getItem: (key: string) => store[key] || null,
-        setItem: (key: string, value: string) => {
-          store[key] = value
-        },
-        removeItem: (key: string) => {
-          delete store[key]
-        },
-        clear: () => {
-          Object.keys(store).forEach(key => delete store[key])
-        },
-        length: 0,
-        key: (index: number) => Object.keys(store)[index] || null,
+    // Define localStorage mock interface separately
+    interface MockLocalStorage {
+      getItem: (key: string) => string | null
+      setItem: (key: string, value: string) => void
+      removeItem: (key: string) => void
+      clear: () => void
+      length: number
+      key: (index: number) => string | null
+    }
+
+    // Create typed localStorage mock
+    const mockLocalStorage: MockLocalStorage = {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => {
+        store[key] = value
       },
+      removeItem: (key: string) => {
+        delete store[key]
+      },
+      clear: () => {
+        Object.keys(store).forEach(key => delete store[key])
+      },
+      length: 0,
+      key: (index: number) => Object.keys(store)[index] || null,
+    }
+
+    // Define minimal window interface for global extension
+    interface GlobalWithWindow {
+      window?: {
+        localStorage: MockLocalStorage
+      }
+    }
+
+    // Extend global with minimal window interface
+    ;(global as GlobalWithWindow).window = {
+      localStorage: mockLocalStorage,
     }
   } else {
     // Clear existing localStorage if in browser environment
