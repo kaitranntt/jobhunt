@@ -146,7 +146,7 @@ describe('DashboardPage', () => {
       expect(screen.getByRole('button', { name: /new application/i })).toBeInTheDocument()
     })
 
-    it('should render KanbanBoardV2 with applications', async () => {
+    it('should render KanbanBoardV3 with applications', async () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
@@ -586,8 +586,8 @@ describe('DashboardPage', () => {
     })
   })
 
-  describe('KanbanBoardV2 Integration', () => {
-    it('should render KanbanBoardV2 with correct props', async () => {
+  describe('KanbanBoardV3 Integration', () => {
+    it('should render KanbanBoardV3 with correct props', async () => {
       renderWithTheme(<DashboardPage />)
 
       await waitFor(() => {
@@ -597,14 +597,15 @@ describe('DashboardPage', () => {
       const kanbanContext = screen.getByTestId('kanban-dnd-context')
       expect(kanbanContext).toBeInTheDocument()
 
-      // Verify KanbanBoardV2 structure is present
-      expect(screen.getByTestId('group-column-active_pipeline')).toBeInTheDocument()
-      expect(screen.getByTestId('group-column-in_progress')).toBeInTheDocument()
-      expect(screen.getByTestId('group-column-offers')).toBeInTheDocument()
-      expect(screen.getByTestId('group-column-closed')).toBeInTheDocument()
+      // Verify KanbanBoardV3 structure is present (5 columns instead of 4 groups)
+      expect(screen.getByTestId('column-saved')).toBeInTheDocument()
+      expect(screen.getByTestId('column-applied')).toBeInTheDocument()
+      expect(screen.getByTestId('column-interview')).toBeInTheDocument()
+      expect(screen.getByTestId('column-offers')).toBeInTheDocument()
+      expect(screen.getByTestId('column-closed')).toBeInTheDocument()
     })
 
-    it('should pass filtered applications to KanbanBoardV2', async () => {
+    it('should pass filtered applications to KanbanBoardV3', async () => {
       const user = userEvent.setup()
       renderWithTheme(<DashboardPage />)
 

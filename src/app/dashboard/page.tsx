@@ -1,14 +1,13 @@
 'use client'
 
 import * as React from 'react'
-import { Plus, Search, Rocket, Lightbulb } from 'lucide-react'
+import { Plus, Rocket, Lightbulb } from 'lucide-react'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
-import { KanbanBoardV2 } from '@/components/applications/KanbanBoardV2'
+import { KanbanBoardV3 } from '@/components/applications/KanbanBoardV3'
 import ApplicationForm from '@/components/applications/ApplicationForm'
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   Dialog,
   DialogContent,
@@ -262,41 +261,15 @@ export default function DashboardPage() {
             </div>
           ) : applications.length > 0 ? (
             <>
-              {/* Middle Section - Action Bar (Secondary) */}
-              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex-1">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label-tertiary" />
-                    <Input
-                      type="text"
-                      placeholder="Search by company or job title..."
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      className="pl-10 glass-light rounded-glass-sm text-label-primary placeholder:text-label-tertiary shadow-glass-subtle"
-                      style={{
-                        border: '1px solid var(--glass-border-medium)',
-                        backdropFilter: 'blur(20px) saturate(180%)',
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleOpenNewModal}
-                  size="lg"
-                  className="w-full sm:w-auto btn-glass font-semibold"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Application
-                </Button>
-              </div>
-
-              {/* Bottom Section - Kanban Board (Detailed View) */}
-              <KanbanBoardV2
+              {/* Kanban Board (Detailed View) */}
+              <KanbanBoardV3
                 applications={filteredApplications}
                 onUpdateStatus={handleUpdateStatus}
                 onApplicationClick={handleApplicationClick}
                 isLoading={false}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onNewApplication={handleOpenNewModal}
               />
             </>
           ) : null}
