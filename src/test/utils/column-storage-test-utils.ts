@@ -184,19 +184,16 @@ export function expectCleanState(manager: ColumnStorageManager): void {
 export const testColumnData = {
   basic: {
     name: 'Test Column',
-    color: 'blue' as const,
     description: 'Test Description',
   } as CreateColumnData,
 
   withIcon: {
     name: 'Icon Column',
-    color: 'green' as const,
     icon: '📝',
   } as CreateColumnData,
 
   updateData: {
     name: 'Updated Column',
     description: 'Updated Description',
-    color: 'purple' as const,
   } as UpdateColumnData,
 }

@@ -24,7 +24,7 @@ import { cn } from '@/lib/utils'
 import type { Application, ApplicationStatus } from '@/lib/types/database.types'
 import type { ColumnConfig } from '@/lib/types/column.types'
 import { columnStorage } from '@/lib/storage/column-storage'
-import { getColumnIcon, getColumnColorClass } from '@/lib/utils/column-colors'
+import { getColumnIcon } from '@/lib/utils/column-icons'
 import { useHorizontalScroll } from '@/hooks/use-horizontal-scroll'
 
 interface KanbanBoardV3Props {
@@ -143,14 +143,19 @@ function EmptyState({ column, Icon }: EmptyStateProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center glass-ultra rounded-glass border-2 border-dashed border-label-quaternary p-12 text-center">
-      <div className="glass-ultra rounded-full p-4 mb-4">
-        <Icon className="h-12 w-12 text-label-tertiary" />
+    <div className="flex flex-1 flex-col items-center justify-center glass-ultra rounded-glass border-2 border-dashed border-label-quaternary/30 p-12 text-center">
+      <div className="glass-light rounded-full p-6 mb-6 border border-label-quaternary/20">
+        <Icon className="h-16 w-16 text-label-tertiary" />
       </div>
-      <h4 className="mb-2 font-semibold text-label-primary">{guidance.heading}</h4>
-      <p className="mb-6 max-w-xs text-sm text-label-secondary">{guidance.text}</p>
+      <h4 className="mb-3 font-bold text-label-primary text-lg">{guidance.heading}</h4>
+      <p className="mb-6 max-w-sm text-sm text-label-secondary leading-relaxed">{guidance.text}</p>
       {guidance.cta && (
-        <Button variant="outline" size="sm" disabled className="glass-ultra border-0">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled
+          className="glass-light border border-label-quaternary/30"
+        >
           {guidance.cta}
         </Button>
       )}
@@ -184,7 +189,6 @@ function DroppableKanbanColumn({
 
   const count = applications.length
   const isExpandable = column.id === 'interview' && !column.isCustom
-  const colorClass = getColumnColorClass(column.color)
 
   // Use icon from column or fallback to default icons
   const icon = column.icon || getColumnIcon(column.id)
@@ -195,7 +199,7 @@ function DroppableKanbanColumn({
       className={cn(
         'flex min-w-[280px] flex-1 flex-col rounded-glass p-6 md:min-w-[320px] shadow-glass-soft backdrop-blur-sm transition-all duration-200',
         'h-full min-h-[200px]',
-        colorClass,
+        'glass-light',
         isOver && 'ring-2 ring-blue-400 ring-opacity-50 shadow-glass-dramatic scale-[1.02]'
       )}
       data-testid={`column-${column.id}`}
@@ -218,19 +222,23 @@ function DroppableKanbanColumn({
               )}
             </Button>
           )}
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{icon}</span>
-            <h3 className="text-lg font-semibold text-label-primary">{column.name}</h3>
-            {column.isCustom && (
-              <Badge variant="secondary" className="text-xs">
-                Custom
-              </Badge>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full glass-light border border-label-quaternary/20">
+              <span className="text-xl">{icon}</span>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-label-primary">{column.name}</h3>
+              {column.isCustom && (
+                <Badge variant="secondary" className="text-xs w-fit">
+                  Custom
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
         <Badge
-          variant="secondary"
-          className="text-xs glass-ultra border-0 px-3 py-1"
+          variant="outline"
+          className="text-sm font-semibold glass-light border border-label-quaternary/30 px-3 py-1"
           data-testid={`count-badge-${column.id}`}
         >
           {count}
@@ -255,7 +263,7 @@ function DroppableKanbanColumn({
             <EmptyState
               column={column}
               Icon={() => (
-                <span className="text-2xl">{column.icon || getColumnIcon(column.id)}</span>
+                <span className="text-3xl">{column.icon || getColumnIcon(column.id)}</span>
               )}
             />
           ) : (

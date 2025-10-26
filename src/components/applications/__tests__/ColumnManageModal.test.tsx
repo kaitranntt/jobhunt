@@ -18,13 +18,10 @@ vi.mock('@/lib/storage/column-storage', () => ({
   },
 }))
 
-// Mock the design tokens
-vi.mock('@/lib/utils/column-colors', () => ({
-  getAvailableColorOptions: () => [
-    { value: 'blue', label: 'Blue', preview: 'bg-blue-500' },
-    { value: 'green', label: 'Green', preview: 'bg-green-500' },
-  ],
+// Mock the column icons
+vi.mock('@/lib/utils/column-icons', () => ({
   DEFAULT_COLUMN_ICONS: ['📌', '⭐', '🔥'],
+  getColumnIcon: () => '📋',
 }))
 
 describe('ColumnManageModal', () => {
@@ -34,18 +31,16 @@ describe('ColumnManageModal', () => {
   const mockColumns = [
     {
       id: 'saved' as const,
-      name: '💾 Saved',
+      name: 'Saved',
       description: 'Wishlist and saved positions',
-      color: 'blue' as const,
       isCustom: false,
       order: 0,
       statuses: ['wishlist' as const],
     },
     {
       id: 'applied' as const,
-      name: '📝 Applied',
+      name: 'Applied',
       description: 'Applications submitted',
-      color: 'purple' as const,
       isCustom: false,
       order: 1,
       statuses: ['applied' as const],
@@ -92,8 +87,8 @@ describe('ColumnManageModal', () => {
       />
     )
 
-    expect(screen.getByText('💾 Saved')).toBeInTheDocument()
-    expect(screen.getByText('📝 Applied')).toBeInTheDocument()
+    expect(screen.getByText('Saved')).toBeInTheDocument()
+    expect(screen.getByText('Applied')).toBeInTheDocument()
     expect(screen.getByText('Wishlist and saved positions')).toBeInTheDocument()
   })
 
@@ -118,7 +113,6 @@ describe('ColumnManageModal', () => {
       id: 'custom_123',
       name: 'Test Column',
       description: 'Test description',
-      color: 'green' as const,
       icon: '📌',
       isCustom: true,
       order: 2,
@@ -147,14 +141,6 @@ describe('ColumnManageModal', () => {
     fireEvent.change(nameInput, { target: { value: 'Test Column' } })
     fireEvent.change(descriptionInput, { target: { value: 'Test description' } })
 
-    // Select first color (green)
-    const colorButtons = screen
-      .getAllByRole('button')
-      .filter(button => button.classList.contains('bg-green-500'))
-    if (colorButtons.length > 0) {
-      fireEvent.click(colorButtons[0])
-    }
-
     // Submit form
     const createButton = screen.getByText('Create Column')
     fireEvent.click(createButton)
@@ -163,7 +149,6 @@ describe('ColumnManageModal', () => {
       expect(columnStorage.createCustomColumn).toHaveBeenCalledWith({
         name: 'Test Column',
         description: 'Test description',
-        color: 'green',
         icon: '',
       })
     })

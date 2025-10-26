@@ -20,7 +20,6 @@ export interface CustomColumn {
   id: string
   name: string
   description?: string
-  color: ColumnColor
   icon?: string
   isCustom: boolean
   order: number
@@ -28,23 +27,10 @@ export interface CustomColumn {
   updated_at: string
 }
 
-export type ColumnColor =
-  | 'blue'
-  | 'purple'
-  | 'pink'
-  | 'red'
-  | 'orange'
-  | 'yellow'
-  | 'green'
-  | 'teal'
-  | 'indigo'
-  | 'slate'
-
 export interface ColumnConfig {
   id: ColumnType
   name: string
   description?: string
-  color: ColumnColor
   icon?: string
   isCustom: boolean
   order: number
@@ -54,14 +40,12 @@ export interface ColumnConfig {
 export interface CreateColumnData {
   name: string
   description?: string
-  color: ColumnColor
   icon?: string
 }
 
 export interface UpdateColumnData {
   name?: string
   description?: string
-  color?: ColumnColor
   icon?: string
   order?: number
 }
@@ -74,16 +58,3 @@ export interface ColumnStorage {
 
 // Core columns that cannot be deleted or reordered beyond their initial positions
 export const CORE_COLUMNS: ColumnType[] = ['saved', 'applied', 'interview', 'offers', 'closed']
-
-export const DEFAULT_CUSTOM_COLUMN_COLORS: ColumnColor[] = [
-  'blue',
-  'purple',
-  'pink',
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'teal',
-  'indigo',
-  'slate',
-]

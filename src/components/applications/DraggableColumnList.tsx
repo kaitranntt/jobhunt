@@ -21,7 +21,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { cn } from '@/lib/utils'
 import { GripVertical } from 'lucide-react'
 import type { ColumnConfig, ColumnType } from '@/lib/types/column.types'
-import { getColumnIcon } from '@/lib/utils/column-colors'
+import { getColumnIcon } from '@/lib/utils/column-icons'
 
 interface DraggableColumnListProps {
   columns: ColumnConfig[]

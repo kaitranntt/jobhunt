@@ -13,8 +13,8 @@ vi.mock('@/lib/storage/column-storage', () => ({
   },
 }))
 
-// Mock the column colors utility
-vi.mock('@/lib/utils/column-colors', () => ({
+// Mock the column icons utility
+vi.mock('@/lib/utils/column-icons', () => ({
   getColumnIcon: vi.fn((columnId: string) => {
     const icons: Record<string, string> = {
       saved: '💾',
@@ -25,9 +25,6 @@ vi.mock('@/lib/utils/column-colors', () => ({
     }
     return icons[columnId] || '📋'
   }),
-  getColumnColorClass: vi.fn(
-    (color: string) => `glass-light bg-${color}-500/5 border-${color}-300/20`
-  ),
 }))
 
 // Mock ApplicationCard
@@ -79,45 +76,40 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
 const mockDefaultColumns: ColumnConfig[] = [
   {
     id: 'saved',
-    name: '💾 Saved',
+    name: 'Saved',
     description: 'Wishlist and saved positions',
-    color: 'blue',
     isCustom: false,
     order: 0,
     statuses: ['wishlist'],
   },
   {
     id: 'applied',
-    name: '📝 Applied',
+    name: 'Applied',
     description: 'Applications submitted',
-    color: 'purple',
     isCustom: false,
     order: 1,
     statuses: ['applied'],
   },
   {
     id: 'interview',
-    name: '🎯 Interview',
+    name: 'Interview',
     description: 'Phone screens, technical interviews, final rounds',
-    color: 'orange',
     isCustom: false,
     order: 2,
     statuses: ['phone_screen', 'assessment', 'take_home', 'interviewing', 'final_round'],
   },
   {
     id: 'offers',
-    name: '🎉 Offers',
+    name: 'Offers',
     description: 'Received offers',
-    color: 'green',
     isCustom: false,
     order: 3,
     statuses: ['offered', 'accepted'],
   },
   {
     id: 'closed',
-    name: '❌ Closed',
+    name: 'Closed',
     description: 'Archived applications',
-    color: 'slate',
     isCustom: false,
     order: 4,
     statuses: ['rejected', 'ghosted', 'withdrawn'],
@@ -139,11 +131,11 @@ describe('KanbanBoardV3', () => {
       render(<KanbanBoardV3 applications={[]} onUpdateStatus={vi.fn()} />)
 
       await waitFor(() => {
-        expect(screen.getByText('💾 Saved')).toBeInTheDocument()
-        expect(screen.getByText('📝 Applied')).toBeInTheDocument()
-        expect(screen.getByText('🎯 Interview')).toBeInTheDocument()
-        expect(screen.getByText('🎉 Offers')).toBeInTheDocument()
-        expect(screen.getByText('❌ Closed')).toBeInTheDocument()
+        expect(screen.getByText('Saved')).toBeInTheDocument()
+        expect(screen.getByText('Applied')).toBeInTheDocument()
+        expect(screen.getByText('Interview')).toBeInTheDocument()
+        expect(screen.getByText('Offers')).toBeInTheDocument()
+        expect(screen.getByText('Closed')).toBeInTheDocument()
       })
 
       // Verify columns are rendered with correct test IDs
@@ -317,7 +309,6 @@ describe('KanbanBoardV3', () => {
         id: 'custom_test',
         name: 'Custom Column',
         description: 'A custom column',
-        color: 'pink',
         isCustom: true,
         order: 5,
       }

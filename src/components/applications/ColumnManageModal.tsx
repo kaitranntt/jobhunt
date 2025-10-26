@@ -22,17 +22,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { cn } from '@/lib/utils'
 import { Plus, Settings, Trash2, Edit2, Save, X } from 'lucide-react'
 import type {
   ColumnConfig,
   CreateColumnData,
   UpdateColumnData,
-  ColumnColor,
   ColumnType,
 } from '@/lib/types/column.types'
 import { columnStorage } from '@/lib/storage/column-storage'
-import { getAvailableColorOptions, DEFAULT_COLUMN_ICONS } from '@/lib/utils/column-colors'
+import { DEFAULT_COLUMN_ICONS } from '@/lib/utils/column-icons'
 import { DraggableColumnList } from './DraggableColumnList'
 
 interface ColumnManageModalProps {
@@ -48,7 +46,6 @@ function ColumnItem({
   onSave,
   onCancel,
   onDelete,
-  onColorChange,
   onIconChange,
   onNameChange,
   onDescriptionChange,
@@ -59,20 +56,17 @@ function ColumnItem({
   onSave: () => void
   onCancel: () => void
   onDelete: () => void
-  onColorChange: (color: ColumnColor) => void
   onIconChange: (icon: string) => void
   onNameChange: (name: string) => void
   onDescriptionChange: (description: string) => void
 }) {
   const [editName, setEditName] = useState(column.name)
   const [editDescription, setEditDescription] = useState(column.description || '')
-  const [editColor, setEditColor] = useState(column.color)
   const [editIcon, setEditIcon] = useState(column.icon || '')
 
   const handleSave = () => {
     onNameChange(editName)
     onDescriptionChange(editDescription)
-    onColorChange(editColor)
     onIconChange(editIcon)
     onSave()
   }
@@ -80,7 +74,6 @@ function ColumnItem({
   const handleCancel = () => {
     setEditName(column.name)
     setEditDescription(column.description || '')
-    setEditColor(column.color)
     setEditIcon(column.icon || '')
     onCancel()
   }
@@ -115,22 +108,6 @@ function ColumnItem({
             className="h-8 text-sm"
             placeholder="Column description (optional)"
           />
-          <div className="flex gap-1">
-            {getAvailableColorOptions().map(color => (
-              <button
-                key={color.value}
-                onClick={() => setEditColor(color.value)}
-                className={cn(
-                  'w-6 h-6 rounded-full border-2 transition-all',
-                  color.preview,
-                  editColor === color.value
-                    ? 'border-label-primary scale-110'
-                    : 'border-transparent hover:border-label-secondary'
-                )}
-                title={color.label}
-              />
-            ))}
-          </div>
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave} disabled={!editName.trim()}>
               <Save className="h-4 w-4 mr-2" />
@@ -199,7 +176,6 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
   const [newColumn, setNewColumn] = useState<CreateColumnData>({
     name: '',
     description: '',
-    color: 'blue',
     icon: '',
   })
 
@@ -224,7 +200,7 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
     if (!newColumn.name.trim()) return
 
     columnStorage.createCustomColumn(newColumn)
-    setNewColumn({ name: '', description: '', color: 'blue', icon: '' })
+    setNewColumn({ name: '', description: '', icon: '' })
     setShowAddForm(false)
     refreshColumns()
   }
@@ -258,10 +234,6 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
 
   const handleColumnCancel = () => {
     setEditingId(null)
-  }
-
-  const handleColorChange = (columnId: string, color: ColumnColor) => {
-    handleUpdateColumn(columnId, { color })
   }
 
   const handleIconChange = (columnId: string, icon: string) => {
@@ -307,7 +279,6 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
                     onSave={handleColumnSave}
                     onCancel={handleColumnCancel}
                     onDelete={() => handleDeleteColumn(column)}
-                    onColorChange={color => handleColorChange(column.id, color)}
                     onIconChange={icon => handleIconChange(column.id, icon)}
                     onNameChange={name => handleNameChange(column.id, name)}
                     onDescriptionChange={description =>
@@ -361,22 +332,6 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
                       onChange={e => setNewColumn({ ...newColumn, description: e.target.value })}
                       placeholder="Column description (optional)"
                     />
-                    <div className="flex gap-1">
-                      {getAvailableColorOptions().map(color => (
-                        <button
-                          key={color.value}
-                          onClick={() => setNewColumn({ ...newColumn, color: color.value })}
-                          className={cn(
-                            'w-6 h-6 rounded-full border-2 transition-all',
-                            color.preview,
-                            newColumn.color === color.value
-                              ? 'border-label-primary scale-110'
-                              : 'border-transparent hover:border-label-secondary'
-                          )}
-                          title={color.label}
-                        />
-                      ))}
-                    </div>
                     <div className="flex gap-2">
                       <Button
                         size="sm"
@@ -390,7 +345,7 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
                         variant="outline"
                         onClick={() => {
                           setShowAddForm(false)
-                          setNewColumn({ name: '', description: '', color: 'blue', icon: '' })
+                          setNewColumn({ name: '', description: '', icon: '' })
                         }}
                       >
                         Cancel
@@ -418,7 +373,6 @@ export function ColumnManageModal({ isOpen, onClose, onColumnsChange }: ColumnMa
                         onSave={handleColumnSave}
                         onCancel={handleColumnCancel}
                         onDelete={() => handleDeleteColumn(column)}
-                        onColorChange={color => handleColorChange(column.id, color)}
                         onIconChange={icon => handleIconChange(column.id, icon)}
                         onNameChange={name => handleNameChange(column.id, name)}
                         onDescriptionChange={description =>

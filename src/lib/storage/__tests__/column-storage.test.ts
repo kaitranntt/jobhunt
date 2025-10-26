@@ -59,7 +59,6 @@ describe('ColumnStorageManager', () => {
 
     expect(customColumn).toBeTruthy()
     expect(customColumn.name).toBe(testColumnData.basic.name)
-    expect(customColumn.color).toBe(testColumnData.basic.color)
     expect(customColumn.isCustom).toBe(true)
 
     // Verify it's reflected in getColumns
@@ -77,14 +76,12 @@ describe('ColumnStorageManager', () => {
     expect(updated).toBeTruthy()
     expect(updated!.name).toBe(testColumnData.updateData.name)
     expect(updated!.description).toBe(testColumnData.updateData.description)
-    expect(updated!.color).toBe(testColumnData.updateData.color)
 
     // Verify the change is reflected in getColumns
     const columns = storageManager.getColumns()
     const column = columns.find(col => col.id === customColumn.id)
     expect(column!.name).toBe(testColumnData.updateData.name)
     expect(column!.description).toBe(testColumnData.updateData.description)
-    expect(column!.color).toBe(testColumnData.updateData.color)
   })
 
   it('should delete custom column', () => {
@@ -162,7 +159,7 @@ describe('ColumnStorageManager', () => {
   it('should reset to defaults', () => {
     // Add some custom columns
     storageManager.createCustomColumn(testColumnData.basic)
-    storageManager.createCustomColumn({ name: 'Custom 2', color: 'green' })
+    storageManager.createCustomColumn({ name: 'Custom 2' })
 
     expect(storageManager.getColumns()).toHaveLength(7)
 
@@ -177,7 +174,6 @@ describe('ColumnStorageManager', () => {
     // Create a custom column for export
     storageManager.createCustomColumn({
       name: 'Test Export',
-      color: 'blue',
       description: 'For export testing',
     })
 
