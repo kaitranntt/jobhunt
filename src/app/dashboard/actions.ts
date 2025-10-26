@@ -16,22 +16,38 @@ import {
  * Get all applications for the authenticated user
  */
 export async function getApplicationsAction(): Promise<Application[]> {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    throw new Error('Unauthorized')
-  }
-
   try {
+    const supabase = await createClient()
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Authentication error in getApplicationsAction:', authError)
+      }
+      throw new Error(`Authentication failed: ${authError.message}`)
+    }
+
+    if (!user) {
+      throw new Error('Unauthorized: No user session found. Please log in again.')
+    }
+
     const applications = await getApplications(supabase)
     return applications
   } catch (error) {
-    console.error('Failed to fetch applications:', error)
-    throw new Error('Failed to fetch applications')
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to fetch applications in action:', error)
+    }
+
+    // Re-throw with more context
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch applications: ${error.message}`)
+    }
+
+    throw new Error('Failed to fetch applications: Unknown error occurred')
   }
 }
 
@@ -53,7 +69,6 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
   const validatedData = applicationFormSchema.parse(formData)
 
   const applicationData: ApplicationInsert = {
-    user_id: user.id,
     company_name: validatedData.company_name,
     job_title: validatedData.job_title,
     job_url: validatedData.job_url || null,
@@ -69,7 +84,9 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
     revalidatePath('/dashboard')
     return newApplication
   } catch (error) {
-    console.error('Failed to create application:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to create application:', error)
+    }
     throw new Error('Failed to create application')
   }
 }
@@ -111,7 +128,9 @@ export async function updateApplicationAction(
     revalidatePath('/dashboard')
     return updatedApplication
   } catch (error) {
-    console.error('Failed to update application:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to update application:', error)
+    }
     throw new Error('Failed to update application')
   }
 }
@@ -134,7 +153,9 @@ export async function deleteApplicationAction(id: string): Promise<void> {
     await deleteApplication(supabase, id)
     revalidatePath('/dashboard')
   } catch (error) {
-    console.error('Failed to delete application:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to delete application:', error)
+    }
     throw new Error('Failed to delete application')
   }
 }
@@ -166,7 +187,9 @@ export async function updateApplicationStatusAction(
     revalidatePath('/dashboard')
     return updatedApplication
   } catch (error) {
-    console.error('Failed to update application status:', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to update application status:', error)
+    }
     throw new Error('Failed to update application status')
   }
 }
