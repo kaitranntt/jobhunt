@@ -891,3 +891,64 @@ body {
 .text-label-quaternary {
   color: var(--macos-label-quaternary);
 }
+
+/* ============================================================================ */
+/* Custom Scrollbar Styling (Kanban Board)                                   */
+/* ============================================================================ */
+
+/* Kanban Board Horizontal Scrollbar */
+.kanban-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.kanban-scrollbar::-webkit-scrollbar-track {
+  background: var(--glass-ultra);
+  border-radius: 4px;
+  border: 1px solid var(--glass-border-subtle);
+}
+
+.kanban-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--glass-border-medium);
+  border-radius: 4px;
+  border: 1px solid var(--glass-border-subtle);
+  transition: background-color 0.2s ease;
+}
+
+.kanban-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--glass-border-strong);
+}
+
+.kanban-scrollbar::-webkit-scrollbar-thumb:active {
+  background: var(--macos-fill-secondary);
+}
+
+/* Firefox scrollbar support */
+.kanban-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border-medium) var(--glass-ultra);
+}
+
+/* Vertical scrollbars within columns */
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+  background: var(--glass-border-medium);
+  border-radius: 3px;
+  border: 1px solid var(--glass-border-subtle);
+  transition: background-color 0.2s ease;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: var(--glass-border-strong);
+}
+
+.column-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border-medium) transparent;
+}
