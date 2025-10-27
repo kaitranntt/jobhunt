@@ -20,6 +20,7 @@ const eslintConfig = [
       },
       globals: {
         ...globals.browser,
+        ...globals.node,
         React: 'readonly',
         JSX: 'readonly',
       },

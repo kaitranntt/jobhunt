@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
 
   // Enable standalone output for Docker
   output: 'standalone',
+
+  // Allow external images for company logos
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.logo.dev',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 }
 
 export default nextConfig
