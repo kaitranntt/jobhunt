@@ -7,6 +7,8 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { ProfileDropdown } from '@/components/auth/ProfileDropdown'
 import { cn } from '@/lib/utils'
 import type { User } from '@supabase/supabase-js'
+import { useRouter } from 'next/navigation'
+import { useLogout } from '@/hooks/useLogout'
 
 interface NavBarProps {
   variant?: 'landing' | 'authenticated' | 'auth-pages'
@@ -21,6 +23,9 @@ export function NavBar({
   showThemeToggle = true,
   className,
 }: NavBarProps) {
+  const router = useRouter()
+  const { logout } = useLogout()
+
   // Unified styling for all variants
   const unifiedStyles = {
     borderColor: 'var(--glass-border-subtle)',
@@ -135,17 +140,13 @@ export function NavBar({
                 <ProfileDropdown
                   user={user}
                   onProfileClick={() => {
-                    // TODO: Navigate to profile page
-                    console.log('Navigate to profile')
+                    router.push('/profile')
                   }}
                   onSettingsClick={() => {
-                    // TODO: Navigate to settings page
-                    console.log('Navigate to settings')
+                    // TODO: Navigate to settings page when it exists
+                    console.log('Settings page not implemented yet')
                   }}
-                  onLogoutClick={() => {
-                    // TODO: Handle logout
-                    console.log('Logout clicked')
-                  }}
+                  onLogoutClick={logout}
                 />
               )}
 

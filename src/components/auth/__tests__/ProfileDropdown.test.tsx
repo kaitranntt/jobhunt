@@ -4,6 +4,17 @@ import { vi } from 'vitest'
 import { ProfileDropdown } from '../ProfileDropdown'
 import type { User } from '@supabase/supabase-js'
 
+// Mock Next.js router
+const mockPush = vi.fn()
+const mockRefresh = vi.fn()
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+    refresh: mockRefresh,
+  }),
+}))
+
 // Mock Button component to avoid ref issues
 vi.mock('@/components/ui/button', () => ({
   Button: React.forwardRef(({ children, className, ...props }: any, ref: any) => (

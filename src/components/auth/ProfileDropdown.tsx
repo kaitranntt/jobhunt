@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { User, Settings, LogOut, HelpCircle } from 'lucide-react'
+import { User, Settings, LogOut, HelpCircle, Loader2 } from 'lucide-react'
 import type { ProfileDropdownProps } from './types/profile-dropdown.types'
 import {
   getUserInitials,
@@ -20,6 +20,7 @@ import {
   getUserAvatarUrl,
   formatUserEmail,
 } from './utils/profile-utils'
+import { useLogout } from '@/hooks/useLogout'
 
 export function ProfileDropdown({
   user,
@@ -28,10 +29,20 @@ export function ProfileDropdown({
   onSettingsClick,
   onLogoutClick,
 }: ProfileDropdownProps) {
+  const { logout, isLoading } = useLogout()
+
   const userInitials = getUserInitials(user)
   const userDisplayName = getUserDisplayName(user)
   const userAvatarUrl = getUserAvatarUrl(user)
   const userEmail = formatUserEmail(user)
+
+  const handleLogout = async () => {
+    await logout()
+    // Call the optional callback if provided
+    if (onLogoutClick) {
+      onLogoutClick()
+    }
+  }
 
   const menuItems = [
     {
@@ -54,10 +65,11 @@ export function ProfileDropdown({
     },
     {
       id: 'logout',
-      label: 'Logout',
-      icon: LogOut,
-      onClick: onLogoutClick || (() => {}),
+      label: isLoading ? 'Signing out...' : 'Logout',
+      icon: isLoading ? Loader2 : LogOut,
+      onClick: handleLogout,
       variant: 'destructive' as const,
+      disabled: isLoading,
     },
   ]
 

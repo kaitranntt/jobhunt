@@ -14,7 +14,7 @@ async function handleSignOut(request: NextRequest) {
 
   // Use NEXT_PUBLIC_SITE_URL for consistent redirect, fallback to request origin
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin
-  const url = new URL('/', siteUrl)
+  const url = new URL('/login', siteUrl)
 
   return NextResponse.redirect(url, { status: 303 })
 }
