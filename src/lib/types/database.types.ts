@@ -20,6 +20,9 @@ export interface Application {
   job_url: string | null
   location: string | null
   salary_range: string | null
+  job_description?: string | null
+  company_logo_url?: string | null
+  source?: string | null
   status: ApplicationStatus
   date_applied: string
   notes: string | null
