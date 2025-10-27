@@ -16,6 +16,10 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
   status: 'applied',
   date_applied: '2025-10-01',
   notes: 'Great opportunity',
+  job_description:
+    '<p>We are looking for a Senior Software Engineer to join our team. You will work on cutting-edge technologies and help us build amazing products.</p>',
+  source: 'external',
+  company_logo_url: null,
   created_at: '2025-10-01T10:00:00Z',
   updated_at: '2025-10-01T10:00:00Z',
   ...overrides,
@@ -54,7 +58,7 @@ describe('ApplicationDetail', () => {
       expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument()
     })
 
-    it('displays all application fields with proper labels', () => {
+    it('displays metadata in header section', () => {
       const application = createMockApplication()
       render(
         <ApplicationDetail
@@ -66,30 +70,51 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Check for field labels and values
-      expect(screen.getByText(/company name/i)).toBeInTheDocument()
-      expect(screen.getAllByText('TechCorp Inc').length).toBeGreaterThan(0)
-
-      expect(screen.getByText(/job title/i)).toBeInTheDocument()
-      expect(screen.getAllByText('Senior Software Engineer').length).toBeGreaterThan(0)
-
-      expect(screen.getByText(/location/i)).toBeInTheDocument()
+      // Check that metadata appears in header (not as separate cards)
       expect(screen.getByText('San Francisco, CA')).toBeInTheDocument()
-
-      expect(screen.getByText(/salary range/i)).toBeInTheDocument()
       expect(screen.getByText('$120k - $180k')).toBeInTheDocument()
+      expect(screen.getByText('applied')).toBeInTheDocument()
 
-      expect(screen.getByText(/status/i)).toBeInTheDocument()
-      expect(screen.getAllByText('applied').length).toBeGreaterThan(0)
+      // Check for date in formatted format (mock has 2025-10-01, may show as Sep 30 or Oct 1 due to timezone)
+      expect(
+        screen.getByText((content, _element) => {
+          return (
+            content.includes('2025') &&
+            (content.toLowerCase().includes('september') ||
+              content.toLowerCase().includes('october'))
+          )
+        })
+      ).toBeInTheDocument()
 
-      expect(screen.getByText(/date applied/i)).toBeInTheDocument()
+      // Check for source information
+      expect(screen.getByText(/added from external/i)).toBeInTheDocument()
+    })
 
+    it('displays job description and notes in main content area', () => {
+      const application = createMockApplication({
+        job_description: '<p>We are looking for a senior engineer...</p>',
+        notes: 'Great opportunity with good benefits',
+      })
+      render(
+        <ApplicationDetail
+          application={application}
+          onUpdate={mockOnUpdate}
+          onDelete={mockOnDelete}
+          onClose={mockOnClose}
+          isOpen={true}
+        />
+      )
+
+      // Should show job description in main content
+      expect(screen.getByText(/we are looking for a senior engineer/i)).toBeInTheDocument()
+
+      // Should show notes section
+      expect(screen.getByText('Great opportunity with good benefits')).toBeInTheDocument()
       expect(screen.getByText(/notes/i)).toBeInTheDocument()
-      expect(screen.getByText('Great opportunity')).toBeInTheDocument()
     })
 
-    it('displays status badge with correct color for applied status', () => {
-      const application = createMockApplication({ status: 'applied' })
+    it('displays default job description content', () => {
+      const application = createMockApplication() // Uses default job_description
       render(
         <ApplicationDetail
           application={application}
@@ -100,13 +125,15 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      const badges = screen.getAllByText('applied')
-      const badge = badges.find(el => el.className.includes('glass-light'))
-      expect(badge).toBeInTheDocument()
+      // Should show default job description content
+      expect(
+        screen.getByText(/we are looking for a senior software engineer to join our team/i)
+      ).toBeInTheDocument()
+      expect(screen.getByText(/you will work on cutting-edge technologies/i)).toBeInTheDocument()
     })
 
-    it('displays formatted date in readable format', () => {
-      const application = createMockApplication({ date_applied: '2025-10-15' })
+    it('displays status with proper formatting', () => {
+      const application = createMockApplication({ status: 'phone_screen' })
       render(
         <ApplicationDetail
           application={application}
@@ -117,16 +144,33 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      // Should format date - accounting for potential timezone differences in test environment
-      expect(screen.getByText(/Oct (14|15), 2025/i)).toBeInTheDocument()
+      // Should display status with space instead of underscore
+      expect(screen.getByText('phone screen')).toBeInTheDocument()
     })
 
-    it('handles null optional fields gracefully', () => {
+    it('displays interviewing status without underscore changes', () => {
+      const application = createMockApplication({ status: 'interviewing' })
+      render(
+        <ApplicationDetail
+          application={application}
+          onUpdate={mockOnUpdate}
+          onDelete={mockOnDelete}
+          onClose={mockOnClose}
+          isOpen={true}
+        />
+      )
+
+      // Should display status as is (interviewing doesn't need underscore replacement)
+      expect(screen.getByText('interviewing')).toBeInTheDocument()
+    })
+
+    it('handles null optional fields gracefully in header', () => {
       const application = createMockApplication({
         job_url: null,
         location: null,
         salary_range: null,
         notes: null,
+        job_description: null,
       })
       render(
         <ApplicationDetail
@@ -141,13 +185,18 @@ describe('ApplicationDetail', () => {
       // Should render without errors
       expect(screen.getAllByText('TechCorp Inc').length).toBeGreaterThan(0)
 
-      // Should show "N/A" or empty state for null fields
-      const naTags = screen.getAllByText(/n\/a/i)
-      expect(naTags.length).toBeGreaterThanOrEqual(3) // location, salary_range, notes
+      // Should show empty state when no content available
+      expect(screen.getByText(/no details available/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/this application doesn't have any job description or notes yet/i)
+      ).toBeInTheDocument()
     })
 
     it('displays job URL as clickable link when present', () => {
-      const application = createMockApplication({ job_url: 'https://example.com/job' })
+      const application = createMockApplication({
+        job_url: 'https://example.com/job',
+        job_description: '<p>Job description here</p>',
+      })
       render(
         <ApplicationDetail
           application={application}
@@ -158,7 +207,7 @@ describe('ApplicationDetail', () => {
         />
       )
 
-      const link = screen.getByRole('link', { name: /view job posting/i })
+      const link = screen.getByRole('link', { name: /view original job posting/i })
       expect(link).toBeInTheDocument()
       expect(link).toHaveAttribute('href', 'https://example.com/job')
       expect(link).toHaveAttribute('target', '_blank')
