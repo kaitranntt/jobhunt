@@ -1,9 +1,9 @@
 # JobHunt Codebase Summary
 
-**Generated on:** October 25, 2025
-**Total Files Analyzed:** 90 files
-**Total Tokens:** 121,169 tokens
-**Test Coverage:** 339 tests passing, 14 test files
+**Generated on:** October 27, 2025
+**Total Files Analyzed:** 134 files
+**Total Tokens:** 182,191 tokens
+**Test Coverage:** 399 tests passing, 19 test files
 
 ## Executive Summary
 
@@ -109,7 +109,7 @@ The application uses 5 migration files:
 
 ### Test Coverage Analysis
 
-- **Total Tests**: 339 tests across 14 test files
+- **Total Tests**: 399 tests across 19 test files
 - **Coverage Breakdown**:
   - Business Logic: 80%+ coverage (schemas, API functions)
   - Components: 70%+ coverage (interactive components)
@@ -247,7 +247,7 @@ yarn test           # All tests passing (339 tests)
 
 ### Quality Metrics
 
-- **339 Tests Passing**: Comprehensive test coverage
+- **399 Tests Passing**: Comprehensive test coverage
 - **Zero TypeScript Errors**: Clean compilation
 - **Zero ESLint Errors**: Code quality compliance
 - **A+ Quality Rating**: Overall code quality assessment

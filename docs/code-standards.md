@@ -17,7 +17,7 @@ Every commit MUST pass all quality gates:
 ```bash
 yarn lint           # Zero ESLint errors/warnings
 yarn typecheck      # Zero TypeScript compilation errors
-yarn test           # All tests passing (339 tests)
+yarn test           # All tests passing (399 tests)
 ```
 
 **ABSOLUTELY FORBIDDEN:**

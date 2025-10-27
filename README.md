@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15.x-black.svg)](https://nextjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green.svg)](https://supabase.com/)
-[![Tests](https://img.shields.io/badge/Tests-339%20passing-brightgreen.svg)](https://github.com/kaitranntt/jobhunt)
+[![Tests](https://img.shields.io/badge/Tests-399%20passing-brightgreen.svg)](https://github.com/kaitranntt/jobhunt)
 [![Quality](https://img.shields.io/badge/Quality-A%2B-orange.svg)](https://github.com/kaitranntt/jobhunt)
 
 > **A streamlined, modern job application tracking system with beautiful glass-morphism UI.**
@@ -34,7 +34,6 @@ Track your job applications with an intuitive Kanban board interface. Built with
 
 ### Quality Assurance
 
-- ✅ **339 Tests Passing** - Comprehensive test coverage (98.8% overall)
 - 🚫 **Zero Errors** - Clean TypeScript and ESLint compliance
 - 🔒 **Production Ready** - Deployed and battle-tested on Vercel
 - 📊 **A+ Quality** - Code quality metrics and best practices
@@ -159,7 +158,7 @@ supabase db diff
 ```bash
 yarn dev              # Start development server (localhost:3000)
 yarn build            # Build for production
-yarn test             # Run all tests (339 tests passing)
+yarn test             # Run all tests (399 tests passing)
 yarn test:watch       # Watch mode for TDD development
 yarn test:coverage    # Generate coverage report
 yarn lint             # Run ESLint
@@ -300,4 +299,4 @@ Built with exceptional open-source technologies:
 
 **Built with ❤️ for job seekers everywhere** 🚀
 
-**Current Status**: ✅ Production Ready | ✅ 339 Tests Passing | ✅ A+ Quality
+**Current Status**: ✅ Production Ready | ✅ 399 Tests Passing | ✅ A+ Quality
