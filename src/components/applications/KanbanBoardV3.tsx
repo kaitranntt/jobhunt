@@ -105,14 +105,13 @@ function SortableApplication({
   isDragging,
   onApplicationClick,
 }: SortableApplicationProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, setActivatorNodeRef } =
-    useSortable({
-      id: application.id,
-      data: {
-        applicationId: application.id,
-        currentStatus: application.status,
-      },
-    })
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: application.id,
+    data: {
+      applicationId: application.id,
+      currentStatus: application.status,
+    },
+  })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -120,12 +119,14 @@ function SortableApplication({
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <ApplicationCard
         application={application}
         isDragging={isDragging}
         onClick={() => onApplicationClick?.(application)}
-        dragHandleProps={{ ref: setActivatorNodeRef, ...listeners }}
+        attributes={attributes as unknown as Record<string, unknown>}
+        listeners={listeners as unknown as Record<string, unknown>}
+        setNodeRef={setNodeRef}
       />
     </div>
   )
