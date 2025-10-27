@@ -1,0 +1,1 @@
+export { useApplicationDetail } from './useApplicationDetail'
