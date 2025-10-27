@@ -22,20 +22,22 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
 
 describe('ApplicationCard', () => {
   describe('Basic Rendering', () => {
-    it('renders company name prominently', () => {
+    it('renders company name as secondary information', () => {
       const application = createMockApplication()
       render(<ApplicationCard application={application} />)
 
       const companyName = screen.getByText('TechCorp Inc')
       expect(companyName).toBeInTheDocument()
-      expect(companyName.tagName).toBe('H3')
+      expect(companyName.tagName).toBe('P')
     })
 
-    it('renders job title', () => {
+    it('renders job title prominently', () => {
       const application = createMockApplication()
       render(<ApplicationCard application={application} />)
 
-      expect(screen.getByText('Senior Software Engineer')).toBeInTheDocument()
+      const jobTitle = screen.getByText('Senior Software Engineer')
+      expect(jobTitle).toBeInTheDocument()
+      expect(jobTitle.tagName).toBe('H3')
     })
 
     it('renders formatted date applied', () => {
@@ -46,7 +48,7 @@ describe('ApplicationCard', () => {
       expect(screen.getByText(/Oct (14|15), 2025/i)).toBeInTheDocument()
     })
 
-    it('renders core information in compact layout', () => {
+    it('renders core information with company logo', () => {
       const application = createMockApplication()
       render(<ApplicationCard application={application} />)
 
@@ -56,6 +58,8 @@ describe('ApplicationCard', () => {
       expect(screen.getByText(/(Sep 30|Oct 01), 2025/i)).toBeInTheDocument()
       // Location is no longer displayed in the card
       expect(screen.queryByText('San Francisco, CA')).not.toBeInTheDocument()
+      // Company logo should be present (either loaded or as initials)
+      expect(document.querySelector('.rounded-full')).toBeInTheDocument()
     })
   })
 
@@ -181,8 +185,8 @@ describe('ApplicationCard', () => {
       const application = createMockApplication()
       const { container } = render(<ApplicationCard application={application} />)
 
-      // GripVertical icon should be rendered as drag handle
-      const gripIcon = container.querySelector('[data-testid="drag-handle"]')
+      // GripVertical icon should be rendered as drag indicator
+      const gripIcon = container.querySelector('[data-testid="drag-indicator"]')
       expect(gripIcon).toBeInTheDocument()
     })
   })
@@ -254,7 +258,7 @@ describe('ApplicationCard', () => {
       render(<ApplicationCard application={application} />)
 
       const card = screen.getByRole('article', {
-        name: /techcorp inc.*senior software engineer/i,
+        name: /senior software engineer.*techcorp inc/i,
       })
       expect(card).toBeInTheDocument()
     })
