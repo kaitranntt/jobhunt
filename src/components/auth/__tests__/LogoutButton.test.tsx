@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { LogoutButton } from '../LogoutButton'
 
@@ -62,41 +63,35 @@ describe('LogoutButton', () => {
 
   describe('Dialog Interaction', () => {
     it('opens confirmation dialog when button is clicked', async () => {
+      const user = userEvent.setup()
       render(<LogoutButton />)
 
       const button = screen.getByRole('button', { name: /logout/i })
-      fireEvent.click(button)
-
-      // Wait for dialog to appear
-      await waitFor(() => {
-        expect(screen.getByText('Sign out of JobHunt?')).toBeInTheDocument()
-      })
+      await user.click(button)
 
       // Check dialog content
+      expect(screen.getByText('Sign out of JobHunt?')).toBeInTheDocument()
       expect(screen.getByText(/You will be redirected to the landing page/)).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument()
     })
 
     it('closes dialog when cancel is clicked', async () => {
+      const user = userEvent.setup()
       render(<LogoutButton />)
 
       // Open dialog
       const button = screen.getByRole('button', { name: /logout/i })
-      fireEvent.click(button)
+      await user.click(button)
 
-      await waitFor(() => {
-        expect(screen.getByText('Sign out of JobHunt?')).toBeInTheDocument()
-      })
+      expect(screen.getByText('Sign out of JobHunt?')).toBeInTheDocument()
 
       // Click cancel
       const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-      fireEvent.click(cancelButton)
+      await user.click(cancelButton)
 
       // Dialog should close
-      await waitFor(() => {
-        expect(screen.queryByText('Sign out of JobHunt?')).not.toBeInTheDocument()
-      })
+      expect(screen.queryByText('Sign out of JobHunt?')).not.toBeInTheDocument()
     })
   })
 

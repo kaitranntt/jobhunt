@@ -145,11 +145,11 @@ function EmptyState({ column, Icon }: EmptyStateProps) {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center glass-ultra rounded-glass border-2 border-dashed border-label-quaternary/30 p-12 text-center">
-      <div className="glass-light rounded-full p-6 mb-6 border border-label-quaternary/20">
-        <Icon className="h-16 w-16 text-label-tertiary" />
+      <div className="glass-light rounded-full p-4 mb-4 border border-label-quaternary/20">
+        <Icon className="h-12 w-12 text-label-tertiary" />
       </div>
-      <h4 className="mb-3 font-bold text-label-primary text-lg">{guidance.heading}</h4>
-      <p className="mb-6 max-w-sm text-sm text-label-secondary leading-relaxed">{guidance.text}</p>
+      <h4 className="mb-2 font-bold text-label-primary text-base">{guidance.heading}</h4>
+      <p className="mb-4 max-w-sm text-sm text-label-secondary leading-relaxed">{guidance.text}</p>
       {guidance.cta && (
         <Button
           variant="outline"
@@ -198,15 +198,15 @@ function DroppableKanbanColumn({
     <div
       ref={setNodeRef}
       className={cn(
-        'flex min-w-[280px] flex-1 flex-col rounded-glass p-6 md:min-w-[320px] shadow-glass-soft backdrop-blur-sm transition-all duration-200',
+        'flex min-w-[200px] flex-1 flex-col rounded-glass p-3 md:min-w-[240px] shadow-glass-soft backdrop-blur-sm transition-all duration-200',
         'h-full min-h-[200px]',
         'glass-light',
         isOver && 'ring-2 ring-blue-400 ring-opacity-50 shadow-glass-dramatic scale-[1.02]'
       )}
       data-testid={`column-${column.id}`}
     >
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
           {isExpandable && (
             <Button
               variant="ghost"
@@ -223,7 +223,7 @@ function DroppableKanbanColumn({
               )}
             </Button>
           )}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div className="flex items-center justify-center w-10 h-10 rounded-full glass-light border border-label-quaternary/20">
               <span className="text-xl">{icon}</span>
             </div>
@@ -247,7 +247,7 @@ function DroppableKanbanColumn({
       </div>
 
       {column.description && (
-        <p className="mb-6 text-sm text-label-secondary">{column.description}</p>
+        <p className="mb-4 text-sm text-label-secondary">{column.description}</p>
       )}
 
       <SortableContext
@@ -520,7 +520,7 @@ export function KanbanBoardV3({
           className="flex-1 w-full overflow-x-auto kanban-scrollbar"
         >
           <div
-            className="flex gap-4 p-4 pb-8 min-w-max h-full"
+            className="flex gap-3 p-3 pb-6 min-w-max h-full"
             style={{ minHeight: 'calc(100vh - 250px)' }}
           >
             {orderedColumns.map(column => (

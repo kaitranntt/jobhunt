@@ -310,8 +310,8 @@ describe('ApplicationCard', () => {
       const application = createMockApplication()
       const { container } = render(<ApplicationCard application={application} />)
 
-      const cardHeader = container.querySelector('.flex.flex-col.space-y-1\\.5')
-      const cardContent = container.querySelector('.p-6.pt-0')
+      const cardHeader = container.querySelector('.flex.flex-col.space-y-1\\.5.p-4')
+      const cardContent = container.querySelector('.p-4.pt-0')
       // CardHeader and CardContent have padding classes
       expect(cardHeader).toBeInTheDocument()
       expect(cardContent).toBeInTheDocument()

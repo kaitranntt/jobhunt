@@ -17,38 +17,38 @@ export const fontFamilies = {
 // ============================================================================
 
 export const fontSizes = {
-  // Display Titles (Hero sections)
+  // Display Titles (Hero sections) - Aggressive 50% smaller
   displayLg: {
-    mobile: '40px', // Mobile: 40px
-    tablet: '56px', // Tablet: 56px
-    desktop: '72px', // Desktop: 72px
+    mobile: '20px', // Mobile: 20px (↓50% from 40px)
+    tablet: '28px', // Tablet: 28px (↓50% from 56px)
+    desktop: '36px', // Desktop: 36px (↓50% from 72px)
   },
   displayMd: {
-    mobile: '32px', // Mobile: 32px
-    tablet: '40px', // Tablet: 40px
-    desktop: '56px', // Desktop: 56px
+    mobile: '18px', // Mobile: 18px (↓44% from 32px)
+    tablet: '24px', // Tablet: 24px (↓40% from 40px)
+    desktop: '32px', // Desktop: 32px (↓43% from 56px)
   },
   displaySm: {
-    mobile: '28px', // Mobile: 28px
-    tablet: '32px', // Tablet: 32px
-    desktop: '40px', // Desktop: 40px
+    mobile: '16px', // Mobile: 16px (↓43% from 28px)
+    tablet: '20px', // Tablet: 20px (↓37% from 32px)
+    desktop: '24px', // Desktop: 24px (↓40% from 40px)
   },
 
-  // Page Titles
+  // Page Titles - Aggressive 35% smaller
   titleLg: {
-    mobile: '32px', // Mobile: 32px
-    tablet: '40px', // Tablet: 40px
-    desktop: '48px', // Desktop: 48px
+    mobile: '20px', // Mobile: 20px (↓38% from 32px)
+    tablet: '24px', // Tablet: 24px (↓40% from 40px)
+    desktop: '28px', // Desktop: 28px (↓42% from 48px)
   },
   titleMd: {
-    mobile: '28px', // Mobile: 28px
-    tablet: '32px', // Tablet: 32px
-    desktop: '40px', // Desktop: 40px
+    mobile: '18px', // Mobile: 18px (↓36% from 28px)
+    tablet: '22px', // Tablet: 22px (↓31% from 32px)
+    desktop: '26px', // Desktop: 26px (↓35% from 40px)
   },
   titleSm: {
-    mobile: '24px', // Mobile: 24px
-    tablet: '28px', // Tablet: 28px
-    desktop: '32px', // Desktop: 32px
+    mobile: '16px', // Mobile: 16px (↓33% from 24px)
+    tablet: '20px', // Tablet: 20px (↓29% from 28px)
+    desktop: '22px', // Desktop: 22px (↓31% from 32px)
   },
 
   // Section Headings

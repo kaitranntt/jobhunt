@@ -72,17 +72,17 @@ export function ApplicationCard({
       {...attributes}
       {...listeners}
     >
-      <CardHeader className="pb-4 p-6">
-        <div className="flex items-center gap-4">
+      <CardHeader className="pb-3 p-4">
+        <div className="flex items-center gap-3">
           {/* Company Logo */}
-          <CompanyLogo companyName={application.company_name} size="lg" className="flex-shrink-0" />
+          <CompanyLogo companyName={application.company_name} size="md" className="flex-shrink-0" />
 
           {/* Job Info */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-xl truncate text-label-primary mb-1">
+            <h3 className="font-semibold text-lg truncate text-label-primary mb-1">
               {application.job_title}
             </h3>
-            <p className="text-base font-medium text-label-secondary truncate">
+            <p className="text-sm font-medium text-label-secondary truncate">
               {application.company_name}
             </p>
           </div>
@@ -92,10 +92,10 @@ export function ApplicationCard({
             {/* Drag Indicator */}
             <div
               data-testid="drag-indicator"
-              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 glass-ultra rounded-full p-1.5"
+              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 glass-ultra rounded-full p-1"
               {...dragHandleProps}
             >
-              <GripVertical className="h-4 w-4 text-label-tertiary" />
+              <GripVertical className="h-3 w-3 text-label-tertiary" />
             </div>
 
             <DropdownMenu>
@@ -103,7 +103,7 @@ export function ApplicationCard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-9 w-9 glass-ultra rounded-full hover:glass-light transition-all duration-200"
+                  className="h-8 w-8 glass-ultra rounded-full hover:glass-light transition-all duration-200"
                   aria-label="Application actions"
                 >
                   <MoreHorizontal className="h-4 w-4 text-label-secondary" />
@@ -138,7 +138,7 @@ export function ApplicationCard({
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0 pb-6 px-6">
+      <CardContent className="pt-0 pb-4 px-4">
         <div className="flex items-center justify-between">
           {/* Additional info can go here in the future */}
           <div />

@@ -5,6 +5,9 @@ import * as matchers from '@testing-library/jest-dom/matchers'
 // Import Supabase mocks to set them up globally
 import './src/test/mocks/supabase'
 
+// Mock Logo.dev API key to prevent environment warnings
+process.env.NEXT_PUBLIC_LOGO_DEV_KEY = 'test-logo-dev-api-key'
+
 // Mock ResizeObserver globally for all tests
 class ResizeObserver {
   observe() {}

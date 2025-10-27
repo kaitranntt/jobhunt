@@ -12,7 +12,7 @@ describe('Button', () => {
       expect(button.tagName).toBe('BUTTON')
       expect(button).toHaveClass('inline-flex')
       expect(button).toHaveClass('bg-primary')
-      expect(button).toHaveClass('h-9')
+      expect(button).toHaveClass('h-8')
     })
 
     it('renders button text correctly', () => {
@@ -91,8 +91,8 @@ describe('Button', () => {
       render(<Button size="default">Default Size</Button>)
       const button = screen.getByRole('button')
 
-      expect(button).toHaveClass('h-9')
-      expect(button).toHaveClass('px-4')
+      expect(button).toHaveClass('h-8')
+      expect(button).toHaveClass('px-3')
       expect(button).toHaveClass('py-2')
     })
 
@@ -100,9 +100,9 @@ describe('Button', () => {
       render(<Button size="sm">Small</Button>)
       const button = screen.getByRole('button')
 
-      expect(button).toHaveClass('h-8')
+      expect(button).toHaveClass('h-7')
       expect(button).toHaveClass('rounded-md')
-      expect(button).toHaveClass('px-3')
+      expect(button).toHaveClass('px-2.5')
       expect(button).toHaveClass('gap-1.5')
       // text-xs is not in the current sm size variant
     })
@@ -111,17 +111,17 @@ describe('Button', () => {
       render(<Button size="lg">Large</Button>)
       const button = screen.getByRole('button')
 
-      expect(button).toHaveClass('h-10')
+      expect(button).toHaveClass('h-9')
       expect(button).toHaveClass('rounded-md')
-      expect(button).toHaveClass('px-6')
+      expect(button).toHaveClass('px-5')
     })
 
     it('renders icon size correctly', () => {
       render(<Button size="icon">Icon</Button>)
       const button = screen.getByRole('button')
 
-      expect(button).toHaveClass('size-9')
-      // size-9 replaces both h-9 and w-9 in the current implementation
+      expect(button).toHaveClass('size-8')
+      // size-8 replaces both h-8 and w-8 in the current implementation
     })
   })
 
@@ -293,8 +293,8 @@ describe('Button', () => {
       const button = screen.getByRole('button')
 
       expect(button).toHaveClass('bg-destructive')
-      expect(button).toHaveClass('h-8')
-      expect(button).toHaveClass('px-3')
+      expect(button).toHaveClass('h-7')
+      expect(button).toHaveClass('px-2.5')
     })
 
     it('combines outline variant with large size', () => {
@@ -306,8 +306,8 @@ describe('Button', () => {
       const button = screen.getByRole('button')
 
       expect(button).toHaveClass('border')
-      expect(button).toHaveClass('h-10')
-      expect(button).toHaveClass('px-6')
+      expect(button).toHaveClass('h-9')
+      expect(button).toHaveClass('px-5')
     })
 
     it('combines ghost variant with icon size', () => {
@@ -319,7 +319,7 @@ describe('Button', () => {
       const button = screen.getByRole('button')
 
       expect(button).toHaveClass('hover:bg-accent')
-      expect(button).toHaveClass('size-9')
+      expect(button).toHaveClass('size-8')
     })
   })
 

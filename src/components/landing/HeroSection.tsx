@@ -5,8 +5,8 @@ import { ArrowRight, Github, Star, CheckCircle2, ChevronRight } from 'lucide-rea
 
 export function HeroSection() {
   return (
-    <section className="relative px-4 py-20 sm:py-32">
-      <div className="container mx-auto max-w-7xl">
+    <section className="relative px-4 py-16 sm:py-20">
+      <div className="container mx-auto max-w-6xl">
         <div className="text-center">
           {/* Open Source Badge */}
           <div className="mb-8 flex justify-center animate-slide-up opacity-0 stagger-1">
@@ -17,10 +17,10 @@ export function HeroSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Github className="h-5 w-5 text-brand-primary" />
+              <Github className="h-6 w-6 text-brand-primary" />
               <span className="gradient-brand-text">Open Source</span>
               <span className="flex items-center gap-1 text-foreground/90">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                 Star if useful ⭐
               </span>
             </Link>
@@ -28,16 +28,16 @@ export function HeroSection() {
 
           {/* Main heading with gradient */}
           <h1 className="mb-6 animate-slide-up opacity-0 stagger-2">
-            <span className="block text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
+            <span className="block text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               <span className="gradient-brand-text animate-gradient">Open-Source</span>
             </span>
-            <span className="mt-2 block text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl">
+            <span className="mt-2 block text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               <span className="gradient-brand-text">Job Application Tracker</span>
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto mb-12 max-w-3xl text-lg text-foreground/90 sm:text-xl lg:text-2xl animate-slide-up opacity-0 stagger-3">
+          <p className="mx-auto mb-12 max-w-4xl text-lg text-foreground/90 sm:text-xl lg:text-2xl animate-slide-up opacity-0 stagger-3">
             Your data, your way. Track applications with a modern Kanban board.
             <br />
             Start free on our cloud or self-host with one command.

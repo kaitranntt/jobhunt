@@ -37,8 +37,8 @@ export function LandingContent({ user }: LandingContentProps) {
         <FinalCTASection />
 
         {/* Footer */}
-        <footer className="px-4 py-12 border-t border-gray-200 dark:border-gray-800">
-          <div className="container mx-auto max-w-7xl">
+        <footer className="px-3 py-8 border-t border-gray-200 dark:border-gray-800">
+          <div className="container mx-auto max-w-6xl">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <p className="text-foreground/80 text-sm">
                 &copy; {new Date().getFullYear()} JobHunt. Open source under MIT License.

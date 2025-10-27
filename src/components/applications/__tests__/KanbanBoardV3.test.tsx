@@ -504,8 +504,8 @@ describe('KanbanBoardV3', () => {
 
       const columns = container.querySelectorAll('[data-testid^="column-"]')
       columns.forEach(column => {
-        expect(column).toHaveClass('min-w-[280px]')
-        expect(column).toHaveClass('md:min-w-[320px]')
+        expect(column).toHaveClass('min-w-[200px]')
+        expect(column).toHaveClass('md:min-w-[240px]')
       })
     })
   })

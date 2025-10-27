@@ -21,12 +21,12 @@ const buttonVariants = cva(
           'rounded-glass-lg shadow-glass-soft hover:shadow-glass-medium active:shadow-glass-subtle backdrop-blur-[30px] [-webkit-backdrop-filter:blur(30px)] saturate-[180%] transition-all duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-px active:scale-[0.98] text-[var(--macos-label-primary)] bg-[var(--glass-medium)] border border-[var(--glass-border-strong)]',
       },
       size: {
-        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-8 gap-1.5 px-3 has-[>svg]:px-2.5',
-        lg: 'h-10 px-6 has-[>svg]:px-4',
-        icon: 'size-9',
-        'icon-sm': 'size-8',
-        'icon-lg': 'size-10',
+        default: 'h-8 px-3 py-2 has-[>svg]:px-2.5',
+        sm: 'h-7 gap-1.5 px-2.5 has-[>svg]:px-2',
+        lg: 'h-9 px-5 has-[>svg]:px-3.5',
+        icon: 'size-8',
+        'icon-sm': 'size-7',
+        'icon-lg': 'size-9',
       },
     },
     defaultVariants: {
