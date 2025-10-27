@@ -2,24 +2,14 @@
 
 import * as React from 'react'
 import { format } from 'date-fns'
-import { MoreHorizontal, Eye, Edit2, Trash2, GripVertical } from 'lucide-react'
+import { GripVertical } from 'lucide-react'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { CompanyLogo } from '@/components/ui/company-logo'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import type { Application } from '@/lib/types/database.types'
 
 interface ApplicationCardProps {
   application: Application
-  onEdit?: () => void
-  onDelete?: () => void
   onClick?: () => void
   isDragging?: boolean
   dragHandleProps?: Record<string, unknown>
@@ -38,8 +28,6 @@ const formatDate = (dateString: string): string => {
 
 export function ApplicationCard({
   application,
-  onEdit,
-  onDelete,
   onClick,
   isDragging = false,
   dragHandleProps,
@@ -47,12 +35,7 @@ export function ApplicationCard({
   listeners,
   setNodeRef,
 }: ApplicationCardProps) {
-  const handleCardClick = (e: React.MouseEvent) => {
-    // Don't trigger onClick if clicking on dropdown or its children
-    const target = e.target as HTMLElement
-    if (target.closest('[role="menu"]') || target.closest('button[aria-haspopup]')) {
-      return
-    }
+  const handleCardClick = () => {
     onClick?.()
   }
 
@@ -64,9 +47,9 @@ export function ApplicationCard({
       data-testid="application-card"
       onClick={handleCardClick}
       className={cn(
-        'glass-light rounded-glass shadow-glass-soft transition-all duration-300 group',
+        'glass-light rounded-glass shadow-glass-soft transition-all duration-300 ease-in-out group',
         onClick &&
-          'cursor-pointer glass-interactive hover:shadow-glass-medium hover:-translate-y-1',
+          'cursor-pointer transition-all duration-300 ease-in-out hover:!border-[hsl(var(--copper-light))] hover:shadow-[0_0_0_1px_hsl(var(--copper-light))]',
         isDragging && 'opacity-50 rotate-2 shadow-xl'
       )}
       {...attributes}
@@ -87,53 +70,13 @@ export function ApplicationCard({
             </p>
           </div>
 
-          {/* Actions Dropdown */}
-          <div className="flex items-center gap-2">
-            {/* Drag Indicator */}
-            <div
-              data-testid="drag-indicator"
-              className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 glass-ultra rounded-full p-1"
-              {...dragHandleProps}
-            >
-              <GripVertical className="h-3 w-3 text-label-tertiary" />
-            </div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 glass-ultra rounded-full hover:glass-light transition-all duration-200"
-                  aria-label="Application actions"
-                >
-                  <MoreHorizontal className="h-4 w-4 text-label-secondary" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="glass-medium rounded-glass-sm border-0">
-                <DropdownMenuItem>
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Details
-                </DropdownMenuItem>
-                {onEdit && (
-                  <DropdownMenuItem onClick={onEdit}>
-                    <Edit2 className="mr-2 h-4 w-4" />
-                    Edit
-                  </DropdownMenuItem>
-                )}
-                {onDelete && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={onDelete}
-                      className="text-destructive focus:text-destructive"
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {/* Drag Indicator */}
+          <div
+            data-testid="drag-indicator"
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 glass-ultra rounded-full p-1"
+            {...dragHandleProps}
+          >
+            <GripVertical className="h-3 w-3 text-label-tertiary" />
           </div>
         </div>
       </CardHeader>
