@@ -17,11 +17,6 @@ vi.mock('@/components/ui/ThemeToggle', () => ({
   ThemeToggle: () => <button aria-label="Toggle theme">Theme Toggle</button>,
 }))
 
-// Mock LogoutButton
-vi.mock('@/components/auth/LogoutButton', () => ({
-  LogoutButton: () => <button data-testid="logout-button">Logout Button</button>,
-}))
-
 // Wrapper for ThemeProvider context
 function renderWithTheme(ui: React.ReactElement) {
   return render(<ThemeProvider>{ui}</ThemeProvider>)
@@ -116,7 +111,7 @@ describe('NavBar Component', () => {
   describe('Authenticated Variant', () => {
     const authMockUser = {
       id: 'test-user-id',
-      email: 'test@example.com',
+      email: 'test',
       app_metadata: {},
       user_metadata: {},
       aud: 'authenticated',
@@ -134,33 +129,32 @@ describe('NavBar Component', () => {
       expect(logo).toHaveAttribute('href', '/dashboard')
     })
 
-    it('should render user email when authenticated', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for user email to render
-      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+    it('should render ProfileDropdown when authenticated', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
+      // Should render profile dropdown with user name
+      expect(screen.getByRole('button', { name: /user menu for test/i })).toBeInTheDocument()
+      expect(screen.getByText('test')).toBeInTheDocument()
     })
 
-    it('should render user email, logout button, and ThemeToggle for authenticated user', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Should have user email, logout button, and ThemeToggle
-      expect(screen.getByText('test@example.com')).toBeInTheDocument()
-      expect(screen.getByTestId('logout-button')).toBeInTheDocument()
+    it('should render ProfileDropdown and ThemeToggle for authenticated user', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
+      // Should have ProfileDropdown and ThemeToggle
+      expect(screen.getByRole('button', { name: /user menu for test/i })).toBeInTheDocument()
       expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
 
-      // Should have ThemeToggle button and LogoutButton
+      // Should have ProfileDropdown button and ThemeToggle button
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(2)
     })
 
-    it('should render user email in responsive container', async () => {
-      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} userId="test-user-id" />)
-      // Wait for user email to render
-      const emailSpan = screen.getByText('test@example.com')
-      // The email span itself doesn't have the responsive classes, its parent does
-      const emailContainer = emailSpan.parentElement
-      expect(emailContainer).toBeInTheDocument()
-      expect(emailContainer).toHaveClass('hidden')
-      expect(emailContainer).toHaveClass('sm:block')
+    it('should render ProfileDropdown with responsive user name', async () => {
+      renderWithTheme(<NavBar variant="authenticated" user={authMockUser} />)
+      // ProfileDropdown should render user name
+      const userName = screen.getByText('test')
+      // The user name span should have the responsive classes
+      expect(userName).toBeInTheDocument()
+      expect(userName).toHaveClass('hidden')
+      expect(userName).toHaveClass('sm:block')
     })
 
     it('should render ThemeToggle by default', () => {
@@ -182,10 +176,10 @@ describe('NavBar Component', () => {
     })
 
     it('should handle null user gracefully', () => {
-      renderWithTheme(<NavBar variant="authenticated" user={null} userId="test-user-id" />)
+      renderWithTheme(<NavBar variant="authenticated" user={null} />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should not render LogoutButton when user is null
-      expect(screen.queryByTestId('logout-button')).not.toBeInTheDocument()
+      // Should not render ProfileDropdown when user is null
+      expect(screen.queryByRole('button', { name: /user menu/i })).not.toBeInTheDocument()
       // Should only have ThemeToggle button
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(1)
@@ -194,15 +188,13 @@ describe('NavBar Component', () => {
 
     it('should handle user without email gracefully', async () => {
       const userWithoutEmail = { ...authMockUser, email: '' }
-      renderWithTheme(
-        <NavBar variant="authenticated" user={userWithoutEmail} userId="test-user-id" />
-      )
+      renderWithTheme(<NavBar variant="authenticated" user={userWithoutEmail} />)
       expect(screen.getByText('JobHunt')).toBeInTheDocument()
-      // Should still render ThemeToggle and LogoutButton even without email
-      expect(screen.getByTestId('logout-button')).toBeInTheDocument()
+      // Should still render ThemeToggle and ProfileDropdown even without email
+      expect(screen.getByRole('button', { name: /user menu for user/i })).toBeInTheDocument()
       expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
 
-      // Should have ThemeToggle button and LogoutButton
+      // Should have ThemeToggle button and ProfileDropdown
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(2)
     })
@@ -242,7 +234,7 @@ describe('NavBar Component', () => {
 
     it('should not render user info', () => {
       renderWithTheme(<NavBar variant="auth-pages" />)
-      expect(screen.queryByTestId('logout-button')).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: /user menu/i })).not.toBeInTheDocument()
     })
 
     it('should not render Get Started link', () => {
@@ -286,25 +278,22 @@ describe('NavBar Component', () => {
       expect(githubLink).toHaveClass('sm:inline-flex')
     })
 
-    it('should hide user email on mobile for authenticated variant', async () => {
+    it('should hide user name on mobile for authenticated variant', async () => {
       const responsiveUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      renderWithTheme(
-        <NavBar variant="authenticated" user={responsiveUser} userId="test-user-id" />
-      )
+      renderWithTheme(<NavBar variant="authenticated" user={responsiveUser} />)
       await waitFor(() => {
-        const emailSpan = screen.getByText('test@example.com')
-        // The email span itself doesn't have the responsive classes, its parent does
-        const emailContainer = emailSpan.parentElement
-        expect(emailContainer).toBeInTheDocument()
-        expect(emailContainer).toHaveClass('hidden')
-        expect(emailContainer).toHaveClass('sm:block')
+        const userName = screen.getByText('test')
+        // The user name span should have the responsive classes
+        expect(userName).toBeInTheDocument()
+        expect(userName).toHaveClass('hidden')
+        expect(userName).toHaveClass('sm:block')
       })
     })
   })
@@ -318,7 +307,7 @@ describe('NavBar Component', () => {
     it('should have semantic header element for all variants', () => {
       const accessibilityUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
@@ -340,16 +329,16 @@ describe('NavBar Component', () => {
     it('should have proper accessibility for simplified authenticated variant', async () => {
       const ariaUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
         created_at: '2024-01-01T00:00:00Z',
       }
-      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} userId="test-user-id" />)
+      renderWithTheme(<NavBar variant="authenticated" user={ariaUser} />)
 
       // Should have user email displayed
-      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      expect(screen.getByText('test')).toBeInTheDocument()
 
       // Should have ThemeToggle with proper ARIA label
       expect(screen.getByLabelText('Toggle theme')).toBeInTheDocument()
@@ -365,7 +354,7 @@ describe('NavBar Component', () => {
     it('should not render ThemeToggle when showThemeToggle is false for authenticated', () => {
       const themeTestUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
@@ -417,7 +406,7 @@ describe('NavBar Component', () => {
     it('should render logo image in authenticated variant', () => {
       const brandUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
@@ -441,7 +430,7 @@ describe('NavBar Component', () => {
     it('should use flex layout for authenticated variant', () => {
       const layoutUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',
@@ -467,7 +456,7 @@ describe('NavBar Component', () => {
     it('should group user actions in flex container for authenticated', () => {
       const groupUser = {
         id: 'test-user-id',
-        email: 'test@example.com',
+        email: 'test',
         app_metadata: {},
         user_metadata: {},
         aud: 'authenticated',

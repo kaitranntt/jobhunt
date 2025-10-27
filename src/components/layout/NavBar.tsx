@@ -4,14 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Github } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { LogoutButton } from '@/components/auth/LogoutButton'
+import { ProfileDropdown } from '@/components/auth/ProfileDropdown'
 import { cn } from '@/lib/utils'
 import type { User } from '@supabase/supabase-js'
 
 interface NavBarProps {
   variant?: 'landing' | 'authenticated' | 'auth-pages'
   user?: User | null
-  userId?: string
   showThemeToggle?: boolean
   className?: string
 }
@@ -19,7 +18,6 @@ interface NavBarProps {
 export function NavBar({
   variant = 'landing',
   user,
-  userId,
   showThemeToggle = true,
   className,
 }: NavBarProps) {
@@ -133,16 +131,22 @@ export function NavBar({
 
             {/* User Info & Actions */}
             <div className="flex items-center gap-4">
-              {user && userId && (
-                <>
-                  {/* User Email - shown on desktop only */}
-                  <div className="hidden sm:block">
-                    <span className="text-sm text-label-secondary">{user.email}</span>
-                  </div>
-
-                  {/* Logout Button */}
-                  <LogoutButton />
-                </>
+              {user && (
+                <ProfileDropdown
+                  user={user}
+                  onProfileClick={() => {
+                    // TODO: Navigate to profile page
+                    console.log('Navigate to profile')
+                  }}
+                  onSettingsClick={() => {
+                    // TODO: Navigate to settings page
+                    console.log('Navigate to settings')
+                  }}
+                  onLogoutClick={() => {
+                    // TODO: Handle logout
+                    console.log('Logout clicked')
+                  }}
+                />
               )}
 
               {showThemeToggle && <ThemeToggle />}
