@@ -44,7 +44,6 @@ export default function DashboardPage() {
 
   // User state for NavBar
   const [user, setUser] = React.useState<User | null>(null)
-  const [userId, setUserId] = React.useState<string>('')
 
   // Load user session and applications on mount
   React.useEffect(() => {
@@ -68,7 +67,6 @@ export default function DashboardPage() {
 
         // Set user information
         setUser(currentUser)
-        setUserId(currentUser.id)
 
         // Load applications
         const apps = await getApplicationsAction()
@@ -179,7 +177,7 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={user} userId={userId} />
+          <NavBar variant="authenticated" user={user} />
           <main className="mx-auto w-full px-4 py-4">
             <div className="flex items-center justify-center p-8 glass-ultra rounded-glass shadow-glass-subtle">
               <p className="text-label-secondary">Loading applications...</p>
@@ -194,7 +192,7 @@ export default function DashboardPage() {
     return (
       <AnimatedBackground variant="minimal">
         <div className="min-h-screen">
-          <NavBar variant="authenticated" user={user} userId={userId} />
+          <NavBar variant="authenticated" user={user} />
           <main className="mx-auto w-full px-4 py-4">
             <div className="flex items-center justify-center p-8 glass-light rounded-glass shadow-glass-soft">
               <div className="text-center">
@@ -218,7 +216,7 @@ export default function DashboardPage() {
   return (
     <AnimatedBackground variant="minimal">
       <div className="min-h-screen">
-        <NavBar variant="authenticated" user={user} userId={userId} />
+        <NavBar variant="authenticated" user={user} />
 
         <main className="mx-auto w-full px-4 py-4">
           {applications.length === 0 && !isNewApplicationModalOpen ? (
