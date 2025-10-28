@@ -1,5 +1,10 @@
 import type { User } from '@supabase/supabase-js'
 
+/**
+ * User data utility functions for profile and avatar components
+ * These functions handle extracting and formatting user information
+ */
+
 export function getUserInitials(user: User): string {
   const email = user.email || ''
   const name = email.split('@')[0]

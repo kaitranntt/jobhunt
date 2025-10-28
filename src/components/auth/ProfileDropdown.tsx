@@ -20,6 +20,7 @@ import {
   getUserAvatarUrl,
   formatUserEmail,
 } from './utils/profile-utils'
+import { useAvatarColor, getAvatarColorStyle } from '@/hooks/useAvatarColor'
 import { useLogout } from '@/hooks/useLogout'
 
 export function ProfileDropdown({
@@ -30,6 +31,7 @@ export function ProfileDropdown({
   onLogoutClick,
 }: ProfileDropdownProps) {
   const { logout, isLoading } = useLogout()
+  const { avatarColor } = useAvatarColor(user)
 
   const userInitials = getUserInitials(user)
   const userDisplayName = getUserDisplayName(user)
@@ -98,8 +100,14 @@ export function ProfileDropdown({
               alt={`${userDisplayName}'s avatar`}
               className="h-7 w-7 rounded-full object-cover"
             />
-            <AvatarFallback className="h-7 w-7 rounded-full bg-[var(--tint-blue)] text-white text-sm font-medium flex items-center justify-center">
-              {userInitials}
+            <AvatarFallback
+              className={cn(
+                'avatar-glass',
+                'h-7 w-7 rounded-full flex items-center justify-center'
+              )}
+              style={getAvatarColorStyle(avatarColor)}
+            >
+              <span className="avatar-text text-sm">{userInitials}</span>
             </AvatarFallback>
           </Avatar>
 

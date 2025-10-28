@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { clearSessionAvatarColor } from '@/components/auth/utils/avatar-color'
 
 export function useLogout() {
   const [isLoading, setIsLoading] = useState(false)
@@ -10,6 +12,17 @@ export function useLogout() {
   const logout = async () => {
     try {
       setIsLoading(true)
+
+      // Get current user before logout to clear their avatar color
+      const supabase = createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      // Clear avatar color from session storage before logout
+      if (user) {
+        clearSessionAvatarColor(user)
+      }
 
       // Call the signout API route
       const response = await fetch('/auth/signout', {

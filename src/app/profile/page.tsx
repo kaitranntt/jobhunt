@@ -9,12 +9,15 @@ import { Card } from '@/components/ui/card'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { getUserInitials } from '@/components/auth/utils/profile-utils'
+import { useAvatarColor, getAvatarColorStyle } from '@/hooks/useAvatarColor'
 
 export default function ProfilePage() {
   const router = useRouter()
   const [user, setUser] = React.useState<SupabaseUser | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
+  const { avatarColor } = useAvatarColor(user)
 
   // Load user session on mount
   React.useEffect(() => {
@@ -110,8 +113,11 @@ export default function ProfilePage() {
               <div className="p-6">
                 <div className="flex items-center gap-6 mb-6">
                   {/* Avatar */}
-                  <div className="w-20 h-20 rounded-full bg-[var(--tint-blue)] text-white flex items-center justify-center text-2xl font-medium">
-                    {user.email?.charAt(0).toUpperCase() || 'U'}
+                  <div
+                    className="avatar-glass w-20 h-20 rounded-full flex items-center justify-center text-2xl font-semibold"
+                    style={getAvatarColorStyle(avatarColor)}
+                  >
+                    <span className="avatar-text">{getUserInitials(user)}</span>
                   </div>
 
                   {/* Basic Info */}
