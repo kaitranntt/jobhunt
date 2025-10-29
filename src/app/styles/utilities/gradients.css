@@ -1,0 +1,71 @@
+/* ========================================================================== */
+/* Gradient Utilities                                                          */
+/* ========================================================================== */
+
+/* Brand Gradient Utilities */
+.gradient-brand {
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
+}
+
+.gradient-brand-text {
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-page-bg {
+  background: linear-gradient(
+    to bottom right,
+    hsl(var(--gradient-light-start)),
+    hsl(var(--gradient-light-mid)),
+    hsl(var(--gradient-light-end))
+  );
+}
+
+.gradient-accent-overlay {
+  background: linear-gradient(
+    to top left,
+    hsl(var(--gradient-accent-start) / 0.3),
+    transparent,
+    hsl(var(--gradient-accent-end) / 0.3)
+  );
+}
+
+/* Floating orb gradients */
+.gradient-orb-blue {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-secondary) / 0.3),
+    hsl(var(--brand-primary) / 0.3)
+  );
+}
+
+.gradient-orb-pink {
+  background: linear-gradient(
+    to right,
+    hsl(var(--accent-pink-start) / 0.3),
+    hsl(var(--accent-pink-end) / 0.3)
+  );
+}
+
+.gradient-orb-cyan {
+  background: linear-gradient(
+    to right,
+    hsl(var(--accent-gradient-start) / 0.3),
+    hsl(var(--accent-gradient-end) / 0.3)
+  );
+}
+
+/* Button gradients */
+.btn-brand-gradient {
+  background: linear-gradient(to right, hsl(var(--brand-primary)), hsl(var(--brand-secondary)));
+}
+
+.btn-brand-gradient-hover {
+  background: linear-gradient(
+    to right,
+    hsl(var(--brand-primary-dark)),
+    hsl(var(--brand-secondary-dark))
+  );
+}

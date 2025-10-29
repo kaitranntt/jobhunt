@@ -1,0 +1,19 @@
+/* ========================================================================== */
+/* Border Radius Utilities (Liquid Glass)                                      */
+/* ========================================================================== */
+
+.rounded-glass-sm {
+  border-radius: 12px;
+}
+
+.rounded-glass {
+  border-radius: 20px;
+}
+
+.rounded-glass-lg {
+  border-radius: 32px;
+}
+
+.rounded-glass-xl {
+  border-radius: 40px;
+}

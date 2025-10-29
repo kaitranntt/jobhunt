@@ -1,0 +1,83 @@
+/* ========================================================================== */
+/* macOS 26 "Liquid Glass" Design System - Base Colors (Light Mode)            */
+/* ========================================================================== */
+
+:root {
+  /* Base Colors for color-mix() optimization */
+  --macos-base-black: 0, 0, 0;
+  --macos-base-white: 255, 255, 255;
+  --macos-base-gray: 142, 142, 147;
+
+  /* Glass Base Colors */
+  --glass-base-light: var(--macos-base-white);
+  --glass-base-dark: 18, 18, 18;
+
+  /* System Tint Colors */
+  --tint-blue: 0, 122, 255;
+  --tint-purple: 175, 82, 222;
+  --tint-pink: 255, 45, 85;
+  --tint-red: 255, 59, 48;
+  --tint-orange: 255, 149, 0;
+  --tint-yellow: 255, 204, 0;
+  --tint-green: 52, 199, 89;
+  --tint-teal: 90, 200, 250;
+  --tint-indigo: 88, 86, 214;
+
+  /* Copper Brand Colors */
+  --copper: 25 95% 53%;
+  --copper-light: 25 85% 65%;
+  --copper-dark: 25 100% 45%;
+  --copper-glow: 25 95% 70%;
+  --copper-shimmer: 25 90% 75%;
+
+  /* Animated Background Gradients */
+  --gradient-light-start: 220 70% 98%;
+  --gradient-light-mid: 240 60% 97%;
+  --gradient-light-end: 260 65% 96%;
+  --gradient-accent-start: var(--copper);
+  --gradient-accent-end: var(--copper-light);
+
+  /* Floating Orb Colors */
+  --accent-pink-start: 340 82% 65%;
+  --accent-pink-end: 320 85% 58%;
+  --accent-gradient-start: 180 85% 65%;
+  --accent-gradient-end: 200 85% 60%;
+
+  /* Spring Animation Timing */
+  --spring-timing: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Border Radius */
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Dark Mode Base Colors */
+.dark {
+  /* System Tint Colors (Dark Mode) */
+  --tint-blue: 10, 132, 255;
+  --tint-purple: 191, 90, 242;
+  --tint-pink: 255, 55, 95;
+  --tint-red: 255, 69, 58;
+  --tint-orange: 255, 159, 10;
+  --tint-yellow: 255, 214, 10;
+  --tint-green: 48, 209, 88;
+  --tint-teal: 100, 210, 255;
+  --tint-indigo: 94, 92, 230;
+
+  /* Animated Background Gradients (Dark Mode) */
+  --gradient-light-start: 222 47% 13%;
+  --gradient-light-mid: 217 33% 17%;
+  --gradient-light-end: 222 47% 15%;
+  --gradient-accent-start: var(--copper);
+  --gradient-accent-end: var(--copper-light);
+
+  /* Floating Orb Colors (Dark Mode) */
+  --accent-pink-start: 340 82% 55%;
+  --accent-pink-end: 320 85% 48%;
+  --accent-gradient-start: 180 85% 55%;
+  --accent-gradient-end: 200 85% 50%;
+}

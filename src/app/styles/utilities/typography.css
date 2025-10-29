@@ -1,0 +1,43 @@
+/* ========================================================================== */
+/* Typography Color Utilities (macOS 26)                                       */
+/* ========================================================================== */
+
+.text-label-primary {
+  color: var(--macos-label-primary);
+}
+
+.text-label-secondary {
+  color: var(--macos-label-secondary);
+}
+
+.text-label-tertiary {
+  color: var(--macos-label-tertiary);
+}
+
+.text-label-quaternary {
+  color: var(--macos-label-quaternary);
+}
+
+/* Text colors */
+.text-brand-primary {
+  color: hsl(var(--brand-primary));
+}
+
+.text-brand-secondary {
+  color: hsl(var(--brand-secondary));
+}
+
+/* Destructive text colors (ensure red color is properly applied) */
+.text-destructive {
+  color: hsl(var(--destructive));
+}
+
+/* Fallback red colors for logout button */
+.text-red-destructive {
+  color: hsl(var(--destructive));
+}
+
+.text-red-destructive:hover {
+  color: hsl(var(--destructive));
+  background-color: hsl(var(--destructive) / 0.1);
+}

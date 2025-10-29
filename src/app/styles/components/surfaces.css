@@ -1,0 +1,27 @@
+/* ========================================================================== */
+/* macOS 26 Surface Treatments                                                 */
+/* ========================================================================== */
+
+.surface-primary {
+  background: var(--macos-bg-primary);
+}
+
+.surface-secondary {
+  background: var(--macos-bg-secondary);
+}
+
+.surface-tertiary {
+  background: var(--macos-bg-tertiary);
+}
+
+.surface-fill-primary {
+  background: var(--macos-fill-primary);
+}
+
+.surface-fill-secondary {
+  background: var(--macos-fill-secondary);
+}
+
+.surface-fill-tertiary {
+  background: var(--macos-fill-tertiary);
+}

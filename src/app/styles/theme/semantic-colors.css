@@ -1,0 +1,107 @@
+/* ========================================================================== */
+/* macOS 26 "Liquid Glass" Design System - Semantic Colors (Light Mode)        */
+/* ========================================================================== */
+
+:root {
+  /* macOS Label Colors (Using color-mix for dynamic opacity) */
+  --macos-label-primary: color-mix(in srgb, rgb(var(--macos-base-black)) 84.7%, transparent);
+  --macos-label-secondary: color-mix(in srgb, rgb(var(--macos-base-black)) 49.8%, transparent);
+  --macos-label-tertiary: color-mix(in srgb, rgb(var(--macos-base-black)) 25.9%, transparent);
+  --macos-label-quaternary: color-mix(in srgb, rgb(var(--macos-base-black)) 9.8%, transparent);
+
+  /* macOS Fill Colors */
+  --macos-fill-primary: color-mix(in srgb, rgb(var(--macos-base-gray)) 20%, transparent);
+  --macos-fill-secondary: color-mix(in srgb, rgb(var(--macos-base-gray)) 16%, transparent);
+  --macos-fill-tertiary: color-mix(in srgb, rgb(var(--macos-base-gray)) 12%, transparent);
+  --macos-fill-quaternary: color-mix(in srgb, rgb(var(--macos-base-gray)) 8%, transparent);
+
+  /* macOS System Backgrounds */
+  --macos-bg-primary: rgb(var(--macos-base-white));
+  --macos-bg-secondary: rgb(242, 242, 247);
+  --macos-bg-tertiary: rgb(var(--macos-base-white));
+  --macos-bg-grouped: rgb(242, 242, 247);
+  --macos-bg-grouped-secondary: rgb(var(--macos-base-white));
+  --macos-bg-grouped-tertiary: rgb(242, 242, 247);
+
+  /* Liquid Glass Materials (Using color-mix for opacity) */
+  --glass-ultra: color-mix(in srgb, rgb(var(--glass-base-light)) 15%, transparent);
+  --glass-light: color-mix(in srgb, rgb(var(--glass-base-light)) 25%, transparent);
+  --glass-medium: color-mix(in srgb, rgb(var(--glass-base-light)) 35%, transparent);
+  --glass-heavy: color-mix(in srgb, rgb(var(--glass-base-light)) 45%, transparent);
+
+  /* Glass Borders (Using color-mix) */
+  --glass-border-subtle: color-mix(in srgb, rgb(var(--glass-base-light)) 40%, transparent);
+  --glass-border-medium: color-mix(in srgb, rgb(var(--glass-base-light)) 60%, transparent);
+  --glass-border-strong: color-mix(in srgb, rgb(var(--glass-base-light)) 80%, transparent);
+
+  /* Semantic Colors (Using color-mix) */
+  --color-success: rgb(var(--tint-green));
+  --color-warning: rgb(var(--tint-yellow));
+  --color-error: rgb(var(--tint-red));
+  --color-info: rgb(var(--tint-blue));
+
+  /* Shadow Colors (Using color-mix) */
+  --shadow-subtle: color-mix(in srgb, rgb(var(--macos-base-black)) 5%, transparent);
+  --shadow-soft: color-mix(in srgb, rgb(var(--macos-base-black)) 10%, transparent);
+  --shadow-medium: color-mix(in srgb, rgb(var(--macos-base-black)) 15%, transparent);
+  --shadow-strong: color-mix(in srgb, rgb(var(--macos-base-black)) 20%, transparent);
+  --shadow-specular: color-mix(in srgb, rgb(var(--macos-base-white)) 30%, transparent);
+
+  /* Optimized Backdrop Filters */
+  --glass-blur-light: blur(20px) saturate(180%);
+  --glass-blur-medium: blur(30px) saturate(200%);
+  --glass-blur-heavy: blur(40px) saturate(220%);
+
+  /* Optimized Glass Shadows - 20-30% reduction */
+  --shadow-glass-subtle: 0 4px 16px var(--shadow-subtle), inset 0 2px 10px var(--shadow-specular);
+  --shadow-glass-soft: 0 6px 20px var(--shadow-soft), inset 0 3px 12px var(--shadow-specular);
+  --shadow-glass-medium: 0 8px 24px var(--shadow-medium), inset 0 4px 16px var(--shadow-specular);
+  --shadow-glass-strong: 0 10px 32px var(--shadow-strong), inset 0 5px 20px var(--shadow-specular);
+}
+
+/* Dark Mode Semantic Colors */
+.dark {
+  /* macOS Label Colors (Using color-mix for dynamic opacity) */
+  --macos-label-primary: color-mix(in srgb, rgb(var(--macos-base-white)) 84.7%, transparent);
+  --macos-label-secondary: color-mix(in srgb, rgb(var(--macos-base-white)) 54.9%, transparent);
+  --macos-label-tertiary: color-mix(in srgb, rgb(var(--macos-base-white)) 25.1%, transparent);
+  --macos-label-quaternary: color-mix(in srgb, rgb(var(--macos-base-white)) 9.8%, transparent);
+
+  /* macOS Fill Colors */
+  --macos-fill-primary: color-mix(in srgb, rgb(var(--macos-base-gray)) 36%, transparent);
+  --macos-fill-secondary: color-mix(in srgb, rgb(var(--macos-base-gray)) 32%, transparent);
+  --macos-fill-tertiary: color-mix(in srgb, rgb(var(--macos-base-gray)) 24%, transparent);
+  --macos-fill-quaternary: color-mix(in srgb, rgb(var(--macos-base-gray)) 18%, transparent);
+
+  /* macOS System Backgrounds */
+  --macos-bg-primary: rgb(var(--macos-base-black));
+  --macos-bg-secondary: rgb(28, 28, 30);
+  --macos-bg-tertiary: rgb(44, 44, 46);
+  --macos-bg-grouped: rgb(var(--macos-base-black));
+  --macos-bg-grouped-secondary: rgb(28, 28, 30);
+  --macos-bg-grouped-tertiary: rgb(44, 44, 46);
+
+  /* Liquid Glass Materials (Using color-mix for opacity) */
+  --glass-ultra: color-mix(in srgb, rgb(var(--glass-base-dark)) 40%, transparent);
+  --glass-light: color-mix(in srgb, rgb(var(--glass-base-dark)) 50%, transparent);
+  --glass-medium: color-mix(in srgb, rgb(var(--glass-base-dark)) 65%, transparent);
+  --glass-heavy: color-mix(in srgb, rgb(var(--glass-base-dark)) 80%, transparent);
+
+  /* Glass Borders (Using color-mix) */
+  --glass-border-subtle: color-mix(in srgb, rgb(var(--macos-base-white)) 10%, transparent);
+  --glass-border-medium: color-mix(in srgb, rgb(var(--macos-base-white)) 15%, transparent);
+  --glass-border-strong: color-mix(in srgb, rgb(var(--macos-base-white)) 25%, transparent);
+
+  /* Semantic Colors (Using color-mix) */
+  --color-success: rgb(var(--tint-green));
+  --color-warning: rgb(var(--tint-yellow));
+  --color-error: rgb(var(--tint-red));
+  --color-info: rgb(var(--tint-blue));
+
+  /* Shadow Colors (Using color-mix) */
+  --shadow-subtle: color-mix(in srgb, rgb(var(--macos-base-black)) 20%, transparent);
+  --shadow-soft: color-mix(in srgb, rgb(var(--macos-base-black)) 30%, transparent);
+  --shadow-medium: color-mix(in srgb, rgb(var(--macos-base-black)) 40%, transparent);
+  --shadow-strong: color-mix(in srgb, rgb(var(--macos-base-black)) 60%, transparent);
+  --shadow-specular: color-mix(in srgb, rgb(var(--macos-base-white)) 10%, transparent);
+}

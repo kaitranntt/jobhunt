@@ -1,0 +1,104 @@
+/* ========================================================================== */
+/* Animation Utility Classes                                                    */
+/* ========================================================================== */
+
+/* Utility Classes for Animations */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Spring Animation Utilities (Optimized) */
+.animate-spring-bounce {
+  animation: spring-bounce 0.5s var(--spring-timing) forwards;
+}
+
+.animate-spring-bounce-in {
+  animation: spring-bounce-in 0.6s var(--spring-timing) forwards;
+}
+
+.animate-glass-shimmer {
+  background: linear-gradient(90deg, transparent 0%, var(--shadow-specular) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: glass-shimmer 3s ease-in-out infinite;
+}
+
+.animate-depth-float {
+  animation: depth-float 4s ease-in-out infinite;
+}
+
+.animate-refraction {
+  animation: refraction-shift 8s ease-in-out infinite;
+}
+
+.animate-specular-glint {
+  animation: specular-glint 2s ease-in-out infinite;
+}
+
+/* Stagger Animation Delays */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+.stagger-6 {
+  animation-delay: 0.6s;
+}
+
+/* Perspective for 3D effects */
+.perspective-1000 {
+  perspective: 1000px;
+}

@@ -1,0 +1,95 @@
+/* ========================================================================== */
+/* Liquid Glass Material System (macOS 26)                                     */
+/* ========================================================================== */
+
+/* Core Liquid Glass Effect (Optimized) */
+.liquid-glass {
+  background: var(--glass-light);
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--shadow-glass-standard);
+}
+
+/* Glass Variants (Optimized - Using consolidated variables) */
+.glass-ultra {
+  background: var(--glass-ultra);
+  backdrop-filter: blur(15px) saturate(150%);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: 0 4px 16px var(--shadow-subtle), inset 0 2px 10px var(--shadow-specular);
+}
+
+.glass-light {
+  background: var(--glass-light);
+  backdrop-filter: var(--glass-blur-light);
+  border: 1px solid var(--glass-border-medium);
+  box-shadow: var(--shadow-glass-light);
+}
+
+.glass-medium {
+  background: var(--glass-medium);
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--shadow-glass-standard);
+}
+
+.glass-heavy {
+  background: var(--glass-heavy);
+  backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--shadow-glass-heavy);
+}
+
+.glass-frosted {
+  background: var(--glass-heavy);
+  backdrop-filter: var(--glass-blur-heavy) brightness(1.05);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: 0 16px 64px var(--shadow-strong), inset 0 8px 40px var(--shadow-specular);
+}
+
+/* Legacy Glass (Backward Compatibility) */
+.glass {
+  background: color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 5%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 10%, transparent);
+}
+
+.glass-strong {
+  background: color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 10%, transparent);
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, rgb(var(--glass-base-light, var(--macos-base-white))) 20%, transparent);
+}
+
+/* Interactive Glass with Spring Physics */
+.glass-interactive {
+  transition: all 0.3s var(--spring-timing);
+}
+
+.glass-interactive:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: var(--shadow-glass-heavy);
+}
+
+.glass-interactive:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: var(--shadow-glass-light);
+}
+
+/* Button with Glass Effect (Optimized) */
+.btn-glass {
+  background: var(--glass-medium);
+  backdrop-filter: var(--glass-blur-medium);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--shadow-glass-light);
+  transition: all 0.3s var(--spring-timing);
+}
+
+.btn-glass:hover {
+  background: var(--glass-heavy);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glass-standard);
+}
+
+.btn-glass:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px var(--shadow-subtle), inset 0 1px 5px var(--shadow-specular);
+}
