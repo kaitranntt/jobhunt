@@ -300,7 +300,7 @@ export const getApplicationsByStatus = withErrorHandling(
 
     return result.data
   },
-  { context: { operation: 'getApplicationsByStatus', status } }
+  { context: { operation: 'getApplicationsByStatus' } }
 )
 
 // ============================================================================
