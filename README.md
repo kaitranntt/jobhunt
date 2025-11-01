@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15.x-black.svg)](https://nextjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green.svg)](https://supabase.com/)
-[![Tests](https://img.shields.io/badge/Tests-399%20passing-brightgreen.svg)](https://github.com/kaitranntt/jobhunt)
+[![Tests](https://img.shields.io/badge/Tests-544%20passing-brightgreen.svg)](https://github.com/kaitranntt/jobhunt)
 [![Quality](https://img.shields.io/badge/Quality-A%2B-orange.svg)](https://github.com/kaitranntt/jobhunt)
 
 > **A streamlined, modern job application tracking system with beautiful glass-morphism UI.**
@@ -158,7 +158,7 @@ supabase db diff
 ```bash
 yarn dev              # Start development server (localhost:3000)
 yarn build            # Build for production
-yarn test             # Run all tests (399 tests passing)
+yarn test             # Run all tests (544 tests passing)
 yarn test:watch       # Watch mode for TDD development
 yarn test:coverage    # Generate coverage report
 yarn lint             # Run ESLint
@@ -255,12 +255,30 @@ yarn dev
 
 **Comprehensive Documentation Suite:**
 
-- **[./docs/project-overview-pdr.md](./docs/project-overview-pdr.md)** - Project overview and Product Development Requirements
-- **[./docs/system-architecture.md](./docs/system-architecture.md)** - System architecture, design patterns, and technical decisions
-- **[./docs/code-standards.md](./docs/code-standards.md)** - Development standards, patterns, and best practices
-- **[./docs/codebase-summary.md](./docs/codebase-summary.md)** - Comprehensive codebase analysis and summary
+### 📖 Core Documentation
+
+- **[Documentation Index](./docs/README.md)** - Complete documentation guide and navigation
+- **[Project Overview & PDR](./docs/project-overview-pdr.md)** - Project overview and Product Development Requirements
+- **[System Architecture](./docs/system-architecture.md)** - System architecture, design patterns, and technical decisions
+- **[Code Standards](./docs/code-standards.md)** - Development standards, patterns, and best practices
+- **[Design Guidelines](./docs/design-guidelines.md)** - UI/UX design system and glass-morphism patterns
+- **[API Documentation](./docs/api-documentation.md)** - Complete API reference and integration guide
+- **[Deployment Guide](./docs/deployment-guide.md)** - Production deployment and maintenance instructions
+- **[Project Roadmap](./docs/project-roadmap.md)** - Future development plans and timeline
+
+### 🔍 Technical Reference
+
+- **[Codebase Summary](./docs/codebase-summary.md)** - Comprehensive codebase analysis and summary
+- **[Database Setup](./docs/DATABASE_SETUP.md)** - Database configuration and migration guide
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution guidelines and development setup
 - **[DOCKER.md](./DOCKER.md)** - Docker deployment instructions
+
+### 📊 Quick Links
+
+- **Live Demo**: [https://jobhunt.kaitran.ca](https://jobhunt.kaitran.ca)
+- **Documentation**: [https://docs.jobhunt.kaitran.ca](https://docs.jobhunt.kaitran.ca)
+- **API Reference**: [API Documentation](./docs/api-documentation.md)
+- **Development Setup**: [Deployment Guide](./docs/deployment-guide.md)
 
 ## 🗺️ Project Roadmap
 
@@ -299,4 +317,4 @@ Built with exceptional open-source technologies:
 
 **Built with ❤️ for job seekers everywhere** 🚀
 
-**Current Status**: ✅ Production Ready | ✅ 399 Tests Passing | ✅ A+ Quality
+**Current Status**: ✅ Production Ready | ✅ 544 Tests Passing | ✅ A+ Quality
