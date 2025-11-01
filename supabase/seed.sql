@@ -33,8 +33,9 @@ VALUES (
     '00000000-0000-0000-0000-000000000001'::uuid,
     '00000000-0000-0000-0000-000000000000'::uuid,
     'test@jobhunt.dev',
-    -- Password: TestUser123! (hashed with bcrypt)
-    '$2a$10$KqBvGvXfJKvLKz0w7YqKr.yVZQxkMQmKvZQxGKqYzKqNzKqLKqMKq',
+    -- Password: TestUser123! (bcrypt hashed, 10 rounds)
+    -- Generated using: python3 -c "import bcrypt; print(bcrypt.hashpw(b'TestUser123!', bcrypt.gensalt(10)).decode())"
+    '$2b$10$RWauqqeSmsWB/gzojypNUOz4xIdK4DA9ofApgDq5ETjL7yClcFomq',
     now(),
     now(),
     now(),
