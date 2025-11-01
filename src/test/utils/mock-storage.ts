@@ -325,9 +325,8 @@ export function setupMockStorage(): void {
     }
 
     values(): IterableIterator<MockFormDataEntryValue> {
-      return Array.from(this.data.values())
-        .map(entry => entry.value)
-        [Symbol.iterator]()
+      const values = Array.from(this.data.values()).map(entry => entry.value)
+      return values[Symbol.iterator]()
     }
 
     // Test utility
