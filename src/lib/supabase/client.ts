@@ -1,8 +1,14 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserClient } from './singleton'
 
+/**
+ * Backward compatibility export
+ * @deprecated Use getBrowserClient() from './singleton' instead
+ */
 export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  return getBrowserClient()
 }
+
+/**
+ * Recommended: Use the singleton pattern
+ */
+export { getBrowserClient }

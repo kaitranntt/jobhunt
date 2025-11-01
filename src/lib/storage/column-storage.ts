@@ -162,7 +162,7 @@ export class ColumnStorageManager {
     this.storage.customColumns.push(customColumn)
 
     const columnConfig: ColumnConfig = {
-      id: customColumn.id as any,
+      id: customColumn.id as ColumnType,
       name: customColumn.name,
       description: customColumn.description,
       icon: customColumn.icon,

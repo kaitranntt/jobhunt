@@ -125,7 +125,7 @@ export function ApplicationDetail({
                     location: application.location ?? '',
                     salary_range: application.salary_range ?? '',
                     status: application.status,
-                    date_applied: application.date_applied,
+                    date_applied: application.date_applied ?? '',
                     notes: application.notes ?? '',
                   }}
                   isLoading={isSubmitting}

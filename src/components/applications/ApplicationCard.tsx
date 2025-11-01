@@ -90,7 +90,7 @@ export function ApplicationCard({
           <div className="flex items-center gap-2">
             <span className="text-sm text-label-secondary font-medium">Applied</span>
             <span className="text-sm text-label-secondary">
-              {formatDate(application.date_applied)}
+              {application.date_applied ? formatDate(application.date_applied) : 'No date'}
             </span>
           </div>
         </div>

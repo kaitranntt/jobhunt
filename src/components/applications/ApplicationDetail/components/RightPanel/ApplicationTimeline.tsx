@@ -31,7 +31,7 @@ export function ApplicationTimeline({ application, className }: ApplicationTimel
       type: 'status_change',
       title: 'Application Created',
       description: `You added a new job application for ${application.job_title} at ${application.company_name}`,
-      timestamp: new Date(application.date_applied),
+      timestamp: application.date_applied ? new Date(application.date_applied) : new Date(),
       icon: Plus,
     })
 
@@ -42,7 +42,7 @@ export function ApplicationTimeline({ application, className }: ApplicationTimel
         type: 'status_change',
         title: `Status: ${application.status.replace('_', ' ')}`,
         description: `Application status updated to ${application.status.replace('_', ' ')}`,
-        timestamp: new Date(application.date_applied),
+        timestamp: application.date_applied ? new Date(application.date_applied) : new Date(),
         icon: CheckCircle,
       })
     }

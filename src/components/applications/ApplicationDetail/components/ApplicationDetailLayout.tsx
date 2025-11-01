@@ -105,11 +105,13 @@ export function ApplicationDetailLayout({
           <div className="flex items-center gap-2">
             <span className="text-label-tertiary">📅</span>
             <span className="text-label-primary font-medium">
-              {new Date(application.date_applied).toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              })}
+              {application.date_applied
+                ? new Date(application.date_applied).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                : 'No date applied'}
             </span>
           </div>
 
