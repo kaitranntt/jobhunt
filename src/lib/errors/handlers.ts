@@ -45,14 +45,32 @@ export class ErrorLogger {
       }),
     }
 
+    // Safe JSON serializer that handles circular references
+    const safeStringify = (obj: unknown): string => {
+      const seen = new WeakSet()
+      return JSON.stringify(
+        obj,
+        (_key, value) => {
+          if (typeof value === 'object' && value !== null) {
+            if (seen.has(value)) {
+              return '[Circular Reference]'
+            }
+            seen.add(value)
+          }
+          return value
+        },
+        2
+      )
+    }
+
     // Console output for development
     if (process.env.NODE_ENV === 'development') {
-      console.error('[ERROR]', JSON.stringify(errorInfo, null, 2))
+      console.error('[ERROR]', safeStringify(errorInfo))
     } else {
       // Production logging (can be extended to external logging services)
       console.error(
         '[ERROR]',
-        JSON.stringify({
+        safeStringify({
           timestamp,
           message: errorInfo.message,
           code: errorInfo.code,
