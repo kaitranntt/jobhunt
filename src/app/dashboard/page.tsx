@@ -62,13 +62,14 @@ export default function DashboardPage() {
         if (authError || !currentUser) {
           console.error('Authentication error:', authError)
           setError('Authentication required. Please log in.')
-          return
+          setIsLoading(false)
+          return // Early return - do not proceed to load applications
         }
 
         // Set user information
         setUser(currentUser)
 
-        // Load applications
+        // Load applications (only executes if user is authenticated)
         const apps = await getApplicationsAction()
         setApplications(apps)
         setFilteredApplications(apps)

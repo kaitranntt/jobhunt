@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { NavBar } from '@/components/layout/NavBar'
 import { AnimatedBackground } from '@/components/layout/AnimatedBackground'
+import { devLoginAsTestUser, TEST_USER } from '@/lib/auth/dev-login'
 
 function LoginForm() {
   const router = useRouter()
@@ -46,6 +47,25 @@ function LoginForm() {
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDevLogin = async () => {
+    setError('')
+    setLoading(true)
+
+    try {
+      const success = await devLoginAsTestUser()
+      if (success) {
+        router.push('/dashboard')
+        router.refresh()
+      } else {
+        setError('Dev login failed. Check console for details.')
+      }
+    } catch (err) {
+      setError('Dev login error: ' + (err instanceof Error ? err.message : 'Unknown error'))
     } finally {
       setLoading(false)
     }
@@ -103,6 +123,32 @@ function LoginForm() {
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
+
+          {process.env.NODE_ENV === 'development' && (
+            <div className="space-y-3">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-muted"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Development</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleDevLogin}
+                disabled={loading}
+                className="w-full rounded-md border border-dashed border-brand-primary/50 bg-brand-primary/5 px-4 py-2 text-sm font-medium text-brand-primary hover:bg-brand-primary/10 disabled:opacity-50"
+              >
+                🚀 Quick Login as Test User
+              </button>
+
+              <p className="text-center text-xs text-muted-foreground">
+                {TEST_USER.email} / {TEST_USER.password}
+              </p>
+            </div>
+          )}
 
           <p className="text-center text-sm text-foreground">
             Don&apos;t have an account?{' '}
