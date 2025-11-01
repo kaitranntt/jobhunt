@@ -6,6 +6,16 @@
 import { ColumnStorageManager } from '@/lib/storage/column-storage'
 import type { CreateColumnData, UpdateColumnData } from '@/lib/types/column.types'
 
+// Type for singleton class with private instance property (for test manipulation only)
+export interface SingletonClass {
+  instance: ColumnStorageManager | null
+}
+
+// Type for manager with test cleanup function
+export interface ManagerWithCleanup extends ColumnStorageManager {
+  _testCleanup?: () => void
+}
+
 /**
  * Creates a completely isolated ColumnStorageManager instance for testing
  * This ensures no state leakage between tests by using a simple in-memory approach
@@ -15,8 +25,9 @@ export function createIsolatedStorageManager(): ColumnStorageManager {
   resetLocalStorage()
 
   // Reset singleton completely before creating new instance
-  const originalInstance = (ColumnStorageManager as any).instance
-  ;(ColumnStorageManager as any).instance = null
+  const SingletonManager = ColumnStorageManager as unknown as SingletonClass
+  const originalInstance = SingletonManager.instance
+  SingletonManager.instance = null
 
   // Clear localStorage to ensure clean state
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -24,15 +35,15 @@ export function createIsolatedStorageManager(): ColumnStorageManager {
   }
 
   // Create new instance
-  const manager = ColumnStorageManager.getInstance()
+  const manager = ColumnStorageManager.getInstance() as ManagerWithCleanup
 
   // Force it to reset to defaults immediately
   manager._testReset()
 
   // Store cleanup function on the manager
-  ;(manager as any)._testCleanup = () => {
+  manager._testCleanup = () => {
     // Reset singleton to original
-    ;(ColumnStorageManager as any).instance = originalInstance
+    SingletonManager.instance = originalInstance
 
     // Clear localStorage completely
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -53,20 +64,21 @@ export function createTestContext(): {
   storageManager: ColumnStorageManager
   cleanup: () => void
 } {
-  const originalInstance = (ColumnStorageManager as any).instance
+  const SingletonManager = ColumnStorageManager as unknown as SingletonClass
+  const originalInstance = SingletonManager.instance
 
   // Clear localStorage and reset singleton
   if (typeof window !== 'undefined') {
     localStorage.clear()
   }
-  ;(ColumnStorageManager as any).instance = null
+  SingletonManager.instance = null
 
   const storageManager = ColumnStorageManager.getInstance()
   storageManager.resetToDefaults()
 
   const cleanup = () => {
     // Restore original state
-    ;(ColumnStorageManager as any).instance = originalInstance
+    SingletonManager.instance = originalInstance
     if (typeof window !== 'undefined') {
       localStorage.clear()
     }
