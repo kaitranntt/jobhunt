@@ -17,8 +17,11 @@ vi.mock('next/navigation', () => ({
 
 // Mock Button component to avoid ref issues
 vi.mock('@/components/ui/button', () => ({
-  Button: React.forwardRef(({ children, className, ...props }: any, ref: any) => (
-    <button className={className} ref={ref} {...props} data-testid="button">
+  Button: React.forwardRef<
+    HTMLButtonElement,
+    React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }
+  >(({ children, className, ...props }, ref) => (
+    <button className={className || ''} ref={ref} {...props} data-testid="button">
       {children}
     </button>
   )),

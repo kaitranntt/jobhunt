@@ -8,6 +8,7 @@ import type { ApplicationFormData } from '@/lib/schemas/application.schema'
 const createMockApplication = (overrides?: Partial<Application>): Application => ({
   id: '123e4567-e89b-12d3-a456-426614174000',
   user_id: 'user-123',
+  company_id: null,
   company_name: 'TechCorp Inc',
   job_title: 'Senior Software Engineer',
   job_url: 'https://example.com/job',
@@ -18,8 +19,8 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
   notes: 'Great opportunity',
   job_description:
     '<p>We are looking for a Senior Software Engineer to join our team. You will work on cutting-edge technologies and help us build amazing products.</p>',
-  source: 'external',
   company_logo_url: null,
+  source: 'external',
   created_at: '2025-10-01T10:00:00Z',
   updated_at: '2025-10-01T10:00:00Z',
   ...overrides,

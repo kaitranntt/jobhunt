@@ -14,12 +14,16 @@ const mockApplications: Application[] = [
   {
     id: '1',
     user_id: 'user-1',
+    company_id: null,
     company_name: 'Tech Corp',
     job_title: 'Software Engineer',
     status: 'applied',
     job_url: 'https://techcorp.com/jobs/123',
     location: 'San Francisco, CA',
     salary_range: '$120k - $180k',
+    job_description: null,
+    company_logo_url: null,
+    source: 'manual',
     notes: 'Great company culture',
     date_applied: '2025-10-01',
     created_at: '2025-10-01T10:00:00Z',
@@ -42,12 +46,18 @@ const createMockSupabaseClient = () => {
   return {
     from: vi.fn(() => ({
       select: vi.fn().mockReturnThis(),
-      order: vi.fn().mockReturnValue(mockData),
+      order: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
       single: vi.fn().mockReturnValue(mockSingleData),
       insert: vi.fn().mockReturnThis(),
       update: vi.fn().mockReturnThis(),
       delete: vi.fn().mockReturnThis(),
+      range: vi.fn().mockReturnThis(),
+      or: vi.fn().mockReturnThis(),
+      gte: vi.fn().mockReturnThis(),
+      lte: vi.fn().mockReturnThis(),
+      ilike: vi.fn().mockReturnThis(),
+      then: vi.fn(resolve => resolve(mockData)),
     })),
     auth: {
       getUser: vi.fn().mockResolvedValue({
@@ -83,12 +93,16 @@ describe('Applications API', () => {
   describe('createApplication', () => {
     it('should create a new application', async () => {
       const newApp = {
+        company_id: null,
         company_name: 'New Corp',
         job_title: 'Developer',
         status: 'wishlist' as const,
         job_url: null,
         location: null,
         salary_range: null,
+        job_description: null,
+        company_logo_url: null,
+        source: 'manual',
         notes: null,
         date_applied: '2025-10-02',
       }

@@ -2,17 +2,25 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { CompanyLogo } from '../company-logo'
 
+// Partial mock of HTMLImageElement for testing
+type MockHTMLImageElement = Pick<
+  HTMLImageElement,
+  'onload' | 'onerror' | 'src' | 'tagName' | 'nodeName' | 'nodeType' | 'parentElement'
+> & {
+  classList: Set<string>
+}
+
 // Mock the Image constructor and document.createElement
-const mockImg = {
-  onload: null as ((this: HTMLImageElement, ev: Event) => any) | null,
-  onerror: null as ((this: HTMLImageElement, ev: Event) => any) | null,
+const mockImg: MockHTMLImageElement = {
+  onload: null,
+  onerror: null,
   src: '',
   tagName: 'IMG',
   nodeName: 'IMG',
   nodeType: 1,
   parentElement: null,
   classList: new Set(),
-} as any
+}
 
 const originalCreateElement = document.createElement
 const originalEnv = process.env
@@ -28,7 +36,7 @@ describe('CompanyLogo', () => {
     vi.clearAllMocks()
     vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
       if (tagName === 'img') {
-        return mockImg as any
+        return mockImg as unknown as HTMLImageElement
       }
       return originalCreateElement.call(document, tagName)
     })
@@ -271,7 +279,7 @@ describe('CompanyLogo', () => {
         vi.clearAllMocks()
         vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
           if (tagName === 'img') {
-            return mockImg as any
+            return mockImg as unknown as HTMLImageElement
           }
           return originalCreateElement.call(document, tagName)
         })
@@ -297,7 +305,7 @@ describe('CompanyLogo', () => {
         vi.clearAllMocks()
         vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
           if (tagName === 'img') {
-            return mockImg as any
+            return mockImg as unknown as HTMLImageElement
           }
           return originalCreateElement.call(document, tagName)
         })
@@ -319,7 +327,7 @@ describe('CompanyLogo', () => {
         vi.clearAllMocks()
         vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
           if (tagName === 'img') {
-            return mockImg as any
+            return mockImg as unknown as HTMLImageElement
           }
           return originalCreateElement.call(document, tagName)
         })
@@ -341,7 +349,7 @@ describe('CompanyLogo', () => {
         vi.clearAllMocks()
         vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
           if (tagName === 'img') {
-            return mockImg as any
+            return mockImg as unknown as HTMLImageElement
           }
           return originalCreateElement.call(document, tagName)
         })

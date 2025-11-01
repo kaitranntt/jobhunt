@@ -9,6 +9,8 @@ import {
   createIsolatedStorageManager,
   expectCleanState,
   testColumnData,
+  type SingletonClass,
+  type ManagerWithCleanup,
 } from '@/test/utils/column-storage-test-utils'
 import type { ColumnType } from '@/lib/types/column.types'
 
@@ -24,12 +26,14 @@ describe('ColumnStorageManager', () => {
     // Complete cleanup after each test
     try {
       // Use the cleanup function if available on the manager
-      if ((storageManager as any)._testCleanup) {
-        ;(storageManager as any)._testCleanup()
+      const managerWithCleanup = storageManager as ManagerWithCleanup
+      if (managerWithCleanup._testCleanup) {
+        managerWithCleanup._testCleanup()
       }
 
       // Reset singleton
-      ;(ColumnStorageManager as any).instance = null
+      const SingletonManager = ColumnStorageManager as unknown as SingletonClass
+      SingletonManager.instance = null
 
       // Clear localStorage completely
       if (typeof window !== 'undefined' && window.localStorage) {
@@ -200,12 +204,12 @@ describe('ColumnStorageManager', () => {
   })
 
   it('should handle invalid import data', () => {
-    // Test with invalid JSON
-    const result = storageManager.importData('invalid json' as any)
+    // Test with invalid JSON - intentionally passing invalid data
+    const result = storageManager.importData('invalid json')
     expect(result).toBe(false)
 
-    // Test with invalid data structure
-    const result2 = storageManager.importData({} as any)
+    // Test with invalid data structure - intentionally passing object instead of string
+    const result2 = storageManager.importData(JSON.stringify({}))
     expect(result2).toBe(false)
 
     // Should still be in clean state
@@ -214,14 +218,15 @@ describe('ColumnStorageManager', () => {
 
   it('should return singleton instance', () => {
     // Clear singleton first
-    const originalInstance = (ColumnStorageManager as any).instance
-    ;(ColumnStorageManager as any).instance = null
+    const SingletonManager = ColumnStorageManager as unknown as SingletonClass
+    const originalInstance = SingletonManager.instance
+    SingletonManager.instance = null
 
     const instance1 = ColumnStorageManager.getInstance()
     const instance2 = ColumnStorageManager.getInstance()
     expect(instance1).toBe(instance2)
 
     // Restore original instance
-    ;(ColumnStorageManager as any).instance = originalInstance
+    SingletonManager.instance = originalInstance
   })
 })
