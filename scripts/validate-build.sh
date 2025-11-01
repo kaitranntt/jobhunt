@@ -80,7 +80,8 @@ else
 fi
 
 # Check for 'any' type usage (excluding test files and type definitions)
-if git grep -n ": any\|<any>\|any\[\]\|Array<any>" -- "*.ts" "*.tsx" | grep -v "\.test\.\|\.d\.ts\|test-utils" > /dev/null 2>&1; then
+# Use word boundaries to avoid false positives like "Company[]" matching "any[]"
+if git grep -n ": any\b\|<any>\|Array<any>\|\bany\[\]" -- "*.ts" "*.tsx" | grep -v "\.test\.\|\.d\.ts\|test-utils" > /dev/null 2>&1; then
     print_status 1 "Found 'any' type usage (should be avoided)"
     echo -e "${YELLOW}   Use proper types instead of 'any'${NC}"
 else
