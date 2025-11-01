@@ -1,7 +1,4 @@
 import { vi } from 'vitest'
-// Note: MockSupabaseClient imported for type compatibility but used through global state
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { MockSupabaseClient } from './test-utils.types'
 
 // Type for auth method responses
 type AuthMethodResponse = {

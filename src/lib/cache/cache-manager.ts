@@ -356,7 +356,7 @@ export class CacheManager {
   /**
    * Memoize function with caching
    */
-  memoize<TArgs extends any[], TReturn>(
+  memoize<TArgs extends unknown[], TReturn>(
     fn: (...args: TArgs) => Promise<TReturn>,
     getKey?: (...args: TArgs) => string,
     options: CacheOptions = {}
