@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { type NextRequest, NextResponse } from 'next/server'
 
+// Force dynamic rendering for auth signout
+export const dynamic = 'force-dynamic'
+
 async function handleSignOut(request: NextRequest) {
   const supabase = await createClient()
 
