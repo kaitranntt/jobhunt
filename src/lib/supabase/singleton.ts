@@ -19,8 +19,8 @@ async function getCookies() {
  * with proper caching and environment-specific optimizations.
  */
 
-// Global cache for client instances
-let serverClientCache: SupabaseClient | null = null
+// Global cache for browser client only
+// NOTE: Server client should NOT be cached as it needs fresh cookies per request
 let browserClientCache: SupabaseClient | null = null
 
 // Environment validation
@@ -65,37 +65,32 @@ export function getBrowserClient(): SupabaseClient {
 }
 
 /**
- * Get cached server client for server-side operations
+ * Get server client for server-side operations
+ * IMPORTANT: Creates a fresh client per request with current cookies.
+ * Do NOT cache this globally as it would share auth sessions between users.
  */
 export async function getServerClient(): Promise<SupabaseClient> {
-  if (!serverClientCache) {
-    const env = validateEnvironmentVariables()
-    const cookieStore = await getCookies()
+  const env = validateEnvironmentVariables()
+  const cookieStore = await getCookies()
 
-    serverClientCache = createServerClient(
-      env.NEXT_PUBLIC_SUPABASE_URL,
-      env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet: Array<{ name: string; value: string } & Record<string, unknown>>) {
-            try {
-              cookiesToSet.forEach(({ name, value, ...options }) =>
-                cookieStore.set(name, value, Object.keys(options).length > 0 ? options : undefined)
-              )
-            } catch {
-              // The `setAll` method was called from a Server Component.
-              // This can be ignored if you have middleware refreshing
-              // user sessions.
-            }
-          },
-        },
-      }
-    )
-  }
-  return serverClientCache
+  return createServerClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll()
+      },
+      setAll(cookiesToSet: Array<{ name: string; value: string } & Record<string, unknown>>) {
+        try {
+          cookiesToSet.forEach(({ name, value, ...options }) =>
+            cookieStore.set(name, value, Object.keys(options).length > 0 ? options : undefined)
+          )
+        } catch {
+          // The `setAll` method was called from a Server Component.
+          // This can be ignored if you have middleware refreshing
+          // user sessions.
+        }
+      },
+    },
+  })
 }
 
 /**
@@ -147,10 +142,10 @@ export async function getServiceRoleClient(): Promise<SupabaseClient> {
 }
 
 /**
- * Reset client cache (useful for testing or cache invalidation)
+ * Reset browser client cache (useful for testing or cache invalidation)
+ * Note: Server client is never cached, so only browser client needs resetting
  */
 export function resetClientCache(): void {
-  serverClientCache = null
   browserClientCache = null
 }
 
