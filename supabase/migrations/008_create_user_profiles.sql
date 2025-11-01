@@ -3,6 +3,27 @@
 -- Follows existing migration patterns and RLS security model
 
 -- ============================================================================
+-- UUID EXTENSION CHECK
+-- ============================================================================
+
+-- Enable UUID extension for primary key generation
+-- Create extension in public schema to ensure uuid_generate_v4() is accessible
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA public;
+
+-- Set search path to include extensions schema
+SET search_path TO public, extensions;
+
+-- Validate UUID function is available
+DO $$
+BEGIN
+    -- Test UUID generation to ensure function is accessible
+    PERFORM uuid_generate_v4();
+    RAISE NOTICE '✅ UUID function uuid_generate_v4() is accessible';
+EXCEPTION WHEN undefined_function THEN
+    RAISE EXCEPTION '❌ UUID function uuid_generate_v4() is not accessible. Check extension installation and search_path.';
+END $$;
+
+-- ============================================================================
 -- USER_PROFILES TABLE CREATION
 -- ============================================================================
 
