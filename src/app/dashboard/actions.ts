@@ -70,6 +70,18 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
   // Validate form data
   const validatedData = applicationFormSchema.parse(formData)
 
+  // Get the max position for the target status to place new card at the end
+  const { data: existingApps } = await supabase
+    .from('applications')
+    .select('position')
+    .eq('status', validatedData.status)
+    .eq('user_id', user.id)
+    .order('position', { ascending: false })
+    .limit(1)
+
+  const maxPosition = existingApps?.[0]?.position || 0
+  const newPosition = maxPosition + 1
+
   const applicationData: ApplicationInsert = {
     company_name: validatedData.company_name,
     job_title: validatedData.job_title,
@@ -79,7 +91,7 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
     status: validatedData.status,
     date_applied: validatedData.date_applied,
     notes: validatedData.notes || null,
-    position: 1, // Default position for new applications
+    position: newPosition,
   }
 
   try {

@@ -347,6 +347,11 @@ export function KanbanBoardV3({
       // For now, custom columns will be empty unless we add custom status mapping
     })
 
+    // Sort each column's applications by position
+    Object.keys(grouped).forEach(columnId => {
+      grouped[columnId].sort((a, b) => a.position - b.position)
+    })
+
     return grouped
   }, [optimisticApplications, columns])
 
