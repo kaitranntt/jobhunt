@@ -61,6 +61,7 @@ interface ApplicationFormProps {
   onCancel?: () => void
   initialData?: Partial<ApplicationFormData>
   isLoading?: boolean
+  submitButtonText?: string
 }
 
 const STATUS_OPTIONS: { value: ApplicationStatus; label: string }[] = [
@@ -83,6 +84,7 @@ export default function ApplicationForm({
   onCancel,
   initialData,
   isLoading = false,
+  submitButtonText = 'Submit Application',
 }: ApplicationFormProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -305,7 +307,11 @@ export default function ApplicationForm({
             </Button>
           )}
           <Button type="submit" variant="glass" disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Submit Application'}
+            {isLoading
+              ? submitButtonText === 'Save Changes'
+                ? 'Saving...'
+                : 'Submitting...'
+              : submitButtonText}
           </Button>
         </div>
       </form>

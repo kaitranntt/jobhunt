@@ -501,7 +501,8 @@ describe('DashboardPage', () => {
       await user.clear(jobTitleInput)
       await user.type(jobTitleInput, 'Senior Software Engineer')
 
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // In edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
       await waitFor(() => {
@@ -760,13 +761,14 @@ describe('DashboardPage', () => {
       await user.clear(jobTitleInput)
       await user.type(jobTitleInput, 'Senior Software Engineer')
 
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // In edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
-      // Should show loading state
+      // Should show loading state - in edit mode should show "Saving..."
       await waitFor(
         () => {
-          expect(screen.getByText(/submitting/i)).toBeInTheDocument()
+          expect(screen.getByText(/saving/i)).toBeInTheDocument()
         },
         { timeout: 1000 }
       )

@@ -317,8 +317,8 @@ describe('ApplicationDetail', () => {
       await user.clear(companyInput)
       await user.type(companyInput, 'Updated Corp')
 
-      // Submit form
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // Submit form - in edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
       // Should call onUpdate with application ID and updated data
@@ -354,12 +354,12 @@ describe('ApplicationDetail', () => {
       const editButtons = screen.getAllByRole('button', { name: /edit/i })
       await user.click(editButtons[0])
 
-      // Submit form
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // Submit form - in edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
-      // Should show loading state
-      expect(screen.getByText(/submitting/i)).toBeInTheDocument()
+      // Should show loading state - in edit mode should show "Saving..."
+      expect(screen.getByText(/saving/i)).toBeInTheDocument()
     })
 
     it('returns to view mode after successful submission', async () => {
@@ -379,8 +379,8 @@ describe('ApplicationDetail', () => {
       const editButtons = screen.getAllByRole('button', { name: /edit/i })
       await user.click(editButtons[0])
 
-      // Submit form
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // Submit form - in edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
       // Should return to view mode
@@ -411,8 +411,8 @@ describe('ApplicationDetail', () => {
       const editButtons = screen.getAllByRole('button', { name: /edit/i })
       await user.click(editButtons[0])
 
-      // Submit form
-      const submitButton = screen.getByRole('button', { name: /submit/i })
+      // Submit form - in edit mode, button should say "Save Changes"
+      const submitButton = screen.getByRole('button', { name: /save changes/i })
       await user.click(submitButton)
 
       // Should show error message

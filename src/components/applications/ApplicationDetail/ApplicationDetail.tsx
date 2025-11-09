@@ -118,6 +118,7 @@ export function ApplicationDetail({
               <div className="flex-1 overflow-y-auto p-6">
                 <ApplicationForm
                   onSubmit={handleFormSubmit}
+                  onCancel={handleCancelEdit}
                   initialData={{
                     company_name: application.company_name,
                     job_title: application.job_title,
@@ -129,29 +130,8 @@ export function ApplicationDetail({
                     notes: application.notes ?? '',
                   }}
                   isLoading={isSubmitting}
+                  submitButtonText="Save Changes"
                 />
-              </div>
-
-              {/* Form Actions */}
-              <div className="glass-light border-t border-label-quaternary/20 p-6">
-                <div className="flex justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={handleCancelEdit}
-                    disabled={isSubmitting}
-                    className="px-4 py-2 glass-ultra border border-label-quaternary/30 rounded-glass-sm text-label-primary hover:glass-light transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    form="application-form"
-                    disabled={isSubmitting}
-                    className="px-4 py-2 bg-copper text-white rounded-glass-sm hover:bg-copper/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? 'Saving...' : 'Save Changes'}
-                  </button>
-                </div>
               </div>
             </div>
           ) : (
