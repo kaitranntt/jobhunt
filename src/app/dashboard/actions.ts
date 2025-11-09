@@ -10,6 +10,8 @@ import {
   updateApplication,
   deleteApplication,
   getApplications,
+  reorderApplicationsInColumn,
+  updateApplicationPosition,
 } from '@/lib/api/applications'
 
 /**
@@ -68,6 +70,18 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
   // Validate form data
   const validatedData = applicationFormSchema.parse(formData)
 
+  // Get the max position for the target status to place new card at the end
+  const { data: existingApps } = await supabase
+    .from('applications')
+    .select('position')
+    .eq('status', validatedData.status)
+    .eq('user_id', user.id)
+    .order('position', { ascending: false })
+    .limit(1)
+
+  const maxPosition = existingApps?.[0]?.position || 0
+  const newPosition = maxPosition + 1
+
   const applicationData: ApplicationInsert = {
     company_name: validatedData.company_name,
     job_title: validatedData.job_title,
@@ -77,6 +91,7 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
     status: validatedData.status,
     date_applied: validatedData.date_applied,
     notes: validatedData.notes || null,
+    position: newPosition,
   }
 
   try {
@@ -191,5 +206,64 @@ export async function updateApplicationStatusAction(
       console.error('Failed to update application status:', error)
     }
     throw new Error('Failed to update application status')
+  }
+}
+
+/**
+ * Reorder applications within a column
+ * Updates positions for multiple applications in bulk
+ */
+export async function reorderApplicationsAction(
+  updates: Array<{ id: string; position: number }>
+): Promise<void> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  try {
+    await reorderApplicationsInColumn(supabase, updates)
+    revalidatePath('/dashboard')
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to reorder applications:', error)
+    }
+    throw new Error('Failed to reorder applications')
+  }
+}
+
+/**
+ * Update application position and optionally status (for drag-and-drop)
+ * Used for both same-column reordering and cross-column moves
+ */
+export async function updateApplicationPositionAction(
+  id: string,
+  position: number,
+  status?: ApplicationStatus
+): Promise<Application> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  try {
+    const updatedApplication = await updateApplicationPosition(supabase, id, position, status)
+    revalidatePath('/dashboard')
+    return updatedApplication
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to update application position:', error)
+    }
+    throw new Error('Failed to update application position')
   }
 }

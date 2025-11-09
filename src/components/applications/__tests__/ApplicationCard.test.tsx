@@ -14,6 +14,7 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
   status: 'applied',
   date_applied: '2025-10-01',
   notes: 'Great opportunity',
+  position: 1,
   created_at: '2025-10-01T10:00:00Z',
   updated_at: '2025-10-01T10:00:00Z',
   ...overrides,

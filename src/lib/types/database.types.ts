@@ -26,6 +26,7 @@ export interface Application {
   status: ApplicationStatus
   date_applied: string
   notes: string | null
+  position: number
   created_at: string
   updated_at: string
 }

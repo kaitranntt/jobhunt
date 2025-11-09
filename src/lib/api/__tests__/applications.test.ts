@@ -22,6 +22,7 @@ const mockApplications: Application[] = [
     salary_range: '$120k - $180k',
     notes: 'Great company culture',
     date_applied: '2025-10-01',
+    position: 1,
     created_at: '2025-10-01T10:00:00Z',
     updated_at: '2025-10-01T10:00:00Z',
   },
@@ -39,16 +40,25 @@ const createMockSupabaseClient = () => {
     error: null,
   }
 
-  return {
-    from: vi.fn(() => ({
+  const createQueryBuilder = () => {
+    const builder = {
       select: vi.fn().mockReturnThis(),
-      order: vi.fn().mockReturnValue(mockData),
+      order: vi.fn().mockReturnThis(),
       eq: vi.fn().mockReturnThis(),
       single: vi.fn().mockReturnValue(mockSingleData),
       insert: vi.fn().mockReturnThis(),
       update: vi.fn().mockReturnThis(),
       delete: vi.fn().mockReturnThis(),
-    })),
+      // Make the query builder thenable so it can be awaited
+      then: (resolve: (value: typeof mockData) => void) => {
+        resolve(mockData)
+      },
+    }
+    return builder
+  }
+
+  return {
+    from: vi.fn(() => createQueryBuilder()),
     auth: {
       getUser: vi.fn().mockResolvedValue({
         data: { user: { id: 'user-1' } },
@@ -91,6 +101,7 @@ describe('Applications API', () => {
         salary_range: null,
         notes: null,
         date_applied: '2025-10-02',
+        position: 1,
       }
 
       const result = await createApplication(mockSupabase, newApp)

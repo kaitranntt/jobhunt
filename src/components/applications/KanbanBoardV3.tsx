@@ -12,7 +12,12 @@ import {
   closestCorners,
   useDroppable,
 } from '@dnd-kit/core'
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ChevronDown, ChevronRight, Settings, Plus, Search } from 'lucide-react'
 import { ApplicationCard } from './ApplicationCard'
@@ -26,6 +31,7 @@ import type { ColumnConfig } from '@/lib/types/column.types'
 import { columnStorage } from '@/lib/storage/column-storage'
 import { getColumnIcon } from '@/lib/utils/column-icons'
 import { useHorizontalScroll } from '@/hooks/use-horizontal-scroll'
+import { reorderApplicationsAction } from '@/app/dashboard/actions'
 
 interface KanbanBoardV3Props {
   applications: Application[]
@@ -341,6 +347,11 @@ export function KanbanBoardV3({
       // For now, custom columns will be empty unless we add custom status mapping
     })
 
+    // Sort each column's applications by position
+    Object.keys(grouped).forEach(columnId => {
+      grouped[columnId].sort((a, b) => a.position - b.position)
+    })
+
     return grouped
   }, [optimisticApplications, columns])
 
@@ -367,7 +378,12 @@ export function KanbanBoardV3({
     }
 
     const applicationId = active.id as string
-    const dropTargetId = over.id as string
+
+    // Determine the drop target - could be a card or a column
+    // When dragging over a card, over.data.current.applicationId exists
+    // When dragging over empty column space, over.id is the column ID
+    const overData = over.data?.current as { applicationId?: string } | undefined
+    const dropTargetId = overData?.applicationId || (over.id as string)
 
     // Find the application being dragged
     const application = optimisticApplications.find(app => app.id === applicationId)
@@ -418,10 +434,58 @@ export function KanbanBoardV3({
     // Use the first status in the target column
     const newStatus = targetStatuses[0]
 
+    // Handle same-column reordering (NEW LOGIC)
     if (application.status === newStatus) {
+      // Get applications in the current column
+      const columnApps = columnApplications[targetColumn.id] || []
+
+      // Find old and new indices
+      const oldIndex = columnApps.findIndex(app => app.id === applicationId)
+      let newIndex = columnApps.findIndex(app => app.id === dropTargetId)
+
+      // If dropping on the column itself (not on a card), move to end
+      if (newIndex === -1 && dropTargetId === targetColumn.id) {
+        newIndex = columnApps.length - 1
+      }
+
+      // If indices are the same or invalid, no reordering needed
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
+        return
+      }
+
+      // Reorder the applications array
+      const reorderedApps = arrayMove(columnApps, oldIndex, newIndex)
+
+      // Create position updates
+      const positionUpdates = reorderedApps.map((app, index) => ({
+        id: app.id,
+        position: index + 1,
+      }))
+
+      // Optimistically update the UI
+      const updatedApplications = optimisticApplications.map(app => {
+        const update = positionUpdates.find(u => u.id === app.id)
+        return update ? { ...app, position: update.position } : app
+      })
+      setOptimisticApplications(updatedApplications)
+
+      // Announce reordering for screen readers
+      setAnnouncement(`${application.company_name} reordered within ${targetColumn.name}`)
+
+      try {
+        // Persist the position changes
+        await reorderApplicationsAction(positionUpdates)
+      } catch (error) {
+        // Rollback on error
+        console.error('Failed to reorder applications:', error)
+        setOptimisticApplications(applications)
+        setAnnouncement(`Failed to reorder ${application.company_name}. Please try again.`)
+      }
+
       return
     }
 
+    // Handle cross-column move (EXISTING LOGIC)
     const oldStatus = application.status
 
     // Optimistic update: Update UI immediately
