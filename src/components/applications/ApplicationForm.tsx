@@ -300,7 +300,7 @@ export default function ApplicationForm({
 
         <div className="flex justify-end gap-3 pt-4 border-t border-label-quaternary">
           {onCancel && (
-            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
+            <Button type="button" variant="glass" onClick={onCancel} disabled={isLoading}>
               Cancel
             </Button>
           )}
