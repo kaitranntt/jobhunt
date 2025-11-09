@@ -431,10 +431,15 @@ export function KanbanBoardV3({
 
       // Find old and new indices
       const oldIndex = columnApps.findIndex(app => app.id === applicationId)
-      const newIndex = columnApps.findIndex(app => app.id === dropTargetId)
+      let newIndex = columnApps.findIndex(app => app.id === dropTargetId)
+
+      // If dropping on the column itself (not on a card), move to end
+      if (newIndex === -1 && dropTargetId === targetColumn.id) {
+        newIndex = columnApps.length - 1
+      }
 
       // If indices are the same or invalid, no reordering needed
-      if (oldIndex === -1 || oldIndex === newIndex) {
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) {
         return
       }
 
