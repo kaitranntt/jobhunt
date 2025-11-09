@@ -13,6 +13,7 @@ function renderWithTheme(ui: React.ReactElement) {
 
 describe('ApplicationForm', () => {
   const mockOnSubmit = vi.fn()
+  const mockOnCancel = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -400,6 +401,50 @@ describe('ApplicationForm', () => {
 
       await user.tab()
       expect(jobTitleInput).toHaveFocus()
+    })
+  })
+
+  describe('Cancel Button', () => {
+    it('should not render cancel button when onCancel is not provided', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} />)
+
+      expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument()
+    })
+
+    it('should render cancel button when onCancel is provided', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />)
+
+      expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument()
+    })
+
+    it('should call onCancel when cancel button is clicked', async () => {
+      const user = userEvent.setup()
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />)
+
+      const cancelButton = screen.getByRole('button', { name: /cancel/i })
+      await user.click(cancelButton)
+
+      expect(mockOnCancel).toHaveBeenCalledTimes(1)
+      expect(mockOnSubmit).not.toHaveBeenCalled()
+    })
+
+    it('should disable cancel button when loading', () => {
+      renderWithTheme(
+        <ApplicationForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} isLoading={true} />
+      )
+
+      const cancelButton = screen.getByRole('button', { name: /cancel/i })
+      expect(cancelButton).toBeDisabled()
+    })
+
+    it('should render cancel and submit buttons on the same row', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} />)
+
+      const cancelButton = screen.getByRole('button', { name: /cancel/i })
+      const submitButton = screen.getByRole('button', { name: /submit/i })
+
+      // Both buttons should be in the same parent container
+      expect(cancelButton.parentElement).toBe(submitButton.parentElement)
     })
   })
 

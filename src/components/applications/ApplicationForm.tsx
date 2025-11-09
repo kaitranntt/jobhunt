@@ -58,6 +58,7 @@ type FormData = z.infer<typeof formSchema>
 
 interface ApplicationFormProps {
   onSubmit: (_data: ApplicationFormData) => void
+  onCancel?: () => void
   initialData?: Partial<ApplicationFormData>
   isLoading?: boolean
 }
@@ -79,6 +80,7 @@ const STATUS_OPTIONS: { value: ApplicationStatus; label: string }[] = [
 
 export default function ApplicationForm({
   onSubmit,
+  onCancel,
   initialData,
   isLoading = false,
 }: ApplicationFormProps) {
@@ -296,12 +298,13 @@ export default function ApplicationForm({
           />
         </div>
 
-        <div className="flex justify-end gap-4 pt-4 border-t border-label-quaternary">
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="glass-medium rounded-glass-sm hover:glass-heavy"
-          >
+        <div className="flex justify-end gap-3 pt-4 border-t border-label-quaternary">
+          {onCancel && (
+            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
+              Cancel
+            </Button>
+          )}
+          <Button type="submit" variant="glass" disabled={isLoading}>
             {isLoading ? 'Submitting...' : 'Submit Application'}
           </Button>
         </div>

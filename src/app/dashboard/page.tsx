@@ -289,13 +289,11 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <ApplicationForm onSubmit={handleCreateApplication} isLoading={isCreating} />
-
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button variant="outline" onClick={handleCloseNewModal} disabled={isCreating}>
-                Cancel
-              </Button>
-            </div>
+            <ApplicationForm
+              onSubmit={handleCreateApplication}
+              onCancel={handleCloseNewModal}
+              isLoading={isCreating}
+            />
           </DialogContent>
         </Dialog>
 
