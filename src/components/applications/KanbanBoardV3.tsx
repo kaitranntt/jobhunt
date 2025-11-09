@@ -376,12 +376,37 @@ export function KanbanBoardV3({
       return
     }
 
-    // For now, we'll only handle moving between core columns
-    // Custom column handling will be implemented in the next iteration
-    let targetStatuses: ApplicationStatus[] = []
+    // Determine the target column
+    // The dropTargetId could be either a column ID or an application ID (when dropping onto another card)
+    let targetColumn = columns.find(col => col.id === dropTargetId)
 
-    const targetColumn = columns.find(col => col.id === dropTargetId)
-    if (targetColumn && targetColumn.statuses) {
+    if (!targetColumn) {
+      // If not a column, it might be an application ID - find which column contains that application
+      const targetApplication = optimisticApplications.find(app => app.id === dropTargetId)
+      if (targetApplication) {
+        // Find the column that contains this application's status
+        targetColumn = columns.find(col =>
+          col.statuses && col.statuses.includes(targetApplication.status)
+        )
+      }
+    }
+
+    // If we still can't find a target column, use the over.data.column if available
+    if (!targetColumn && over.data?.current) {
+      const overData = over.data.current as Record<string, unknown>
+      if (overData.column) {
+        targetColumn = overData.column as ColumnConfig
+      }
+    }
+
+    // If we still can't determine the target column, abort
+    if (!targetColumn) {
+      return
+    }
+
+    // Get the target statuses
+    let targetStatuses: ApplicationStatus[] = []
+    if (targetColumn.statuses) {
       targetStatuses = targetColumn.statuses
     }
 
