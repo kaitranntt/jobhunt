@@ -448,6 +448,35 @@ describe('ApplicationForm', () => {
     })
   })
 
+  describe('Custom Submit Button Text', () => {
+    it('should use default submit button text when submitButtonText is not provided', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} />)
+
+      expect(screen.getByRole('button', { name: /submit application/i })).toBeInTheDocument()
+    })
+
+    it('should use custom submit button text when provided', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} submitButtonText="Save Changes" />)
+
+      expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: /submit application/i })).not.toBeInTheDocument()
+    })
+
+    it('should show custom loading text based on submitButtonText', () => {
+      renderWithTheme(
+        <ApplicationForm onSubmit={mockOnSubmit} submitButtonText="Save Changes" isLoading={true} />
+      )
+
+      expect(screen.getByRole('button', { name: /saving/i })).toBeInTheDocument()
+    })
+
+    it('should show default loading text when submitButtonText is not provided', () => {
+      renderWithTheme(<ApplicationForm onSubmit={mockOnSubmit} isLoading={true} />)
+
+      expect(screen.getByRole('button', { name: /submitting/i })).toBeInTheDocument()
+    })
+  })
+
   describe('Edge Cases', () => {
     it('should handle empty optional fields correctly', async () => {
       const user = userEvent.setup()
