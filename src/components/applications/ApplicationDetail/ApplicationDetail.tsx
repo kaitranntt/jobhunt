@@ -105,7 +105,7 @@ export function ApplicationDetail({
           )}
 
           {isEditMode ? (
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col h-full overflow-hidden">
               {/* Edit Mode Header */}
               <div className="glass-ultra border-b border-label-quaternary/20 rounded-t-glass-lg p-6 shrink-0">
                 <h2 className="text-2xl font-bold text-label-primary">Edit Application</h2>
@@ -114,24 +114,26 @@ export function ApplicationDetail({
                 </p>
               </div>
 
-              {/* Form Content */}
-              <div className="flex-1 overflow-y-auto p-6">
-                <ApplicationForm
-                  onSubmit={handleFormSubmit}
-                  onCancel={handleCancelEdit}
-                  initialData={{
-                    company_name: application.company_name,
-                    job_title: application.job_title,
-                    job_url: application.job_url ?? '',
-                    location: application.location ?? '',
-                    salary_range: application.salary_range ?? '',
-                    status: application.status,
-                    date_applied: application.date_applied,
-                    notes: application.notes ?? '',
-                  }}
-                  isLoading={isSubmitting}
-                  submitButtonText="Save Changes"
-                />
+              {/* Form Content - Centered with max-width */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="max-w-4xl mx-auto p-6">
+                  <ApplicationForm
+                    onSubmit={handleFormSubmit}
+                    onCancel={handleCancelEdit}
+                    initialData={{
+                      company_name: application.company_name,
+                      job_title: application.job_title,
+                      job_url: application.job_url ?? '',
+                      location: application.location ?? '',
+                      salary_range: application.salary_range ?? '',
+                      status: application.status,
+                      date_applied: application.date_applied,
+                      notes: application.notes ?? '',
+                    }}
+                    isLoading={isSubmitting}
+                    submitButtonText="Save Changes"
+                  />
+                </div>
               </div>
             </div>
           ) : (
