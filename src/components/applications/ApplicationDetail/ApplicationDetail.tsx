@@ -87,7 +87,12 @@ export function ApplicationDetail({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-full h-full max-w-7xl max-h-[90vh] overflow-hidden p-0 glass-light rounded-glass-lg shadow-glass-dramatic backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)]">
+        <DialogContent
+          className={cn(
+            'w-full h-full max-h-[90vh] overflow-hidden p-0 glass-light rounded-glass-lg shadow-glass-dramatic backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)]',
+            isEditMode ? 'max-w-4xl' : 'max-w-7xl'
+          )}
+        >
           {/* Visually Hidden Title for Accessibility */}
           <VisuallyHidden>
             <DialogTitle>
@@ -114,26 +119,24 @@ export function ApplicationDetail({
                 </p>
               </div>
 
-              {/* Form Content - Centered with max-width */}
-              <div className="flex-1 overflow-y-auto">
-                <div className="max-w-4xl mx-auto p-6">
-                  <ApplicationForm
-                    onSubmit={handleFormSubmit}
-                    onCancel={handleCancelEdit}
-                    initialData={{
-                      company_name: application.company_name,
-                      job_title: application.job_title,
-                      job_url: application.job_url ?? '',
-                      location: application.location ?? '',
-                      salary_range: application.salary_range ?? '',
-                      status: application.status,
-                      date_applied: application.date_applied,
-                      notes: application.notes ?? '',
-                    }}
-                    isLoading={isSubmitting}
-                    submitButtonText="Save Changes"
-                  />
-                </div>
+              {/* Form Content - Full width with natural padding */}
+              <div className="flex-1 overflow-y-auto p-6">
+                <ApplicationForm
+                  onSubmit={handleFormSubmit}
+                  onCancel={handleCancelEdit}
+                  initialData={{
+                    company_name: application.company_name,
+                    job_title: application.job_title,
+                    job_url: application.job_url ?? '',
+                    location: application.location ?? '',
+                    salary_range: application.salary_range ?? '',
+                    status: application.status,
+                    date_applied: application.date_applied,
+                    notes: application.notes ?? '',
+                  }}
+                  isLoading={isSubmitting}
+                  submitButtonText="Save Changes"
+                />
               </div>
             </div>
           ) : (
