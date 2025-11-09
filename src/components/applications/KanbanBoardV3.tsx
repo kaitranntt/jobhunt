@@ -373,7 +373,12 @@ export function KanbanBoardV3({
     }
 
     const applicationId = active.id as string
-    const dropTargetId = over.id as string
+
+    // Determine the drop target - could be a card or a column
+    // When dragging over a card, over.data.current.applicationId exists
+    // When dragging over empty column space, over.id is the column ID
+    const overData = over.data?.current as { applicationId?: string } | undefined
+    const dropTargetId = overData?.applicationId || (over.id as string)
 
     // Find the application being dragged
     const application = optimisticApplications.find(app => app.id === applicationId)
