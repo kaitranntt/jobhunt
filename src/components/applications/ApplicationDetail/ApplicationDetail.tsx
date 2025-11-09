@@ -89,8 +89,8 @@ export function ApplicationDetail({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent
           className={cn(
-            'w-full h-full max-h-[90vh] overflow-hidden p-0 glass-light rounded-glass-lg shadow-glass-dramatic backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)]',
-            isEditMode ? 'max-w-4xl' : 'max-w-7xl'
+            'w-full overflow-hidden p-0 glass-light rounded-glass-lg shadow-glass-dramatic backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)]',
+            isEditMode ? 'max-w-4xl h-auto max-h-[90vh]' : 'max-w-7xl h-full max-h-[90vh]'
           )}
         >
           {/* Visually Hidden Title for Accessibility */}
@@ -110,7 +110,7 @@ export function ApplicationDetail({
           )}
 
           {isEditMode ? (
-            <div className="flex flex-col h-full overflow-hidden">
+            <div className="flex flex-col max-h-[90vh]">
               {/* Edit Mode Header */}
               <div className="glass-ultra border-b border-label-quaternary/20 rounded-t-glass-lg p-6 shrink-0">
                 <h2 className="text-2xl font-bold text-label-primary">Edit Application</h2>
@@ -119,8 +119,8 @@ export function ApplicationDetail({
                 </p>
               </div>
 
-              {/* Form Content - Full width with natural padding */}
-              <div className="flex-1 overflow-y-auto p-6">
+              {/* Form Content - Scrollable if needed */}
+              <div className="overflow-y-auto p-6">
                 <ApplicationForm
                   onSubmit={handleFormSubmit}
                   onCancel={handleCancelEdit}
