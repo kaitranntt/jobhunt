@@ -29,7 +29,8 @@ export async function getApplications(supabase: SupabaseClient): Promise<Applica
     const { data, error } = await supabase
       .from('applications')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('status', { ascending: true })
+      .order('position', { ascending: true })
 
     if (error) {
       if (process.env.NODE_ENV === 'development') {
@@ -185,7 +186,7 @@ export async function getApplicationsByStatus(
       .select('*')
       .eq('status', status)
       .eq('user_id', userId) // Ensure user can only access their own applications
-      .order('created_at', { ascending: false })
+      .order('position', { ascending: true })
 
     if (error) {
       if (process.env.NODE_ENV === 'development') {
@@ -198,6 +199,90 @@ export async function getApplicationsByStatus(
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('getApplicationsByStatus error:', error)
+    }
+    throw error
+  }
+}
+
+/**
+ * Reorder applications within a column
+ * Updates positions for all applications in the reordered list
+ */
+export async function reorderApplicationsInColumn(
+  supabase: SupabaseClient,
+  updates: Array<{ id: string; position: number }>
+): Promise<void> {
+  try {
+    const userId = await verifyAuthenticationContext(supabase)
+
+    // Execute all updates in parallel
+    const updatePromises = updates.map(({ id, position }) =>
+      supabase
+        .from('applications')
+        .update({ position, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .eq('user_id', userId) // Ensure user can only update their own applications
+    )
+
+    const results = await Promise.all(updatePromises)
+
+    // Check for errors
+    const errors = results.filter(result => result.error)
+    if (errors.length > 0) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to reorder applications:', errors)
+      }
+      throw new Error('Failed to reorder applications')
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('reorderApplicationsInColumn error:', error)
+    }
+    throw error
+  }
+}
+
+/**
+ * Update application position and optionally status
+ * Used for both same-column reordering and cross-column moves
+ */
+export async function updateApplicationPosition(
+  supabase: SupabaseClient,
+  id: string,
+  position: number,
+  status?: Application['status']
+): Promise<Application> {
+  try {
+    const userId = await verifyAuthenticationContext(supabase)
+
+    const updates: Partial<Application> = {
+      position,
+      updated_at: new Date().toISOString(),
+    }
+
+    if (status) {
+      updates.status = status
+    }
+
+    const { data, error } = await supabase
+      .from('applications')
+      .update(updates)
+      .eq('id', id)
+      .eq('user_id', userId) // Ensure user can only update their own applications
+      .select()
+      .single()
+
+    if (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to update application position:', error)
+      }
+      throw new Error(`Failed to update application position: ${error.message}`)
+    }
+
+    return data
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('updateApplicationPosition error:', error)
     }
     throw error
   }

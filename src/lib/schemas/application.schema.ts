@@ -68,14 +68,20 @@ export const applicationFormSchema = z.object({
  */
 export const createApplicationSchema = applicationFormSchema.extend({
   user_id: z.string().uuid('Invalid user ID'),
+  position: z.number().int().positive().default(1),
 })
 
 /**
  * Schema for updating an existing application
  */
-export const updateApplicationSchema = applicationFormSchema.partial().omit({
-  // user_id cannot be updated
-})
+export const updateApplicationSchema = applicationFormSchema
+  .partial()
+  .extend({
+    position: z.number().int().positive().optional(),
+  })
+  .omit({
+    // user_id cannot be updated
+  })
 
 /**
  * Type exports inferred from schemas

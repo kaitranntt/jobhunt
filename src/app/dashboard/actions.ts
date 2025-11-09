@@ -10,6 +10,8 @@ import {
   updateApplication,
   deleteApplication,
   getApplications,
+  reorderApplicationsInColumn,
+  updateApplicationPosition,
 } from '@/lib/api/applications'
 
 /**
@@ -77,6 +79,7 @@ export async function createApplicationAction(formData: ApplicationFormData): Pr
     status: validatedData.status,
     date_applied: validatedData.date_applied,
     notes: validatedData.notes || null,
+    position: 1, // Default position for new applications
   }
 
   try {
@@ -191,5 +194,64 @@ export async function updateApplicationStatusAction(
       console.error('Failed to update application status:', error)
     }
     throw new Error('Failed to update application status')
+  }
+}
+
+/**
+ * Reorder applications within a column
+ * Updates positions for multiple applications in bulk
+ */
+export async function reorderApplicationsAction(
+  updates: Array<{ id: string; position: number }>
+): Promise<void> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  try {
+    await reorderApplicationsInColumn(supabase, updates)
+    revalidatePath('/dashboard')
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to reorder applications:', error)
+    }
+    throw new Error('Failed to reorder applications')
+  }
+}
+
+/**
+ * Update application position and optionally status (for drag-and-drop)
+ * Used for both same-column reordering and cross-column moves
+ */
+export async function updateApplicationPositionAction(
+  id: string,
+  position: number,
+  status?: ApplicationStatus
+): Promise<Application> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('Unauthorized')
+  }
+
+  try {
+    const updatedApplication = await updateApplicationPosition(supabase, id, position, status)
+    revalidatePath('/dashboard')
+    return updatedApplication
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to update application position:', error)
+    }
+    throw new Error('Failed to update application position')
   }
 }

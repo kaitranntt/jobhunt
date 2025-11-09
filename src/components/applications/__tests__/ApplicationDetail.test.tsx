@@ -20,6 +20,7 @@ const createMockApplication = (overrides?: Partial<Application>): Application =>
     '<p>We are looking for a Senior Software Engineer to join our team. You will work on cutting-edge technologies and help us build amazing products.</p>',
   source: 'external',
   company_logo_url: null,
+  position: 1,
   created_at: '2025-10-01T10:00:00Z',
   updated_at: '2025-10-01T10:00:00Z',
   ...overrides,
