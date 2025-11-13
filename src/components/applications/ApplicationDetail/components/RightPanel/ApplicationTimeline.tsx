@@ -102,11 +102,11 @@ export function ApplicationTimeline({ application, className }: ApplicationTimel
           const isLast = index === timelineEvents.length - 1
 
           return (
-            <div key={event.id} className="relative pl-6 pb-4 last:pb-0">
+            <div key={event.id} className="relative pl-8 pb-6 last:pb-0">
               {/* Timeline line */}
               {!isLast && (
                 <div
-                  className="absolute left-[7px] top-8 w-0.5 h-full bg-label-quaternary/30"
+                  className="absolute left-[11px] top-10 w-1 h-full bg-gradient-to-b from-copper/60 to-copper/20"
                   aria-hidden="true"
                 />
               )}
@@ -114,11 +114,11 @@ export function ApplicationTimeline({ application, className }: ApplicationTimel
               {/* Timeline dot */}
               <div
                 className={cn(
-                  'absolute left-0 top-2 w-4 h-4 rounded-full border-2 bg-background',
+                  'absolute left-0 top-2 w-6 h-6 rounded-full border-3 bg-background shadow-sm',
                   getEventColor(event.type)
                 )}
               >
-                <div className="w-2 h-2 rounded-full bg-current m-auto mt-0.5" />
+                <div className="w-3 h-3 rounded-full bg-current m-auto mt-[3px]" />
               </div>
 
               {/* Event content */}
