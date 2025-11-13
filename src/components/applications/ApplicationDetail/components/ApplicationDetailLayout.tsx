@@ -1,10 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import Image from 'next/image'
 import type { Application } from '@/lib/types/database.types'
 import type { ApplicationFormData } from '@/lib/schemas/application.schema'
 import type { TabType } from '../types'
+import { CompanyLogo } from '@/components/ui/company-logo'
 import { TabNavigation } from './LeftPanel/TabNavigation'
 import { MainPanel } from './MainPanel/MainPanel'
 import { ApplicationTimeline } from './RightPanel/ApplicationTimeline'
@@ -40,21 +40,11 @@ export function ApplicationDetailLayout({
         {/* Primary Header Info */}
         <div className="flex items-start justify-between gap-4 p-6 pb-2">
           <div className="flex items-center gap-4">
-            {application.company_logo_url ? (
-              <Image
-                src={application.company_logo_url}
-                alt={`${application.company_name} logo`}
-                width={48}
-                height={48}
-                className="rounded-lg glass-light border border-label-quaternary/20 flex-shrink-0"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-lg glass-light border border-label-quaternary/20 flex items-center justify-center bg-copper/10 flex-shrink-0">
-                <span className="text-copper font-semibold text-xl">
-                  {application.company_name.charAt(0)}
-                </span>
-              </div>
-            )}
+            <CompanyLogo
+              companyName={application.company_name}
+              size="lg"
+              className="flex-shrink-0"
+            />
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl font-semibold text-label-primary truncate leading-tight">
                 {application.job_title}
