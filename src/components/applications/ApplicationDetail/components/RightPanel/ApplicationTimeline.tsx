@@ -103,24 +103,23 @@ export function ApplicationTimeline({ application, className }: ApplicationTimel
 
           return (
             <div key={event.id} className="relative pl-6 pb-4 last:pb-0">
-              {/* Timeline line - connecting vertical line between dots */}
-              {!isLast && (
-                <div
-                  className="absolute left-[7px] top-6 bottom-0 w-[3px] bg-label-secondary/40"
-                  style={{ height: 'calc(100% + 0.5rem)' }}
-                  aria-hidden="true"
-                />
-              )}
-
               {/* Timeline dot */}
               <div
                 className={cn(
-                  'absolute left-0 top-2 w-4 h-4 rounded-full border-2 bg-background',
+                  'absolute left-0 top-2 w-4 h-4 rounded-full border-2 bg-background z-10',
                   getEventColor(event.type)
                 )}
               >
                 <div className="w-2 h-2 rounded-full bg-current m-auto mt-0.5" />
               </div>
+
+              {/* Timeline line - connecting vertical line between dots */}
+              {!isLast && (
+                <div
+                  className="absolute left-[7px] top-[16px] h-full border-l-2 border-copper/50"
+                  aria-hidden="true"
+                />
+              )}
 
               {/* Event content */}
               <div className="space-y-1">
