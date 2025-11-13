@@ -90,7 +90,7 @@ export function ApplicationDetail({
         <DialogContent
           className={cn(
             'w-full overflow-hidden p-0 glass-light rounded-glass-lg shadow-glass-dramatic backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)]',
-            isEditMode ? 'max-w-5xl h-auto max-h-[90vh]' : 'max-w-[92vw] h-full max-h-[90vh]'
+            isEditMode ? 'max-w-5xl h-auto max-h-[90vh]' : 'max-w-[85vw] h-full max-h-[90vh]'
           )}
         >
           {/* Visually Hidden Title for Accessibility */}
