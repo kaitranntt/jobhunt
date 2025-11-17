@@ -1,19 +1,17 @@
 # JobHunt - AI Assistant Development Guidelines
 
-**Security Policies**
+## Security Policies
 
-> **⚠️ NEVER COMMIT ENVIRONMENT FILES TO GIT**
+> **NEVER COMMIT ENVIRONMENT FILES TO GIT**
 > Never `git add` or `git commit` any `.env*` files except `.env.example`.
 
 ## Project Overview
 
 JobHunt is a job application tracking system built with Next.js 15, TypeScript, Supabase, and Shadcn UI.
 
-**📌 NOTE: This file contains strict development rules for AI assistants ONLY. See README.md for project documentation.**
+**NOTE: This file contains strict development rules for AI assistants ONLY. See README.md for project documentation.**
 
----
-
-## 🚨 CRITICAL: Code Quality Gates (NON-NEGOTIABLE)
+## Code Quality Gates (NON-NEGOTIABLE)
 
 **BEFORE any commit, ALWAYS run and ensure these pass:**
 
@@ -25,65 +23,35 @@ yarn test              # All tests must pass
 
 **If quality gates fail, you MUST fix the issues before proceeding. No exceptions.**
 
-**🛑 ABSOLUTELY FORBIDDEN:**
+**ABSOLUTELY FORBIDDEN:**
 
-- ❌ **NEVER use `// eslint-disable` or `// eslint-disable-next-line`** - Fix the issue properly
-- ❌ **NEVER use `// @ts-ignore` or `// @ts-expect-error`** - Fix type issues correctly
-- ❌ **NEVER use `any` types** - Always find or define proper types
-- ❌ **NEVER bypass quality gates** - All errors must be resolved, not suppressed
+- **NEVER use `// eslint-disable` or `// eslint-disable-next-line`** - Fix the issue properly
+- **NEVER use `// @ts-ignore` or `// @ts-expect-error`** - Fix type issues correctly
+- **NEVER use `any` types** - Always find or define proper types
+- **NEVER bypass quality gates** - All errors must be resolved, not suppressed
 
-**These bypasses are code smell indicators. If you're tempted to use them, the real issue needs fixing.**
+These bypasses are code smell indicators. If you're tempted to use them, the real issue needs fixing.
 
----
-
-## 🧪 Core Development Rules (MANDATORY)
+## Core Development Rules (MANDATORY)
 
 ### 1. Test-Driven Development (TDD) - REQUIRED
 
 **ALWAYS write tests BEFORE implementation.**
 
-**TDD Workflow**:
-
-1. 📝 Write failing test
-2. ✅ Make test pass with minimal code
-3. 🔄 Refactor while keeping tests green
-4. 🔁 Repeat for next feature
-
 **Testing Strategy - Test Value, Not Lines:**
 
-- ✅ **MUST TEST**: Business logic (auth, CRUD, validation schemas)
-- ✅ **MUST TEST**: Reusable UI components (buttons, forms, cards)
-- ✅ **MUST TEST**: Error handling and edge cases
-- ❌ **SKIP**: Thin library wrappers (Supabase clients, Next.js middleware)
-- ❌ **SKIP**: Pure presentational components without logic
-- ❌ **SKIP**: Configuration files
-
-**Test Pattern Examples:**
-
-```typescript
-// ✅ Business Logic Tests (applications.test.ts, application.schema.test.ts)
-- CRUD operations with proper mocking
-- Validation schemas with comprehensive edge cases
-- Error handling and data transformation
-
-// ✅ Component Tests (login/page.test.tsx, button.test.tsx)
-- Form rendering and user interactions
-- All component variants and props
-- Accessibility and keyboard navigation
-- Loading states and error handling
-
-// ❌ DO NOT Test (unless they contain business logic)
-- Supabase client wrappers (thin SDK abstractions)
-- Next.js middleware delegation (framework patterns)
-- Type definition files (no runtime behavior)
-```
+- **MUST TEST**: Business logic (auth, CRUD, validation schemas)
+- **MUST TEST**: Reusable UI components (buttons, forms, cards)
+- **MUST TEST**: Error handling and edge cases
+- **SKIP**: Thin library wrappers (Supabase clients, Next.js middleware)
+- **SKIP**: Pure presentational components without logic
+- **SKIP**: Configuration files
 
 ### 2. Package Management - STRICT REQUIREMENTS
 
 - **Use latest `yarn` (modern Yarn) ONLY** - no npm, pnpm, or legacy yarn versions
 - Lock file: `yarn.lock` must be committed
 - Installation: `yarn install` or simply `yarn`
-- **NOTE: We use modern Yarn (latest stable), NOT outdated Yarn Classic v1**
 
 ### 3. Clean Architecture - MANDATORY
 
@@ -94,7 +62,7 @@ yarn test              # All tests must pass
 
 ### 4. TypeScript & ESLint Standards - ENFORCED
 
-**🚨 CRITICAL: Never use `any` types - Always find proper types**
+**CRITICAL: Never use `any` types - Always find proper types**
 
 **Quality Standards - NO BYPASSES ALLOWED:**
 
@@ -111,9 +79,7 @@ yarn test              # All tests must pass
 - **Type issues** → Import correct types or define custom interfaces
 - **Complex types** → Break down into smaller, manageable type definitions
 
----
-
-## 🛡️ Quality Standards
+## Quality Standards
 
 ### Test Coverage Requirements
 
@@ -125,7 +91,7 @@ yarn test              # All tests must pass
 ### Code Quality Validation Commands
 
 ```bash
-# Daily Development (RECOMMENDED)
+# Daily Development
 yarn lint                   # ESLint validation
 yarn typecheck              # TypeScript compilation check
 yarn test                   # Run all tests
@@ -138,16 +104,14 @@ yarn build                  # Production build verification
 
 ### Pre-Deployment Checklist
 
-- [ ] Tests passing (`yarn test`) ✅ **CRITICAL**
-- [ ] TypeScript compilation clean (`yarn typecheck`) ✅ **CRITICAL**
-- [ ] ESLint passing (`yarn lint`) ✅ **CRITICAL**
-- [ ] Build successful (`yarn build`) ✅ **CRITICAL**
+- [ ] Tests passing (`yarn test`) - **CRITICAL**
+- [ ] TypeScript compilation clean (`yarn typecheck`) - **CRITICAL**
+- [ ] ESLint passing (`yarn lint`) - **CRITICAL**
+- [ ] Build successful (`yarn build`) - **CRITICAL**
 - [ ] Coverage targets met (`yarn test:coverage`)
-- [ ] **NO eslint-disable or @ts-ignore comments in code** ✅ **CRITICAL**
+- [ ] **NO eslint-disable or @ts-ignore comments in code** - **CRITICAL**
 
----
-
-## 🗄️ Database & Supabase
+## Database & Supabase
 
 ### Database Operations Requirements
 
@@ -162,9 +126,7 @@ yarn build                  # Production build verification
 - **Use Supabase Auth Helpers for Next.js**
 - **Implement proper error handling for auth failures**
 
----
-
-## 🎨 UI/UX Development with Shadcn UI
+## UI/UX Development with Shadcn UI
 
 ### Component Development Rules
 
@@ -179,9 +141,7 @@ yarn build                  # Production build verification
 - Implement proper error handling and user feedback
 - Type all form data with proper interfaces
 
----
-
-## 🔄 Development Workflow
+## Development Workflow
 
 ### Always Maintain Working State
 
@@ -191,19 +151,17 @@ yarn build                  # Production build verification
 
 ### Development Process
 
-1. 📋 Check TODO.md for current phase requirements
-2. 🧪 Write tests for the feature/component
-3. 💻 Implement to make tests pass
-4. 🔄 Refactor while keeping tests green
-5. ✅ **CRITICAL**: Run `yarn lint && yarn typecheck && yarn test`
-6. 📝 Update TODO.md checkboxes
-7. 🚀 Deploy to Vercel to verify working state
+1. Check TODO.md for current phase requirements
+2. Write tests for the feature/component
+3. Implement to make tests pass
+4. Refactor while keeping tests green
+5. **CRITICAL**: Run `yarn lint && yarn typecheck && yarn test`
+6. Update TODO.md checkboxes
+7. Deploy to Vercel to verify working state
 
----
+## Critical Mistakes to Avoid
 
-## 🚨 Critical Mistakes to Avoid
-
-### ❌ NEVER DO THESE
+### NEVER DO THESE
 
 1. **Skip quality gates**: Commit without running `yarn lint && yarn typecheck && yarn test`
 2. **Skip tests**: Writing implementation before tests
@@ -216,7 +174,7 @@ yarn build                  # Production build verification
 9. **Hardcode sensitive data**: Use environment variables
 10. **Ignore RLS policies**: Direct database access without proper auth
 
-### ✅ ALWAYS DO THESE
+### ALWAYS DO THESE
 
 1. **Run quality gates**: `yarn lint && yarn typecheck && yarn test` before every commit
 2. **Write tests first**: TDD approach for all features
@@ -227,25 +185,3 @@ yarn build                  # Production build verification
 7. **Use environment variables**: Never commit secrets
 8. **Respect RLS**: All database queries must respect user permissions
 9. **Mobile-first design**: Ensure responsive layouts
-
----
-
-## 📚 Project Documentation References
-
-**For AI Assistants:**
-
-- **TODO.md** - Progressive development checklist (check here for current tasks)
-- **README.md** - Project setup, architecture, and documentation (for reference only)
-
-**External Documentation:**
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Shadcn UI Documentation](https://ui.shadcn.com)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs)
-
----
-
-**Remember: Quality gates are non-negotiable. Run `yarn lint && yarn typecheck && yarn test` before every commit.**
-
-**NEVER use eslint-disable, @ts-ignore, or any types. Fix issues properly.**
