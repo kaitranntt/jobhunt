@@ -179,7 +179,7 @@ describe('ApplicationCard', () => {
 
       const card = container.querySelector('[role="article"]')
       expect(card?.className).toContain('cursor-pointer')
-      expect(card?.className).toContain('hover:!border-[hsl(var(--copper-light))]')
+      expect(card?.className).toContain('hover:border-copper-light')
     })
   })
 

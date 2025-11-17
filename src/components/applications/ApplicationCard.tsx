@@ -49,7 +49,7 @@ export function ApplicationCard({
       className={cn(
         'glass-light rounded-glass shadow-glass-soft transition-all duration-300 ease-in-out group',
         onClick &&
-          'cursor-pointer transition-all duration-300 ease-in-out hover:!border-[hsl(var(--copper-light))] hover:shadow-[0_0_0_1px_hsl(var(--copper-light))]',
+          'cursor-pointer transition-all duration-300 ease-in-out hover:border-copper-light hover:ring-1 hover:ring-copper-light',
         isDragging && 'opacity-50 rotate-2 shadow-xl'
       )}
       {...attributes}

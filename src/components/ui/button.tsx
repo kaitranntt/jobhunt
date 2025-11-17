@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 rounded-md',
         link: 'text-primary underline-offset-4 hover:underline rounded-md',
         glass:
-          'rounded-glass-lg shadow-glass-soft hover:shadow-glass-medium active:shadow-glass-subtle backdrop-blur-[30px] [-webkit-backdrop-filter:blur(30px)] saturate-[180%] transition-all duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-px active:scale-[0.98] text-[var(--macos-label-primary)] bg-[var(--glass-medium)] border border-[var(--glass-border-strong)]',
+          'rounded-glass-lg shadow-glass-soft hover:shadow-glass-medium active:shadow-glass-subtle backdrop-blur-[30px] [-webkit-backdrop-filter:blur(30px)] saturate-[180%] transition-all duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-px active:scale-[0.98] text-label-primary bg-glass-medium border border-glass-border-strong',
       },
       size: {
         default: 'h-8 px-3 py-2 has-[>svg]:px-2.5',

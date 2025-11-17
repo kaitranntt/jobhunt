@@ -1,59 +1,81 @@
 # macOS 26 "Liquid Glass" Design System
 
-Production-ready design tokens for JobHunt's macOS 26-inspired UI redesign.
+**⚠️ NOTICE: TypeScript tokens in this directory are for reference only.**
+
+**The single source of truth for all design values is now CSS:**
+- **Colors**: `/src/app/styles/theme/*.css`
+- **Utilities**: `/src/app/styles/utilities/*.css`
+- **Tailwind Theme**: `/src/app/styles/theme/tailwind-theme.css`
+
+## Current Implementation
+
+This project uses **CSS-first design tokens** with Tailwind v4:
+
+- ✅ **All styling via CSS variables and Tailwind utilities**
+- ✅ **Centralized theme management in CSS files**
+- ✅ **Easy theme switching (light/dark modes)**
+- ✅ **Zero runtime TypeScript token imports**
 
 ## Overview
 
 This design system implements the "Liquid Glass" aesthetic with:
 
-- **RGBA-based color system** for proper alpha channel support
+- **RGBA-based color system** via CSS custom properties
 - **8pt grid spacing system** for consistent layouts
 - **Responsive typography scale** following 4pt baseline grid
 - **Spring physics animations** for natural motion
 - **Depth-based shadow system** with specular highlights
 
-## Quick Start
+## Quick Start (CSS-First Approach - RECOMMENDED)
 
-### TypeScript/React Usage
+### React/TypeScript Usage (Recommended)
+
+Use Tailwind utility classes and CSS variables:
 
 ```typescript
-import {
-  labelColors,
-  spacing,
-  fontSizes,
-  systemTints,
-  liquidGlassMaterials
-} from '@/lib/design-tokens';
-
-// Use in components
+// ✅ RECOMMENDED: Use Tailwind utilities
 const MyComponent = () => (
+  <div className="
+    bg-glass-medium
+    text-label-primary
+    p-4
+    rounded-glass-lg
+    shadow-glass-medium
+  ">
+    Content
+  </div>
+);
+
+// ✅ RECOMMENDED: Use CSS variables in inline styles
+const MyStyledComponent = () => (
   <div style={{
-    color: labelColors.light.primary,
-    padding: spacing[3], // 24px
-    fontSize: fontSizes.body, // 16px
-    background: liquidGlassMaterials.light.medium,
+    background: 'var(--glass-medium)',
+    color: 'var(--macos-label-primary)',
   }}>
     Content
   </div>
 );
+
+// ❌ DEPRECATED: Don't import TypeScript tokens
+// import { labelColors } from '@/lib/design-tokens';
 ```
 
 ### CSS/Tailwind Usage
 
 ```css
-/* Use CSS custom properties */
+/* ✅ Use CSS custom properties */
 .my-element {
   color: var(--macos-label-primary);
-  padding: var(--spacing-3);
-  font-size: var(--font-size-body);
   background: var(--glass-medium);
 }
 
-/* Or use utility classes */
+/* ✅ Use Tailwind utility classes */
 .my-glass-card {
-  @apply glass-medium rounded-glass-lg shadow-glass-medium;
-  @apply text-label-primary;
-  @apply animate-spring-bounce-in;
+  @apply bg-glass-medium
+         border-glass-border-strong
+         rounded-glass-lg
+         shadow-glass-medium
+         text-label-primary;
 }
 ```
 

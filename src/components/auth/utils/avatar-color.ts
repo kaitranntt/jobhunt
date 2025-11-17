@@ -1,54 +1,60 @@
 import type { User } from '@supabase/supabase-js'
 
-// Vibrant preset gradients inspired by the mockup design
+// Vibrant preset gradients using macOS 26 design system tints
 const VIBRANT_GRADIENTS = [
   // Purple to Blue (like JD avatar)
   {
-    primary: '#6A5ACD',
-    secondary: '#4169E1',
+    primary: 'rgb(var(--tint-purple))',
+    secondary: 'rgb(var(--tint-blue))',
     angle: 135,
   },
-  // Orange to Red-Orange (like SA avatar)
+  // Orange to Red (like SA avatar)
   {
-    primary: '#FFA500',
-    secondary: '#FF4500',
+    primary: 'rgb(var(--tint-orange))',
+    secondary: 'rgb(var(--tint-red))',
     angle: 135,
   },
   // Teal to Green (like ML avatar)
   {
-    primary: '#00CED1',
-    secondary: '#3CB371',
+    primary: 'rgb(var(--tint-teal))',
+    secondary: 'rgb(var(--tint-green))',
     angle: 135,
   },
-  // Red to Orange-Red (like RB avatar)
+  // Red to Orange (like RB avatar)
   {
-    primary: '#FF0000',
-    secondary: '#FF4500',
+    primary: 'rgb(var(--tint-red))',
+    secondary: 'rgb(var(--tint-orange))',
     angle: 135,
   },
   // Pink to Purple
   {
-    primary: '#FF69B4',
-    secondary: '#9370DB',
+    primary: 'rgb(var(--tint-pink))',
+    secondary: 'rgb(var(--tint-purple))',
     angle: 120,
   },
   // Yellow to Orange
   {
-    primary: '#FFD700',
-    secondary: '#FF8C00',
+    primary: 'rgb(var(--tint-yellow))',
+    secondary: 'rgb(var(--tint-orange))',
     angle: 145,
   },
-  // Cyan to Blue
+  // Teal to Blue
   {
-    primary: '#00CED1',
-    secondary: '#1E90FF',
+    primary: 'rgb(var(--tint-teal))',
+    secondary: 'rgb(var(--tint-blue))',
     angle: 125,
   },
   // Green to Teal
   {
-    primary: '#32CD32',
-    secondary: '#20B2AA',
+    primary: 'rgb(var(--tint-green))',
+    secondary: 'rgb(var(--tint-teal))',
     angle: 160,
+  },
+  // Indigo to Purple
+  {
+    primary: 'rgb(var(--tint-indigo))',
+    secondary: 'rgb(var(--tint-purple))',
+    angle: 140,
   },
 ]
 

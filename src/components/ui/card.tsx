@@ -17,7 +17,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         'rounded-xl border text-card-foreground shadow',
         variant === 'default' && 'bg-card',
         variant === 'glass' &&
-          'rounded-glass bg-[var(--glass-light)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-[var(--glass-border-strong)] shadow-glass-soft',
+          'rounded-glass bg-glass-light backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] saturate-[180%] border-glass-border-strong shadow-glass-soft',
         interactive && variant === 'glass' && 'glass-interactive',
         className
       )}
@@ -37,7 +37,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       ref={ref}
       className={cn(
         'flex flex-col space-y-1.5 p-4',
-        glass && 'border-b border-[var(--glass-border-medium)]',
+        glass && 'border-b border-glass-border-medium',
         className
       )}
       {...props}

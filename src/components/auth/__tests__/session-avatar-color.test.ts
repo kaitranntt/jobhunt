@@ -150,27 +150,21 @@ describe('Session-Based Avatar Color System', () => {
     it('should generate colors from vibrant presets', () => {
       const colors = Array.from({ length: 20 }, () => getSessionAvatarColor(testUser))
 
-      const expectedColors = [
-        '#6A5ACD',
-        '#4169E1', // Purple to Blue
-        '#FFA500',
-        '#FF4500', // Orange to Red-Orange
-        '#00CED1',
-        '#3CB371', // Teal to Green
-        '#FF0000',
-        '#FF4500', // Red to Orange-Red
-        '#FF69B4',
-        '#9370DB', // Pink to Purple
-        '#FFD700',
-        '#FF8C00', // Yellow to Orange
-        '#00CED1',
-        '#1E90FF', // Cyan to Blue
-        '#32CD32',
-        '#20B2AA', // Green to Teal
+      // Expected CSS variable colors from macOS 26 design system
+      const expectedColorPatterns = [
+        'rgb(var(--tint-purple))',
+        'rgb(var(--tint-blue))',
+        'rgb(var(--tint-orange))',
+        'rgb(var(--tint-red))',
+        'rgb(var(--tint-teal))',
+        'rgb(var(--tint-green))',
+        'rgb(var(--tint-pink))',
+        'rgb(var(--tint-yellow))',
+        'rgb(var(--tint-indigo))',
       ]
 
       colors.forEach(color => {
-        const hasExpectedColor = expectedColors.some(expectedColor =>
+        const hasExpectedColor = expectedColorPatterns.some(expectedColor =>
           color.gradient.includes(expectedColor)
         )
         expect(hasExpectedColor).toBe(true)

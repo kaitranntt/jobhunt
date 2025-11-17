@@ -88,7 +88,7 @@ export function useAvatarColor(user: User | null): UseAvatarColorReturn {
 export function getAvatarColorStyle(avatarColor: AvatarColorData | null): React.CSSProperties {
   if (!avatarColor) {
     return {
-      background: 'linear-gradient(135deg, #6A5ACD 0%, #4169E1 100%)',
+      background: 'linear-gradient(135deg, rgb(var(--tint-purple)) 0%, rgb(var(--tint-blue)) 100%)',
     }
   }
 

@@ -8,6 +8,7 @@
 @import './styles/theme/base-colors.css';
 @import './styles/theme/semantic-colors.css';
 @import './styles/theme/legacy-shadcn.css';
+@import './styles/theme/tailwind-theme.css';
 
 /* Base Styles */
 body {

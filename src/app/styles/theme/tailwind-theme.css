@@ -1,0 +1,101 @@
+/* ========================================================================== */
+/* Tailwind v4 Theme Mappings - Expose CSS Variables as Utility Classes      */
+/* ========================================================================== */
+/* This file maps our design system CSS variables to Tailwind utilities.     */
+/* After adding variables here, you can use them like: bg-glass-medium       */
+/* ========================================================================== */
+
+@theme inline {
+  /* ===== Glass Background Colors ===== */
+  --color-glass-ultra: var(--glass-ultra);
+  --color-glass-light: var(--glass-light);
+  --color-glass-medium: var(--glass-medium);
+  --color-glass-heavy: var(--glass-heavy);
+
+  /* ===== Glass Border Colors ===== */
+  --color-glass-border-subtle: var(--glass-border-subtle);
+  --color-glass-border-medium: var(--glass-border-medium);
+  --color-glass-border-strong: var(--glass-border-strong);
+
+  /* ===== macOS Fill Colors ===== */
+  --color-fill-primary: var(--macos-fill-primary);
+  --color-fill-secondary: var(--macos-fill-secondary);
+  --color-fill-tertiary: var(--macos-fill-tertiary);
+  --color-fill-quaternary: var(--macos-fill-quaternary);
+
+  /* ===== macOS Label Colors ===== */
+  --color-label-primary: var(--macos-label-primary);
+  --color-label-secondary: var(--macos-label-secondary);
+  --color-label-tertiary: var(--macos-label-tertiary);
+  --color-label-quaternary: var(--macos-label-quaternary);
+
+  /* ===== macOS Background Colors ===== */
+  --color-bg-primary: var(--macos-bg-primary);
+  --color-bg-secondary: var(--macos-bg-secondary);
+  --color-bg-tertiary: var(--macos-bg-tertiary);
+  --color-bg-grouped: var(--macos-bg-grouped);
+  --color-bg-grouped-secondary: var(--macos-bg-grouped-secondary);
+  --color-bg-grouped-tertiary: var(--macos-bg-grouped-tertiary);
+
+  /* ===== Copper Brand Colors ===== */
+  /* Note: These use HSL format, wrap in hsl() when using */
+  --color-copper: hsl(var(--copper));
+  --color-copper-light: hsl(var(--copper-light));
+  --color-copper-dark: hsl(var(--copper-dark));
+  --color-copper-glow: hsl(var(--copper-glow));
+  --color-copper-shimmer: hsl(var(--copper-shimmer));
+
+  /* ===== System Tint Colors ===== */
+  /* Note: These use RGB format, wrap in rgb() when using */
+  --color-tint-blue: rgb(var(--tint-blue));
+  --color-tint-purple: rgb(var(--tint-purple));
+  --color-tint-pink: rgb(var(--tint-pink));
+  --color-tint-red: rgb(var(--tint-red));
+  --color-tint-orange: rgb(var(--tint-orange));
+  --color-tint-yellow: rgb(var(--tint-yellow));
+  --color-tint-green: rgb(var(--tint-green));
+  --color-tint-teal: rgb(var(--tint-teal));
+  --color-tint-indigo: rgb(var(--tint-indigo));
+
+  /* ===== Semantic Colors ===== */
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-info: var(--color-info);
+
+  /* ===== Shadow Colors (for custom shadows) ===== */
+  --color-shadow-subtle: var(--shadow-subtle);
+  --color-shadow-soft: var(--shadow-soft);
+  --color-shadow-medium: var(--shadow-medium);
+  --color-shadow-strong: var(--shadow-strong);
+  --color-shadow-specular: var(--shadow-specular);
+}
+
+/* ========================================================================== */
+/* Usage Examples:                                                            */
+/* ========================================================================== */
+/*
+  Glass Backgrounds:
+    bg-glass-ultra, bg-glass-light, bg-glass-medium, bg-glass-heavy
+
+  Glass Borders:
+    border-glass-border-subtle, border-glass-border-medium, border-glass-border-strong
+
+  Fill Colors:
+    bg-fill-primary, bg-fill-secondary, bg-fill-tertiary, bg-fill-quaternary
+
+  Label Text Colors:
+    text-label-primary, text-label-secondary, text-label-tertiary, text-label-quaternary
+
+  Copper Brand:
+    bg-copper, text-copper, border-copper-light, hover:bg-copper-dark
+
+  System Tints:
+    bg-tint-blue, text-tint-purple, border-tint-green
+
+  Semantic Colors:
+    bg-success, text-error, border-warning
+
+  Background Colors:
+    bg-bg-primary, bg-bg-secondary, bg-bg-tertiary
+*/
