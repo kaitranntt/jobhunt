@@ -35,7 +35,7 @@ JobHunt is a modern, production-ready job application tracking system built with
 - **Testing Library** for component testing utilities
 - **ESLint + Prettier** for code quality and formatting
 - **Husky + lint-staged** for git hooks and pre-commit checks
-- **Modern Yarn** for fast, reliable package management
+- **Bun** for fast, reliable package management
 
 ## Codebase Structure
 
@@ -192,9 +192,9 @@ The application uses 5 migration files:
 All commits must pass:
 
 ```bash
-yarn lint           # ESLint validation
-yarn typecheck      # TypeScript compilation
-yarn test           # All tests passing (339 tests)
+bun run lint           # ESLint validation
+bun run typecheck      # TypeScript compilation
+bun run test           # All tests passing (339 tests)
 ```
 
 ### Git Workflow

@@ -68,11 +68,6 @@ __pycache__/
 /node_modules
 /.pnp
 .pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
 
 # testing
 /coverage
@@ -90,7 +85,6 @@ __pycache__/
 # package manager
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
 
 # vercel
 .vercel

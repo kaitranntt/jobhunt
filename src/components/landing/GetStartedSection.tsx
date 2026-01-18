@@ -137,7 +137,7 @@ git clone https://github.com/kaitranntt/jobhunt.git
 cd jobhunt
 
 # Install dependencies
-yarn install
+bun install
 
 # Set up environment variables
 cp .env.example .env.local
@@ -146,7 +146,7 @@ cp .env.example .env.local
 vercel deploy
 
 # Or run locally
-yarn dev`}</code>
+bun run dev`}</code>
                 </pre>
               </div>
 

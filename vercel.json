@@ -1,5 +1,4 @@
 {
-  "buildCommand": "yarn build",
-  "installCommand": "yarn install --immutable",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "bunVersion": "1.x"
 }

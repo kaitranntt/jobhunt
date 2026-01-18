@@ -1,6 +1,4 @@
 {
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
@@ -13,17 +11,11 @@
     "**/.DS_Store": true,
     "**/node_modules": true,
     "**/.next": true,
-    "**/dist": true,
-    "**/.pnp.*": true,
-    "**/.yarn": true
+    "**/dist": true
   },
   "search.exclude": {
     "**/node_modules": true,
     "**/.next": true,
-    "**/dist": true,
-    "**/.pnp.*": true,
-    "**/.yarn": true
-  },
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
+    "**/dist": true
+  }
 }

@@ -26,7 +26,7 @@ We welcome contributions of all kinds:
 **Option B: Local Development**
 
 - **Node.js** 20+ (check `.nvmrc` for exact version)
-- **Yarn** (modern Yarn, not Classic v1)
+- **Bun** - Latest version
 - **Supabase CLI** - [Installation guide](https://supabase.com/docs/guides/cli)
 - **Git** for version control
 
@@ -61,7 +61,7 @@ See [DOCKER.md](./DOCKER.md) for detailed Docker instructions.
 
 ```bash
 # Install dependencies
-yarn install
+bun install
 ```
 
 3. **Set up Supabase (Local Development only)**
@@ -101,7 +101,7 @@ Edit `.env.local` with your Supabase credentials:
 5. **Run the development server**
 
 ```bash
-yarn dev
+bun run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to see the app.
@@ -113,7 +113,7 @@ Visit [http://localhost:3000](http://localhost:3000) to see the app.
 **Before every commit, run:**
 
 ```bash
-yarn lint && yarn typecheck && yarn test
+bun run lint && bun run typecheck && bun run test
 ```
 
 All three must pass with zero errors. No exceptions.
@@ -130,9 +130,9 @@ We follow TDD practices:
 **Test commands:**
 
 ```bash
-yarn test              # Run all tests
-yarn test:watch        # Watch mode for TDD
-yarn test:coverage     # Generate coverage report
+bun run test              # Run all tests
+bun run test:watch        # Watch mode for TDD
+bun run test:coverage     # Generate coverage report
 ```
 
 ### Code Quality Standards
@@ -155,16 +155,16 @@ yarn test:coverage     # Generate coverage report
 ### Development Commands
 
 ```bash
-yarn dev              # Start development server
-yarn build            # Build for production
-yarn lint             # Run ESLint
-yarn lint:fix         # Auto-fix ESLint issues
-yarn typecheck        # TypeScript validation
-yarn test             # Run tests
-yarn test:watch       # Watch mode
-yarn test:coverage    # Coverage report
-yarn format           # Format code with Prettier
-yarn format:check     # Check formatting
+bun run dev              # Start development server
+bun run build            # Build for production
+bun run lint             # Run ESLint
+bun run lint:fix         # Auto-fix ESLint issues
+bun run typecheck        # TypeScript validation
+bun run test             # Run tests
+bun run test:watch       # Watch mode
+bun run test:coverage    # Coverage report
+bun run format           # Format code with Prettier
+bun run format:check     # Check formatting
 ```
 
 ## 📝 Making Changes
@@ -196,13 +196,13 @@ Branch naming conventions:
 
 ```bash
 # Run quality gates
-yarn lint && yarn typecheck && yarn test
+bun run lint && bun run typecheck && bun run test
 
 # Test the build
-yarn build
+bun run build
 
 # Manual testing
-yarn dev
+bun run dev
 ```
 
 ### 4. Commit Your Changes

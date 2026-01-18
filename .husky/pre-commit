@@ -2,10 +2,10 @@
 
 # Run lint-staged for file-specific linting and formatting
 echo "🎨 Running lint-staged..."
-yarn lint-staged
+bunx lint-staged
 
 # Run quality gates
 echo "🔍 Running quality gates..."
-yarn lint && yarn typecheck && yarn test
+bun run lint && bun run typecheck && bun run test
 
 echo "✅ All quality gates passed!"

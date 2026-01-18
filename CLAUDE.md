@@ -16,9 +16,9 @@ JobHunt is a job application tracking system built with Next.js 15, TypeScript, 
 **BEFORE any commit, ALWAYS run and ensure these pass:**
 
 ```bash
-yarn lint              # ESLint must pass with zero errors/warnings
-yarn typecheck         # TypeScript must compile with zero errors
-yarn test              # All tests must pass
+bun run lint              # ESLint must pass with zero errors/warnings
+bun run typecheck         # TypeScript must compile with zero errors
+bun run test              # All tests must pass
 ```
 
 **If quality gates fail, you MUST fix the issues before proceeding. No exceptions.**
@@ -49,9 +49,9 @@ These bypasses are code smell indicators. If you're tempted to use them, the rea
 
 ### 2. Package Management - STRICT REQUIREMENTS
 
-- **Use latest `yarn` (modern Yarn) ONLY** - no npm, pnpm, or legacy yarn versions
-- Lock file: `yarn.lock` must be committed
-- Installation: `yarn install` or simply `yarn`
+- **Use Bun ONLY** - no npm, pnpm, or yarn
+- Lock file: `bun.lockb` must be committed
+- Installation: `bun install` or simply `bun`
 
 ### 3. Clean Architecture - MANDATORY
 
@@ -92,23 +92,23 @@ These bypasses are code smell indicators. If you're tempted to use them, the rea
 
 ```bash
 # Daily Development
-yarn lint                   # ESLint validation
-yarn typecheck              # TypeScript compilation check
-yarn test                   # Run all tests
-yarn test:watch             # Watch mode for TDD
+bun run lint                   # ESLint validation
+bun run typecheck              # TypeScript compilation check
+bun run test                   # Run all tests
+bun run test:watch             # Watch mode for TDD
 
 # Coverage & Build
-yarn test:coverage          # Generate coverage report
-yarn build                  # Production build verification
+bun run test:coverage          # Generate coverage report
+bun run build                  # Production build verification
 ```
 
 ### Pre-Deployment Checklist
 
-- [ ] Tests passing (`yarn test`) - **CRITICAL**
-- [ ] TypeScript compilation clean (`yarn typecheck`) - **CRITICAL**
-- [ ] ESLint passing (`yarn lint`) - **CRITICAL**
-- [ ] Build successful (`yarn build`) - **CRITICAL**
-- [ ] Coverage targets met (`yarn test:coverage`)
+- [ ] Tests passing (`bun run test`) - **CRITICAL**
+- [ ] TypeScript compilation clean (`bun run typecheck`) - **CRITICAL**
+- [ ] ESLint passing (`bun run lint`) - **CRITICAL**
+- [ ] Build successful (`bun run build`) - **CRITICAL**
+- [ ] Coverage targets met (`bun run test:coverage`)
 - [ ] **NO eslint-disable or @ts-ignore comments in code** - **CRITICAL**
 
 ## Database & Supabase
@@ -155,7 +155,7 @@ yarn build                  # Production build verification
 2. Write tests for the feature/component
 3. Implement to make tests pass
 4. Refactor while keeping tests green
-5. **CRITICAL**: Run `yarn lint && yarn typecheck && yarn test`
+5. **CRITICAL**: Run `bun run lint && bun run typecheck && bun run test`
 6. Update TODO.md checkboxes
 7. Deploy to Vercel to verify working state
 
@@ -163,9 +163,9 @@ yarn build                  # Production build verification
 
 ### NEVER DO THESE
 
-1. **Skip quality gates**: Commit without running `yarn lint && yarn typecheck && yarn test`
+1. **Skip quality gates**: Commit without running `bun run lint && bun run typecheck && bun run test`
 2. **Skip tests**: Writing implementation before tests
-3. **Use wrong package manager**: npm/pnpm instead of yarn
+3. **Use wrong package manager**: npm/pnpm/yarn instead of bun
 4. **Break working state**: Commit non-functional code
 5. **Use `any` types**: Bypass TypeScript safety
 6. **Use eslint-disable**: Suppress linting errors instead of fixing them
@@ -176,7 +176,7 @@ yarn build                  # Production build verification
 
 ### ALWAYS DO THESE
 
-1. **Run quality gates**: `yarn lint && yarn typecheck && yarn test` before every commit
+1. **Run quality gates**: `bun run lint && bun run typecheck && bun run test` before every commit
 2. **Write tests first**: TDD approach for all features
 3. **Maintain working state**: Every commit is deployable
 4. **Strong typing**: Explicit interfaces and return types - NO bypasses
