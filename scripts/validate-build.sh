@@ -29,21 +29,21 @@ print_status() {
 
 # 1. TypeScript Compilation Check
 echo "📝 Checking TypeScript compilation..."
-if yarn typecheck > /dev/null 2>&1; then
+if bun run typecheck > /dev/null 2>&1; then
     print_status 0 "TypeScript compilation successful"
 else
     print_status 1 "TypeScript compilation failed"
-    echo -e "${YELLOW}   Run 'yarn typecheck' to see errors${NC}"
+    echo -e "${YELLOW}   Run 'bun run typecheck' to see errors${NC}"
 fi
 
 # 2. ESLint Check
 echo ""
 echo "🔍 Checking ESLint..."
-if yarn lint > /dev/null 2>&1; then
+if bun run lint > /dev/null 2>&1; then
     print_status 0 "ESLint passed"
 else
     print_status 1 "ESLint failed"
-    echo -e "${YELLOW}   Run 'yarn lint' to see errors${NC}"
+    echo -e "${YELLOW}   Run 'bun run lint' to see errors${NC}"
 fi
 
 # 3. Test Suite Check
@@ -52,9 +52,9 @@ echo "🧪 Running test suite..."
 # Skip tests on Vercel to avoid timeouts and resource constraints
 if [ -n "$VERCEL" ] || [ -n "$VERCEL_ENV" ]; then
     print_status 0 "Skipping tests on Vercel (run locally before pushing)"
-elif yarn test --reporter=basic 2>/dev/null | grep -q "Test Files.*failed"; then
+elif bun test --reporter=basic 2>/dev/null | grep -q "Test Files.*failed"; then
     print_status 1 "Tests failed"
-    echo -e "${YELLOW}   Run 'yarn test' to see failures${NC}"
+    echo -e "${YELLOW}   Run 'bun test' to see failures${NC}"
 else
     print_status 0 "All tests passed"
 fi

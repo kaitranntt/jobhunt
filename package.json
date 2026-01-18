@@ -35,7 +35,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate": "./scripts/validate-build.sh",
-    "precommit": "yarn lint && yarn typecheck && yarn test",
+    "precommit": "bun run lint && bun run typecheck && bun run test",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -107,6 +107,5 @@
     "typescript": "^5",
     "vite": "^7.1.8",
     "vitest": "^3.2.4"
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

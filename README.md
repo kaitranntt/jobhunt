@@ -64,14 +64,14 @@ Track your job applications with an intuitive Kanban board interface. Built with
 - **Testing Library** - Component testing utilities
 - **ESLint + Prettier** - Code quality and formatting
 - **Husky + lint-staged** - Git hooks and pre-commit checks
-- **Yarn (Modern)** - Fast, reliable package management
+- **Bun** - Fast, reliable package management
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - **Node.js 22+** - Modern JavaScript runtime
-- **Yarn (Modern)** - Package manager (version 4.x)
+- **Bun** - Package manager (latest version)
 - **Supabase Account** - Free tier sufficient for development
 
 ### Option 1: Docker (Recommended for Production)
@@ -100,7 +100,7 @@ Visit [http://localhost:3000](http://localhost:3000) 🎉
 # Clone and install dependencies
 git clone https://github.com/kaitranntt/jobhunt.git
 cd jobhunt
-yarn install
+bun install
 
 # Set up Supabase (choose one method)
 
@@ -117,7 +117,7 @@ cp .env.example .env.local
 # Edit .env.local with your Supabase project details
 
 # Start development server
-yarn dev
+bun run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) 🎉
@@ -156,21 +156,21 @@ supabase db diff
 **Core Commands:**
 
 ```bash
-yarn dev              # Start development server (localhost:3000)
-yarn build            # Build for production
-yarn test             # Run all tests (399 tests passing)
-yarn test:watch       # Watch mode for TDD development
-yarn test:coverage    # Generate coverage report
-yarn lint             # Run ESLint
-yarn lint:fix         # Auto-fix ESLint issues
-yarn typecheck        # TypeScript compilation check
-yarn format           # Format code with Prettier
+bun run dev              # Start development server (localhost:3000)
+bun run build            # Build for production
+bun run test             # Run all tests (399 tests passing)
+bun run test:watch       # Watch mode for TDD development
+bun run test:coverage    # Generate coverage report
+bun run lint             # Run ESLint
+bun run lint:fix         # Auto-fix ESLint issues
+bun run typecheck        # TypeScript compilation check
+bun run format           # Format code with Prettier
 ```
 
 **Quality Gates (MUST PASS before commit):**
 
 ```bash
-yarn lint && yarn typecheck && yarn test
+bun run lint && bun run typecheck && bun run test
 ```
 
 ## 🚀 Deployment
@@ -241,14 +241,14 @@ git clone https://github.com/kaitranntt/jobhunt.git
 cd jobhunt
 
 # Install dependencies
-yarn install
+bun install
 
 # Start local development environment
 supabase start
 supabase db reset
 
 # Run development server
-yarn dev
+bun run dev
 ```
 
 ## 📚 Documentation

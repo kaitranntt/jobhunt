@@ -52,10 +52,10 @@ Closes #
 
 ### Quality Gates
 
-- [ ] `yarn lint` passes with no errors
-- [ ] `yarn typecheck` passes with no errors
-- [ ] `yarn test` passes with no failures
-- [ ] `yarn build` completes successfully
+- [ ] `bun run lint` passes with no errors
+- [ ] `bun run typecheck` passes with no errors
+- [ ] `bun run test` passes with no failures
+- [ ] `bun run build` completes successfully
 
 ## 📸 Screenshots/Videos
 

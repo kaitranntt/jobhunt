@@ -94,7 +94,7 @@ Vercel secrets must be configured:
 
 ### Pre-commit Hooks (Husky)
 
-**Installed:** Automatically via `yarn install`
+**Installed:** Automatically via `bun install`
 
 **Hooks:**
 
@@ -251,17 +251,17 @@ CODECOV_TOKEN: 'your-codecov-token'
 
 ```bash
 # Run locally to see errors
-yarn lint
+bun run lint
 
 # Auto-fix issues
-yarn lint:fix
+bun run lint:fix
 ```
 
 ### CI Failing on TypeScript
 
 ```bash
 # Run locally to see errors
-yarn typecheck
+bun run typecheck
 
 # Fix type errors in your code
 ```
@@ -270,10 +270,10 @@ yarn typecheck
 
 ```bash
 # Run tests locally
-yarn test
+bun run test
 
 # Watch mode for debugging
-yarn test:watch
+bun run test:watch
 ```
 
 ### Commit Message Rejected
@@ -290,7 +290,7 @@ git commit --amend -m "feat: correct message"
 
 ```bash
 # Run hooks manually
-yarn precommit
+bun run precommit
 
 # Skip hooks (NOT RECOMMENDED)
 git commit --no-verify
@@ -312,7 +312,7 @@ docker build --progress=plain -t jobhunt:test .
 
 ### CI Performance
 
-- **Caching:** Yarn dependencies cached per Node version
+- **Caching:** Bun dependencies cached per Node version
 - **Concurrency:** Jobs run in parallel when possible
 - **Timeout:** Reasonable timeouts prevent hanging builds
 
@@ -326,7 +326,7 @@ docker build --progress=plain -t jobhunt:test .
 
 ### For Contributors
 
-1. ✅ Always run `yarn lint && yarn typecheck && yarn test` before committing
+1. ✅ Always run `bun run lint && bun run typecheck && bun run test` before committing
 2. ✅ Use conventional commit messages
 3. ✅ Keep commits focused and atomic
 4. ✅ Write tests for new features

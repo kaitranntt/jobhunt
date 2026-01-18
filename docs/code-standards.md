@@ -15,9 +15,9 @@ This document defines the coding standards, patterns, and best practices that al
 Every commit MUST pass all quality gates:
 
 ```bash
-yarn lint           # Zero ESLint errors/warnings
-yarn typecheck      # Zero TypeScript compilation errors
-yarn test           # All tests passing (399 tests)
+bun run lint           # Zero ESLint errors/warnings
+bun run typecheck      # Zero TypeScript compilation errors
+bun run test           # All tests passing (399 tests)
 ```
 
 **ABSOLUTELY FORBIDDEN:**

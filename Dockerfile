@@ -1,44 +1,21 @@
 # Multi-stage build for optimized production image
 
 # Stage 1: Dependencies
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat bash
-
+FROM oven/bun:1 AS deps
 WORKDIR /app
-
-# Copy package files
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
-
-# Install dependencies with Yarn
-RUN corepack enable && \
-    corepack prepare yarn@4.10.3 --activate && \
-    yarn install --immutable
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
 
 # Stage 2: Builder
-FROM node:20-alpine AS builder
-RUN apk add --no-cache libc6-compat bash git
-
+FROM oven/bun:1 AS builder
 WORKDIR /app
-
-# Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/.yarn ./.yarn
-COPY --from=deps /app/.yarnrc.yml ./.yarnrc.yml
-
-# Copy source code
 COPY . .
-
-# Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-
-# Build the application
-RUN corepack enable && \
-    corepack prepare yarn@4.10.3 --activate && \
-    NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co \
+RUN NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co \
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=dummy-key-for-build \
-    yarn build
+    bun run build
 
 # Stage 3: Runner
 FROM node:20-alpine AS runner
